@@ -1,0 +1,7 @@
+; $Id$
+name = Emic CWRC Implementation
+description = Adds access to CWRCWriter annotation tool
+dependencies[] = fedora_repository
+dependencies[] = islandora_book
+package = Emic Tools
+core = 6.x

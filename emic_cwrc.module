@@ -80,7 +80,7 @@ function cwrc_available($cwrc_url) {
 }
 
 function emic_cwrc_islandora_book_links($pid) {
-  $tile_host = variable_get('islandora_cwrc_path', 'http://localhost/CWRCEditor/resources/index.php');
+  $tile_host = variable_get('islandora_cwrc_path', 'http://137.149.200.49/CWRCEditor/resources/index.php');
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
   $options = array(
     'attributes' => array(),

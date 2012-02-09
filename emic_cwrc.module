@@ -10,26 +10,25 @@ function emic_cwrc_menu() {
     'access arguments' => array('use CWRC'),
   );
 
-  $items['cwrc/checkCWRC'] = array(
-    'file' => 'emic_cwrc.inc',
-    'page callback' => 'checkCWRC',
-    'type' => MENU_CALLBACK,
-    'access arguments' => array('use CWRC'),
-  );
-
-  $items['cwrc/ocr'] = array(
-    'file' => 'emic_cwrc.inc',
-    'page callback' => 'cwrc_ocr',
-    'type' => MENU_CALLBACK,
-    'access arguments' => array('use CWRC'),
-  );
   $items['cwrc/save'] = array(
     'file' => 'emic_cwrc.inc',
     'page callback' => 'save_cwrc_data',
     'type' => MENU_CALLBACK,
     'access arguments' => array('use CWRC'),
   );
+  $items['cwrc/getCWRC'] = array(
+    'file' => 'emic_cwrc.inc',
+    'page callback' => 'get_cwrc_data',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('use CWRC'),
+  );
 
+  $items['cwrc/setupCWRC'] = array(
+    'file' => 'emic_cwrc.inc',
+    'page callback' => 'setupCWRC',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('use CWRC'),
+  );
   return $items;
 }
 

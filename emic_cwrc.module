@@ -78,7 +78,7 @@ function cwrc_available($cwrc_url) {
   return $retval;
 }
 
-function emic_cwrc_islandora_book_links($pid) {
+function old_emic_cwrc_islandora_book_links($pid) {
   $tile_host = variable_get('islandora_cwrc_path', 'http://localhost/CWRCEditor/resources/index.php');
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
   $options = array(
@@ -116,5 +116,17 @@ function emic_cwrc_islandora_book_links($pid) {
 
 
   $link = l('Edit Text with CWRC', "$tile_host", $options);
+  return $link;
+}
+
+function emic_cwrc_islandora_book_links($pid){
+  $cwrc_host = variable_get('islandora_cwrc_path', 'http://localhost/CWRCEditor/resources/index.php');
+  $options = array(
+           'attributes' => array('target' => '_blank'),
+           'query' => array(
+                'PID' => $pid . '-001',
+            ),
+          );
+  $link = l('Edit with CWRCWriter', "$cwrc_host", $options);
   return $link;
 }

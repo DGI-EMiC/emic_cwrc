@@ -53,10 +53,13 @@ function setupCWRC($pid) {
   global $base_url;
   global $user;
   module_load_include('inc', 'islandora_book', 'book_pack_utils');
+  module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
   guarantee_cwrc_datastream($pid);
   $books = get_collection_from_pid($pid);
   $book = $books[0];
+  $item = new Fedora_Item($book);
+  $title = $item->objectProfile->objLabel;
   $pages = get_page_pids($book);
   $position = array_search($pid, $pages);
   $results = array();
@@ -65,6 +68,7 @@ function setupCWRC($pid) {
   $results['fedora_url'] = $fedora_url;
   $results['position'] = $position;
   $results['pages'] = $pages;
+  $results['title'] = $title;
 
   $json = json_encode($results);
   echo $json;

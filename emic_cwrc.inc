@@ -77,7 +77,7 @@ function setupCWRC($pid) {
 
 /**
  * Constructs cwrc datastream if none exists
- * @param <type> $pid
+ * @param string $pid
  */
 
 function make_cwrc_datastream($pid) {
@@ -109,6 +109,7 @@ function make_cwrc_datastream($pid) {
 function save_cwrc_to_fedora($pid, $cwrc_stream) {
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $cwrc_stream = preg_replace("/&/", '&amp;', $cwrc_stream);
+  $cwrc_stream = preg_replace("/<>/", '', $cwrc_stream);
   $item = new Fedora_Item($pid);
   if ($item->datastreams['CWRC']) {
     $item->modify_datastream_by_value($cwrc_stream, 'CWRC', 'CWRC', 'text/plain');

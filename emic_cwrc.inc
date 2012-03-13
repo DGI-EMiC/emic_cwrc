@@ -75,12 +75,10 @@ function setupCWRC($pid) {
   echo $json;
 }
 
-
 /**
  * Constructs cwrc datastream if none exists
  * @param string $pid
  */
-
 function make_cwrc_datastream($pid) {
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
@@ -92,6 +90,8 @@ function make_cwrc_datastream($pid) {
   if (is_array($lines)) {
     foreach ($lines as $line) {
       $line = preg_replace('/&£/', '£', $line);
+      $line = preg_replace('/[^(\x20-\x7F)]*/', '', $line);
+      $line = htmlspecialchars($line);
       $ocr .= $line . '<br />';
     }
   }
@@ -125,7 +125,6 @@ function save_cwrc_to_fedora($pid, $cwrc_stream) {
  *
  * @param string $pid
  */
-
 function guarantee_cwrc_datastream($pid) {
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
   $file_url = $fedora_url . "/objects/$pid/datastreams/CWRC/content";

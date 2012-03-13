@@ -41,11 +41,11 @@ function emic_cwrc_perm() {
 function emic_cwrc_form_islandora_book_admin_settings_alter(&$form, &$form_state) {
 
   $cwrc_path = isset($form_state['values']['islandora_cwrc_path']) ? $form_state['values']['islandora_cwrc_path'] : variable_get('islandora_cwrc_path', 'http://localhost/CWRCEditor/resources/index.php');
-  $cwrc_avail = tile_available($tile_path);
+  $cwrc_avail = is_url_valid($cwrc_path);
   $confirmation_message = ($cwrc_avail ? '<img src="' . url('misc/watchdog-ok.png') . '"/>'
-          . t('Tile url is valid.') : '<img src="'
+          . t('CWRCWriter url is valid.') : '<img src="'
           . url('misc/watchdog-error.png') . '"/> '
-          . t('Unable to locate CWRCWriter installtion at !tile_path</p>', array('!tile_path' => $tile_path)));
+          . t('Unable to locate CWRCWriter installtion at !tile_path</p>', array('!tile_path' => $cwrc_path)));
 
   $form['book_ahah_wrapper']['islandora_cwrc_path'] = array(
     '#type' => 'textfield',
@@ -59,65 +59,12 @@ function emic_cwrc_form_islandora_book_admin_settings_alter(&$form, &$form_state
       'event' => 'change'),
   );
 
-  $form['book_ahah_wrapper']['infobox2'] = array(
+  $form['book_ahah_wrapper']['infobox4'] = array(
     '#type' => 'item',
     '#value' => $confirmation_message,
   );
 }
 
-function cwrc_available($cwrc_url) {
-  $handle = curl_init($cwrc_url);
-  curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
-  $response = curl_exec($handle);
-  $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-  $retval = TRUE;
-  if ($httpCode % 100 == 4) {
-    $retval = FALSE;
-  }
-  curl_close($handle);
-  return $retval;
-}
-
-function old_emic_cwrc_islandora_book_links($pid) {
-  $tile_host = variable_get('islandora_cwrc_path', 'http://localhost/CWRCEditor/resources/index.php');
-  $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
-  $options = array(
-    'attributes' => array(),
-    'query' => array(
-      'PID' => $pid,
-    ),
-  );
-
-  module_load_include('inc', 'islandora_book', 'book_pack_utils');
-  $page_pids = get_page_pids($pid);
-  $options = array('Choose page' => t('Choose Page'));
-  foreach ($page_pids as $pid) {
-    $item = new Fedora_Item($pid);
-    $options[$tile_host . '?PID=' . $pid] = $pid;
-  }
-  $form = array();
-  $form['wrapper'] = array(
-    '#type' => 'fieldset',
-  );
-  $form['wrapper']['pages'] = array(
-    '#title' => t('Annotate with CWRC'),
-    '#type' => 'select',
-    '#options' => $options,
-    '#attributes' => array('id' => 'cwrc_page_chooser', 'class' => 'jumpmenu'),
-  );
-  $form['wrapper']['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Load CWRCWriter'),
-    '#attributes' => array('class' => 'cwrc_submit'),
-    '#weight' => 30,
-  );
-
-  return drupal_render($form);
-
-
-  $link = l('Edit Text with CWRC', "$tile_host", $options);
-  return $link;
-}
 
 function emic_cwrc_islandora_book_links($pid){
   $cwrc_host = variable_get('islandora_cwrc_path', 'http://localhost/CWRCEditor/resources/index.php');

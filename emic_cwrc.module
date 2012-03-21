@@ -65,15 +65,18 @@ function emic_cwrc_form_islandora_book_admin_settings_alter(&$form, &$form_state
   );
 }
 
-
-function emic_cwrc_islandora_book_links($pid){
+function emic_cwrc_islandora_book_links($pid) {
+  module_load_include('inc', 'islandora_book', 'book_pack_utils');
+  $pages = get_page_pids($pid);
+  $first_page = $pages[0];
   $cwrc_host = variable_get('islandora_cwrc_path', 'http://localhost/CWRCEditor/resources/index.php');
+
   $options = array(
-           'attributes' => array('target' => '_blank'),
-           'query' => array(
-                'PID' => $pid . '-001',
-            ),
-          );
+    'attributes' => array('target' => '_blank'),
+    'query' => array(
+      'PID' => $first_page,
+    ),
+  );
   $link = l('Edit with CWRCWriter', "$cwrc_host", $options);
   return $link;
 }

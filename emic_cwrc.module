@@ -38,39 +38,16 @@ function emic_cwrc_perm() {
   );
 }
 
-function emic_cwrc_form_islandora_book_admin_settings_alter(&$form, &$form_state) {
-
-  $cwrc_path = isset($form_state['values']['islandora_cwrc_path']) ? $form_state['values']['islandora_cwrc_path'] : variable_get('islandora_cwrc_path', 'http://localhost/CWRCEditor/resources/index.php');
-  $cwrc_avail = is_url_valid($cwrc_path);
-  $confirmation_message = ($cwrc_avail ? '<img src="' . url('misc/watchdog-ok.png') . '"/>'
-          . t('CWRCWriter url is valid.') : '<img src="'
-          . url('misc/watchdog-error.png') . '"/> '
-          . t('Unable to locate CWRCWriter installtion at !tile_path</p>', array('!tile_path' => $cwrc_path)));
-
-  $form['book_ahah_wrapper']['islandora_cwrc_path'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Path to CWRCWriter'),
-    '#description' => t('Path to CWRCWriter installation'),
-    '#default_value' => $cwrc_path,
-    '#ahah' => array(
-      'path' => 'islandora/book/ocr',
-      'wrapper' => 'ibook-url',
-      'effect' => 'fade',
-      'event' => 'change'),
-  );
-
-  $form['book_ahah_wrapper']['infobox4'] = array(
-    '#type' => 'item',
-    '#value' => $confirmation_message,
-  );
-}
-
 function emic_cwrc_islandora_book_links($pid) {
+  if (!user_access('use CWRC')) {
+    return;
+  }
+  global $base_url;
+  $path = drupal_get_path('module', 'emic_cwrc');
   module_load_include('inc', 'islandora_book', 'book_pack_utils');
   $pages = get_page_pids($pid);
   $first_page = $pages[0];
-  $cwrc_host = variable_get('islandora_cwrc_path', 'http://localhost/CWRCEditor/resources/index.php');
-
+  $cwrc_host = "$base_url/$path/resources/index.php";
   $options = array(
     'attributes' => array('target' => '_blank'),
     'query' => array(
@@ -79,4 +56,15 @@ function emic_cwrc_islandora_book_links($pid) {
   );
   $link = l('Edit with CWRCWriter', "$cwrc_host", $options);
   return $link;
+}
+
+function emic_cwrc_islandora_book_get_pageview_links($pid) {
+  $options = array(
+    'attributes' => array('target' => '_blank'),
+    'query' => array(
+      'PID' => $pid,
+    ),
+  );
+
+  return l(t('Edit with CWRCWriter'), "sites/all/modules/emic_cwrc/resources/index.php", $options);
 }

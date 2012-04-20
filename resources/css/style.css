@@ -562,7 +562,7 @@ div.mceDropDown {
 
 .annotation-fullscreen .colmask .colmid .col3 #shared_canvas_iframe
 {
-/*   height: 100%!important; */
+  height: 100%!important;
 }
 
 

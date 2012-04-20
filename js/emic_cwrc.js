@@ -10,3 +10,20 @@ Drupal.behaviors.emic = function(context){
   });
 };
 
+// toggle full screen
+Drupal.behaviors.emicCwrcFullScreen = function(context) {
+
+  $('#full-screen-button').click(function() {
+    
+    $('body').toggleClass('cwrc-fullscreen');
+  
+    if ($(this).val() == Drupal.t('Full Screen')) {
+      $(this).val(Drupal.t('Exit Full Screen'));
+
+    }
+    else {
+      $(this).val(Drupal.t('Full Screen'));
+    }
+  });  
+};
+

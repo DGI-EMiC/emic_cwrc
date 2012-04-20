@@ -1,0 +1,6 @@
+<div class="cwrc-iframe-wrapper">
+  <input id="full-screen-button" type="button" value="<?php print t('Full Screen'); ?>" />
+  <div class="cwrc-iframe-outer">
+    <iframe id="shared_canvas_iframe" src="<?php print $src; ?>" scrolling="0" frameborder="0" style="width: 100%; height: 800px;"><?php print t('Errors: unable to load SharedCanavas'); ?></iframe>
+  </div>
+</div>

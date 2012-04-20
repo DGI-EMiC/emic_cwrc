@@ -38,6 +38,27 @@ function emic_cwrc_perm() {
   );
 }
 
+
+/**
+ * Implementation of hook_theme
+ */
+function emic_cwrc_theme($existing, $type, $theme, $path) {
+  $path = drupal_get_path('module', 'emic_cwrc') . '/theme';
+  $file = 'emic_cwrc.theme.inc';
+   
+  return array(
+    'emic_cwrc' => array(
+      'arguments' => array('src' => NULL), 
+      'path' => $path,
+      'file' => $file,
+      'template' => 'emic-cwrc',
+    ), 
+  );
+}
+
+
+
+
 function emic_cwrc_islandora_book_links($pid) {
   if (!user_access('use CWRC')) {
     return;
@@ -82,11 +103,12 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $page_pids = get_page_pids($pid);
   $src = $base_url . '/sites/all/modules/emic_cwrc/resources/index.php?PID=' . $page_pids[0];
-  $iframe = '<iframe id="shared_canvas_iframe" src="' . $src . '" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>';
+/*   $iframe = '<iframe id="shared_canvas_iframe" src="' . $src . '" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>'; */
   $tabset['all_edits_tab'] = array(
     '#type' => 'tabpage',
     '#title' => t("Consolidated editor"),
-    '#content' => $iframe,
+    '#content' => theme('emic_cwrc', $src),
+/*     '#content' => $iframe, */
   );
   return $tabset;
 }

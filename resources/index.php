@@ -21,6 +21,7 @@
     <script type="text/javascript" src="js/gzoom.js"></script>
     <script type="text/javascript" src="js/structuretree.js"></script>
     <script type="text/javascript" src="js/entitieslist.js"></script>
+    <script type="text/javascript" src="js/fullscreen.js"></script>
     <script type="text/javascript" src="Islandora/js/startup.js"></script>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link type="text/css" rel="stylesheet" href="css/screen.css" />
@@ -65,6 +66,7 @@
           <div class="col3">
               <div id="page_selector">Loading....</div>
             <!-- Column 3 start -->
+            <input type="button" id="full-screen" value="Full Screen"/>
             <iframe id="shared_canvas_iframe" src="" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>';
 
             <!-- Column 3 end -->

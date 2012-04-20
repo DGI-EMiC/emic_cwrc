@@ -497,3 +497,76 @@ div.mceDropDown {
 .splitButtons .ui-dialog-buttonset button.left {
   float: left;
 }
+
+
+
+
+/* Fullscreen Image Annotation */
+
+#full-screen
+{
+  float: left;
+  margin: 5px 0px 0px 0px;
+}
+
+#page_selector
+{
+  float: left;
+  margin: 5px 10px 0px 10px;
+}
+
+.annotation-fullscreen
+{
+/*   position: relative; */
+}
+
+.annotation-fullscreen #footer
+{
+  position: absolute;
+  bottom: 0px;
+}
+
+.annotation-fullscreen .colmask
+{
+  position: absolute;
+  top: 29px;
+  bottom: 37px;
+  width: 100%;
+
+}
+
+.annotation-fullscreen .colmask .colmid
+{
+  right: auto;
+  height: 100%;
+}
+
+.annotation-fullscreen .colmask .colmid .colleft
+{
+  right: auto;
+  height: 100%;
+}
+
+.annotation-fullscreen .colmask .colmid .col1,
+.annotation-fullscreen .colmask .colmid .col2
+{
+  display: none;
+}
+
+.annotation-fullscreen .colmask .colmid .col3
+{
+  width: 100%;
+  height: 100%;
+  left: auto;
+}
+
+.annotation-fullscreen .colmask .colmid .col3 #shared_canvas_iframe
+{
+  height: 100%!important;
+}
+
+
+
+
+
+

@@ -65,7 +65,7 @@
           <div class="col3">
               <div id="page_selector">Loading....</div>
             <!-- Column 3 start -->
-            <iframe id="shared_canvas_iframe" src="http://localhost/Development/sites/all/modules/emic_canvas/impl/index.html?PID=islandora%3A1709-007#!s=0" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>';
+            <iframe id="shared_canvas_iframe" src="" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>';
 
             <!-- Column 3 end -->
           </div>

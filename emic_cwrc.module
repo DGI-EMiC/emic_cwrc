@@ -68,3 +68,25 @@ function emic_cwrc_islandora_book_get_pageview_links($pid) {
 
   return l(t('Edit with CWRCWriter'), "sites/all/modules/emic_cwrc/resources/index.php", $options);
 }
+
+function emic_cwrc_islandora_tabs($content_models, $pid) {
+  global $base_url;
+  $content_model_pids = array();
+  foreach ($content_models as $content_model) {
+    $content_model_pids[] = $content_model->pid;
+  }
+  if (!in_array('islandora:bookCModel', $content_model_pids)) {
+    return;
+  }
+  module_load_include('inc', 'islandora_book', 'book_pack_utils');
+  module_load_include('inc', 'fedora_repository', 'api/fedora_item');
+  $page_pids = get_page_pids($pid);
+  $src = $base_url . '/sites/all/modules/emic_cwrc/resources/index.php?PID=' . $page_pids[0];
+  $iframe = '<iframe id="shared_canvas_iframe" src="' . $src . '" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>';
+  $tabset['all_edits_tab'] = array(
+    '#type' => 'tabpage',
+    '#title' => t("Consolidated editor"),
+    '#content' => $iframe,
+  );
+  return $tabset;
+}

@@ -1,0 +1,74 @@
+body {
+  font-family: 'Book Antiqua', serif;
+  font-size: 11pt;
+  color: #333; }
+
+.entity {
+  display: inline-block;
+  height: 11px;
+  width: 2px; }
+
+.start {
+  border-left: 2px solid;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 4px; }
+
+.end {
+  border-right: 2px solid;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px; }
+
+#entityHighlight {}
+
+.person {
+  border-color: #FF0000; }
+
+.date {
+  border-color: #FF7400; }
+
+.place {
+  border-color: #009999; }
+
+.event {
+  border-color: #00CC00; }
+
+.org {
+  border-color: #3914AF; }
+
+.citation {
+  border-color: #CD0074; }
+
+.note {
+  border-color: #0D56A6; }
+
+.title {
+  border-color: #debb00; }
+
+.paraTag {
+  /*display: block;
+  margin-top: 12px;
+  margin-bottom: 12px;*/
+  &:before {
+    /*content: "¶";*/ } }
+
+.titleTagQuotes:before, .quoteTagShort:before {
+  content: open-quote; }
+
+.titleTagQuotes:after, .quoteTagShort:after {
+  content: close-quote; }
+
+.titleTagItalics {
+  font-style: italic; }
+
+.quoteTagLong {
+  display: block;
+  margin-left: 25px; }
+
+.quoteTag {}
+
+.headTag {
+  font-size: 120%;
+  font-weight: bold; }
+
+.emphTag {
+  font-style: italic; }

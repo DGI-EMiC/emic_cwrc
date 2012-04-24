@@ -422,11 +422,13 @@ var Writer = function(config) {
   };
 	
   w.finalizeEntity = function(id, info) {
+    console.dir(info);
+    
     if (info == null) {
       w.removeEntity(id);
     } else {
       w.entities[id].info = info;
-      w.entitiesList.update();
+      w.entitiesList.update('category');
       w.highlightEntity(id);
     }
   };
@@ -839,13 +841,7 @@ var Writer = function(config) {
           }
         });
 
-        ed.addButton('saveasbutton', {
-          title: 'Save As',
-          image: 'img/save_as.png',
-          onclick: function() {
-            w.fm.openSaver();
-          }
-        });
+
 
         ed.addButton('savebutton', {
           title: 'Save',
@@ -856,24 +852,7 @@ var Writer = function(config) {
         });
 				
 
-				
-        ed.addButton('loadbutton', {
-          title: 'Load',
-          image: 'img/folder_page.png',
-          'class': 'entityButton',
-          onclick: function() {
-            w.fm.openLoader();
-          }
-        });
-				
-        ed.addButton('editsource', {
-          title: 'Edit Source',
-          image: 'img/editsource.gif',
-          'class': 'wideButton',
-          onclick: function() {
-            w.fm.editSource();
-          }
-        });
+
   
         // DHSI buttons
 
@@ -927,7 +906,7 @@ var Writer = function(config) {
           }
         });
        
-				
+	// end DHSI
       },
 			
       doctype: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
@@ -949,7 +928,7 @@ var Writer = function(config) {
       plugins: 'paste,-entitycontextmenu,-customtags,-schematags,-viewsource',
       theme_advanced_blockformats: 'p,h1,blockquote',
       //altered for DHSI
-      theme_advanced_buttons1: 'customtags,|,addperson,addplace,adddate,addevent,addorg,addcitation,addnote,addtitle,|,editTag,removeTag,|,viewsource,editsource,|,savebutton,saveasbutton,loadbutton,|,   prevpage,nextpage',
+      theme_advanced_buttons1: 'customtags,|,addperson,addplace,adddate,addevent,addorg,addcitation,addnote,addtitle,|,editTag,removeTag,|,viewsource,|,savebutton,|,prevpage,nextpage',
       theme_advanced_buttons2: '',
       theme_advanced_buttons3: '',
       theme_advanced_toolbar_location: 'top',

@@ -9,38 +9,34 @@
 
 .cwrc-fullscreen
 {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  top: 0px;
 
+  z-index: 50;
+  background: #fff;
 }
 
-.cwrc-fullscreen #main-wrapper
+.admin-menu .cwrc-fullscreen
 {
-  position: inherit;
+  top: 20px;
 }
 
 .cwrc-fullscreen .cwrc-iframe-wrapper
 {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 20px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  top: 30px;
 
   width: 100%;
   z-index: 50;
   
   background: #fff;
 }
-
-.cwrc-fullscreen .cwrc-iframe-outer
-{
-  position: absolute;
-  width: 100%;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 30px;
-}
-
 
 .cwrc-fullscreen .cwrc-iframe-wrapper iframe
 {

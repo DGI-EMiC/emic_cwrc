@@ -422,8 +422,7 @@ var Writer = function(config) {
   };
 	
   w.finalizeEntity = function(id, info) {
-    console.dir(info);
-    
+   
     if (info == null) {
       w.removeEntity(id);
     } else {

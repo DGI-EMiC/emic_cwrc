@@ -49,7 +49,6 @@ var SearchDialog = function(config) {
     closeOnEscape: false,
     open: function(event, ui) {
       var chunk = $('#searchDialog').parent();
-      console.dir(chunk);
       $('#searchDialog').parent().find('.ui-dialog-titlebar-close').hide();
     },
     height: 550,
@@ -163,7 +162,6 @@ var SearchDialog = function(config) {
   };
 
   var handleResults = function(results, lookup) {
-    console.dir(results);
     var formattedResults = '';
     var last = '';
 
@@ -274,7 +272,6 @@ var SearchDialog = function(config) {
     if (!(mode == EDIT && data == null)) {
 
       data.certainty = certainty;
-      console.dir(data);
       w.finalizeEntity(w.editor.currentEntity, data);
     }
   

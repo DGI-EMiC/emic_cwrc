@@ -66,7 +66,7 @@
           <div class="col3">
               <div id="page_selector">Loading....</div>
             <!-- Column 3 start -->
-            <input type="button" id="full-screen" value="Full Screen"/>
+            <input type="button" id="full-screen" value="Full Width"/>
             <iframe id="shared_canvas_iframe" src="" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>
 
             <!-- Column 3 end -->

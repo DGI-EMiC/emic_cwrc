@@ -4,12 +4,12 @@ $(document).ready(function() {
     
     $('body').toggleClass('annotation-fullscreen');
   
-   if ($(this).val() == "Full Screen") {
-      $(this).val("Exit Full Screen");
+   if ($(this).val() == "Full Width") {
+      $(this).val("Exit Full Width");
 
    }
    else {
-      $(this).val("Full Screen");
+      $(this).val("Full Width");
 
    }
 

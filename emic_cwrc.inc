@@ -52,7 +52,11 @@ function get_cwrc_data($pid) {
 function setupCWRC($pid) {
   global $base_url;
   global $user;
+  if(!user_access('use CWRC')){
+    return;
+  }
 
+  $can_edit = user_access('edit CWRC')?'true':'false';
   module_load_include('inc', 'islandora_book', 'book_pack_utils');
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
@@ -70,6 +74,8 @@ function setupCWRC($pid) {
   $results['position'] = $position;
   $results['pages'] = $pages;
   $results['title'] = $title;
+  $results['authority_url'] = $base_url . '/cwrc/authorities/';
+  $results['no_edit'] = !user_access('edit CWRC');
 
   $json = json_encode($results);
   echo $json;
@@ -132,4 +138,58 @@ function guarantee_cwrc_datastream($pid) {
   if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
     make_cwrc_datastream($pid);
   }
+}
+
+function emic_cwrc_get_authorities($dataType) {
+  $mappings = array(
+    'Tag Place' => 'emic_cwrc_return_places',
+    'Tag Person' => 'emic_cwrc_return_people',
+    'Tag Event' => 'emic_cwrc_return_event',
+    'Tag Organization' => 'emic_cwrc_return_org',
+  );
+
+  call_user_func($mappings[$dataType]);
+}
+
+function emic_cwrc_return_places() {
+  $results[] = array('identifier' => "islandora:27", 'Place' => 'Summerside');
+  $results[] = array('identifier' => "islandora:28", 'Place' => 'Elmwood');
+  $results[] = array('identifier' => "islandora:29", 'Place' => 'Rice Point');
+  $results[] = array('identifier' => "islandora:30", 'Place' => 'Cavendish');
+  $results[] = array('identifier' => "islandora:31", 'Place' => 'Elmira');
+  $json = json_encode($results);
+  echo $json;
+}
+
+function emic_cwrc_return_people() {
+  $results[] = array('identifier' => "islandora:40", 'Name' => 'John Smith');
+  $results[] = array('identifier' => "islandora:41", 'Name' => 'Ralph Klein');
+  $results[] = array('identifier' => "islandora:42", 'Name' => 'Carmen Miranda');
+  $results[] = array('identifier' => "islandora:43", 'Name' => 'Joe Shmengi');
+  $results[] = array('identifier' => "islandora:44", 'Name' => 'Ford Prefect');
+  $json = json_encode($results);
+  echo $json;
+}
+
+function emic_cwrc_return_event() {
+  $results[] = array('identifier' => "islandora:50", 'Event' => 'Islandora Conference');
+  $results[] = array('identifier' => "islandora:51", 'Event' => 'Interedition');
+  $results[] = array('identifier' => "islandora:52", 'Event' => 'Robertson Treaty Signing');
+  $results[] = array('identifier' => "islandora:53", 'Event' => 'Toyota Red Tag Days');
+  $results[] = array('identifier' => "islandora:54", 'Event' => 'Belfast Bread Riots');
+  $json = json_encode($results);
+  echo $json;
+}
+
+function emic_cwrc_return_org() {
+  $results[] = array('Organization' => "académie de musique de Québec");
+  $results[] = array('Organization' => "Académie Française", 'Place' => 'Académie');
+  $results[] = array('Organization' => "Académie Goncourt", 'Variations' => 'Académie des Goncourt');
+  $results[] = array('Organization' => "Académie Française", 'Variations' => 'Académie');
+  $results[] = array('Organization' => "L'Action Française", "variations" => 'L\'action française', 'What' => 'Review');
+  $results[] = array('Organization' => "The Atalantic Monthly");
+  $results[] = array('Organization' => "L'Avenir du Nord");
+  $results[] = array('Organization' => "Le Canada", 'What' => 'review');
+  $json = json_encode($results);
+  echo $json;
 }

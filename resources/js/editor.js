@@ -422,11 +422,12 @@ var Writer = function(config) {
   };
 	
   w.finalizeEntity = function(id, info) {
+   
     if (info == null) {
       w.removeEntity(id);
     } else {
       w.entities[id].info = info;
-      w.entitiesList.update();
+      w.entitiesList.update('category');
       w.highlightEntity(id);
     }
   };
@@ -723,7 +724,7 @@ var Writer = function(config) {
       //			mode: 'exact',
       //			elements: 'editor',
       theme: 'advanced',
-
+      readonly : cwrc_params.no_edit,
       content_css: 'css/editor.css',
 			
       width: '100%',
@@ -755,125 +756,103 @@ var Writer = function(config) {
           var name = plugins[i];
           tinymce.PluginManager.load(name, '../../../tinymce_plugins/'+name+'.js');
         }
+       
+       
+          ed.addButton('addperson', {
+            title: 'Tag Person',
+            image: 'img/user.png',
+            'class': 'entityButton person',
+            onclick : function() {
+              ed.execCommand('addEntity', 'person');
+            }
+          });
+          ed.addButton('addplace', {
+            title: 'Tag Place',
+            image: 'img/world.png',
+            'class': 'entityButton place',
+            onclick : function() {
+              ed.execCommand('addEntity', 'place');
+            }
+          });
+          ed.addButton('adddate', {
+            title: 'Tag Date',
+            image: 'img/calendar.png',
+            'class': 'entityButton date',
+            onclick : function() {
+              ed.execCommand('addEntity', 'date');
+            }
+          });
+          ed.addButton('addevent', {
+            title: 'Tag Event',
+            image: 'img/cake.png',
+            'class': 'entityButton event',
+            onclick : function() {
+              ed.execCommand('addEntity', 'event');
+            }
+          });
+          ed.addButton('addorg', {
+            title: 'Tag Organization',
+            image: 'img/group.png',
+            'class': 'entityButton org',
+            onclick : function() {
+              ed.execCommand('addEntity', 'org');
+            }
+          });
+          ed.addButton('addcitation', {
+            title: 'Tag Citation',
+            image: 'img/vcard.png',
+            'class': 'entityButton citation',
+            onclick : function() {
+              ed.execCommand('addEntity', 'citation');
+            }
+          });
+          ed.addButton('addnote', {
+            title: 'Tag Note',
+            image: 'img/note.png',
+            'class': 'entityButton note',
+            onclick : function() {
+              ed.execCommand('addEntity', 'note');
+            }
+          });
+          ed.addButton('addtitle', {
+            title: 'Tag Text/Title',
+            image: 'img/book.png',
+            'class': 'entityButton textTitle',
+            onclick : function() {
+              ed.execCommand('addEntity', 'title');
+            }
+          });
 				
-        ed.addButton('addperson', {
-          title: 'Tag Person',
-          image: 'img/user.png',
-          'class': 'entityButton person',
-          onclick : function() {
-            ed.execCommand('addEntity', 'person');
-          }
-        });
-        ed.addButton('addplace', {
-          title: 'Tag Place',
-          image: 'img/world.png',
-          'class': 'entityButton place',
-          onclick : function() {
-            ed.execCommand('addEntity', 'place');
-          }
-        });
-        ed.addButton('adddate', {
-          title: 'Tag Date',
-          image: 'img/calendar.png',
-          'class': 'entityButton date',
-          onclick : function() {
-            ed.execCommand('addEntity', 'date');
-          }
-        });
-        ed.addButton('addevent', {
-          title: 'Tag Event',
-          image: 'img/cake.png',
-          'class': 'entityButton event',
-          onclick : function() {
-            ed.execCommand('addEntity', 'event');
-          }
-        });
-        ed.addButton('addorg', {
-          title: 'Tag Organization',
-          image: 'img/group.png',
-          'class': 'entityButton org',
-          onclick : function() {
-            ed.execCommand('addEntity', 'org');
-          }
-        });
-        ed.addButton('addcitation', {
-          title: 'Tag Citation',
-          image: 'img/vcard.png',
-          'class': 'entityButton citation',
-          onclick : function() {
-            ed.execCommand('addEntity', 'citation');
-          }
-        });
-        ed.addButton('addnote', {
-          title: 'Tag Note',
-          image: 'img/note.png',
-          'class': 'entityButton note',
-          onclick : function() {
-            ed.execCommand('addEntity', 'note');
-          }
-        });
-        ed.addButton('addtitle', {
-          title: 'Tag Text/Title',
-          image: 'img/book.png',
-          'class': 'entityButton textTitle',
-          onclick : function() {
-            ed.execCommand('addEntity', 'title');
-          }
-        });
+          ed.addButton('editTag', {
+            title: 'Edit Tag',
+            image: 'img/tag_blue_edit.png',
+            'class': 'entityButton',
+            onclick : function() {
+              ed.execCommand('editTag');
+            }
+          });
 				
-        ed.addButton('editTag', {
-          title: 'Edit Tag',
-          image: 'img/tag_blue_edit.png',
-          'class': 'entityButton',
-          onclick : function() {
-            ed.execCommand('editTag');
-          }
-        });
-				
-        ed.addButton('removeTag', {
-          title: 'Remove Tag',
-          image: 'img/cross.png',
-          'class': 'entityButton',
-          onclick : function() {
-            ed.execCommand('removeTag');
-          }
-        });
+          ed.addButton('removeTag', {
+            title: 'Remove Tag',
+            image: 'img/cross.png',
+            'class': 'entityButton',
+            onclick : function() {
+              ed.execCommand('removeTag');
+            }
+          });
 
-        ed.addButton('saveasbutton', {
-          title: 'Save As',
-          image: 'img/save_as.png',
-          onclick: function() {
-            w.fm.openSaver();
-          }
-        });
 
-        ed.addButton('savebutton', {
-          title: 'Save',
-          image: 'img/save.png',
-          onclick: function() {
-            w.fm.saveDocument();
-          }
-        });
-				
 
+          ed.addButton('savebutton', {
+            title: 'Save',
+            image: 'img/save.png',
+            onclick: function() {
+              w.fm.saveDocument();
+            }
+          });
 				
-        ed.addButton('loadbutton', {
-          title: 'Load',
-          image: 'img/folder_page.png',
-          'class': 'entityButton',
-          onclick: function() {
-            w.fm.openLoader();
-          }
-        });
-				
-        ed.addButton('editsource', {
-          title: 'Edit Source',
-          image: 'img/editsource.gif',
-          'class': 'wideButton',
-          onclick: function() {
-            w.fm.editSource();
-          }
-        });
+       
+
   
         // DHSI buttons
 
@@ -927,7 +906,7 @@ var Writer = function(config) {
           }
         });
        
-				
+      // end DHSI
       },
 			
       doctype: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
@@ -949,7 +928,7 @@ var Writer = function(config) {
       plugins: 'paste,-entitycontextmenu,-customtags,-schematags,-viewsource',
       theme_advanced_blockformats: 'p,h1,blockquote',
       //altered for DHSI
-      theme_advanced_buttons1: 'customtags,|,addperson,addplace,adddate,addevent,addorg,addcitation,addnote,addtitle,|,editTag,removeTag,|,viewsource,editsource,|,savebutton,saveasbutton,loadbutton,|,   prevpage,nextpage',
+      theme_advanced_buttons1: 'customtags,|,addperson,addplace,adddate,addevent,addorg,addcitation,addnote,addtitle,|,editTag,removeTag,|,viewsource,|,savebutton,|,prevpage,nextpage',
       theme_advanced_buttons2: '',
       theme_advanced_buttons3: '',
       theme_advanced_toolbar_location: 'top',

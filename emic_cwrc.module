@@ -29,15 +29,21 @@ function emic_cwrc_menu() {
     'type' => MENU_CALLBACK,
     'access arguments' => array('use CWRC'),
   );
+    $items['cwrc/authorities'] = array(
+    'file' => 'emic_cwrc.inc',
+    'page callback' => 'emic_cwrc_get_authorities',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('use CWRC'),
+  );
   return $items;
 }
 
 function emic_cwrc_perm() {
   return array(
     'use CWRC',
+    'edit CWRC'
   );
 }
-
 
 /**
  * Implementation of hook_theme
@@ -45,19 +51,16 @@ function emic_cwrc_perm() {
 function emic_cwrc_theme($existing, $type, $theme, $path) {
   $path = drupal_get_path('module', 'emic_cwrc') . '/theme';
   $file = 'emic_cwrc.theme.inc';
-   
+
   return array(
     'emic_cwrc' => array(
-      'arguments' => array('src' => NULL), 
+      'arguments' => array('src' => NULL),
       'path' => $path,
       'file' => $file,
       'template' => 'emic-cwrc',
-    ), 
+    ),
   );
 }
-
-
-
 
 function emic_cwrc_islandora_book_links($pid) {
   if (!user_access('use CWRC')) {
@@ -79,36 +82,35 @@ function emic_cwrc_islandora_book_links($pid) {
   return $link;
 }
 
-function emic_cwrc_islandora_book_get_pageview_links($pid) {
-  $options = array(
-    'attributes' => array('target' => '_blank'),
-    'query' => array(
-      'PID' => $pid,
-    ),
-  );
 
-  return l(t('Edit with CWRCWriter'), "sites/all/modules/emic_cwrc/resources/index.php", $options);
-}
 
 function emic_cwrc_islandora_tabs($content_models, $pid) {
   global $base_url;
+  $valid = FALSE;
   $content_model_pids = array();
   foreach ($content_models as $content_model) {
     $content_model_pids[] = $content_model->pid;
   }
-  if (!in_array('islandora:bookCModel', $content_model_pids)) {
+  if (in_array('islandora:bookCModel', $content_model_pids)) {
+    $page_pids = get_page_pids($pid);
+    $page_pid = $page_pids[0];
+    $valid = TRUE;
+  }
+  if (in_array('islandora:pageCModel', $content_model_pids)) {
+    $page_pid = $pid;
+    $valid = TRUE;
+  }
+  if(!$valid){
     return;
   }
   module_load_include('inc', 'islandora_book', 'book_pack_utils');
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
-  $page_pids = get_page_pids($pid);
-  $src = $base_url . '/sites/all/modules/emic_cwrc/resources/index.php?PID=' . $page_pids[0];
-/*   $iframe = '<iframe id="shared_canvas_iframe" src="' . $src . '" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>'; */
+
+  $src = $base_url . '/sites/all/modules/emic_cwrc/resources/index.php?PID=' . $page_pid;
   $tabset['all_edits_tab'] = array(
     '#type' => 'tabpage',
-    '#title' => t("Consolidated editor"),
+    '#title' => t("Critical Edition"),
     '#content' => theme('emic_cwrc', $src),
-/*     '#content' => $iframe, */
   );
   return $tabset;
 }

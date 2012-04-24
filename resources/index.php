@@ -15,6 +15,8 @@
     <script type="text/javascript" src="js/jstree/jquery.jstree.js"></script>
     <script type="text/javascript" src="js/snippet/jquery.snippet.min.js"></script>
     <script type="text/javascript" src="js/dialogs/dialog_settings.js"></script>
+    <script type="text/javascript" src="js/dialogs/dialog_search.js"></script>
+
     <script type="text/javascript" src="js/editor.js"></script>
     <script type="text/javascript" src="js/dialog.js"></script>
     <script type="text/javascript" src="js/filemanager.js"></script>

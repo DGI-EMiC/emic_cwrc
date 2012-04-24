@@ -43,7 +43,7 @@ $(this).attr("title", cwrc_params.title);
 $('#header h1').text( cwrc_params.title + " - Page 1");
   // instantiate and initialize writer object
 
-  writer = new Writer();
+  writer = new Writer({'project':'EMiC'});
   writer.init();
 
 

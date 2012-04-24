@@ -724,7 +724,7 @@ var Writer = function(config) {
       //			mode: 'exact',
       //			elements: 'editor',
       theme: 'advanced',
-
+      readonly : cwrc_params.no_edit,
       content_css: 'css/editor.css',
 			
       width: '100%',
@@ -756,101 +756,102 @@ var Writer = function(config) {
           var name = plugins[i];
           tinymce.PluginManager.load(name, '../../../tinymce_plugins/'+name+'.js');
         }
+       
+       
+          ed.addButton('addperson', {
+            title: 'Tag Person',
+            image: 'img/user.png',
+            'class': 'entityButton person',
+            onclick : function() {
+              ed.execCommand('addEntity', 'person');
+            }
+          });
+          ed.addButton('addplace', {
+            title: 'Tag Place',
+            image: 'img/world.png',
+            'class': 'entityButton place',
+            onclick : function() {
+              ed.execCommand('addEntity', 'place');
+            }
+          });
+          ed.addButton('adddate', {
+            title: 'Tag Date',
+            image: 'img/calendar.png',
+            'class': 'entityButton date',
+            onclick : function() {
+              ed.execCommand('addEntity', 'date');
+            }
+          });
+          ed.addButton('addevent', {
+            title: 'Tag Event',
+            image: 'img/cake.png',
+            'class': 'entityButton event',
+            onclick : function() {
+              ed.execCommand('addEntity', 'event');
+            }
+          });
+          ed.addButton('addorg', {
+            title: 'Tag Organization',
+            image: 'img/group.png',
+            'class': 'entityButton org',
+            onclick : function() {
+              ed.execCommand('addEntity', 'org');
+            }
+          });
+          ed.addButton('addcitation', {
+            title: 'Tag Citation',
+            image: 'img/vcard.png',
+            'class': 'entityButton citation',
+            onclick : function() {
+              ed.execCommand('addEntity', 'citation');
+            }
+          });
+          ed.addButton('addnote', {
+            title: 'Tag Note',
+            image: 'img/note.png',
+            'class': 'entityButton note',
+            onclick : function() {
+              ed.execCommand('addEntity', 'note');
+            }
+          });
+          ed.addButton('addtitle', {
+            title: 'Tag Text/Title',
+            image: 'img/book.png',
+            'class': 'entityButton textTitle',
+            onclick : function() {
+              ed.execCommand('addEntity', 'title');
+            }
+          });
 				
-        ed.addButton('addperson', {
-          title: 'Tag Person',
-          image: 'img/user.png',
-          'class': 'entityButton person',
-          onclick : function() {
-            ed.execCommand('addEntity', 'person');
-          }
-        });
-        ed.addButton('addplace', {
-          title: 'Tag Place',
-          image: 'img/world.png',
-          'class': 'entityButton place',
-          onclick : function() {
-            ed.execCommand('addEntity', 'place');
-          }
-        });
-        ed.addButton('adddate', {
-          title: 'Tag Date',
-          image: 'img/calendar.png',
-          'class': 'entityButton date',
-          onclick : function() {
-            ed.execCommand('addEntity', 'date');
-          }
-        });
-        ed.addButton('addevent', {
-          title: 'Tag Event',
-          image: 'img/cake.png',
-          'class': 'entityButton event',
-          onclick : function() {
-            ed.execCommand('addEntity', 'event');
-          }
-        });
-        ed.addButton('addorg', {
-          title: 'Tag Organization',
-          image: 'img/group.png',
-          'class': 'entityButton org',
-          onclick : function() {
-            ed.execCommand('addEntity', 'org');
-          }
-        });
-        ed.addButton('addcitation', {
-          title: 'Tag Citation',
-          image: 'img/vcard.png',
-          'class': 'entityButton citation',
-          onclick : function() {
-            ed.execCommand('addEntity', 'citation');
-          }
-        });
-        ed.addButton('addnote', {
-          title: 'Tag Note',
-          image: 'img/note.png',
-          'class': 'entityButton note',
-          onclick : function() {
-            ed.execCommand('addEntity', 'note');
-          }
-        });
-        ed.addButton('addtitle', {
-          title: 'Tag Text/Title',
-          image: 'img/book.png',
-          'class': 'entityButton textTitle',
-          onclick : function() {
-            ed.execCommand('addEntity', 'title');
-          }
-        });
+          ed.addButton('editTag', {
+            title: 'Edit Tag',
+            image: 'img/tag_blue_edit.png',
+            'class': 'entityButton',
+            onclick : function() {
+              ed.execCommand('editTag');
+            }
+          });
 				
-        ed.addButton('editTag', {
-          title: 'Edit Tag',
-          image: 'img/tag_blue_edit.png',
-          'class': 'entityButton',
-          onclick : function() {
-            ed.execCommand('editTag');
-          }
-        });
-				
-        ed.addButton('removeTag', {
-          title: 'Remove Tag',
-          image: 'img/cross.png',
-          'class': 'entityButton',
-          onclick : function() {
-            ed.execCommand('removeTag');
-          }
-        });
+          ed.addButton('removeTag', {
+            title: 'Remove Tag',
+            image: 'img/cross.png',
+            'class': 'entityButton',
+            onclick : function() {
+              ed.execCommand('removeTag');
+            }
+          });
 
 
 
-        ed.addButton('savebutton', {
-          title: 'Save',
-          image: 'img/save.png',
-          onclick: function() {
-            w.fm.saveDocument();
-          }
-        });
+          ed.addButton('savebutton', {
+            title: 'Save',
+            image: 'img/save.png',
+            onclick: function() {
+              w.fm.saveDocument();
+            }
+          });
 				
-
+       
 
   
         // DHSI buttons
@@ -905,7 +906,7 @@ var Writer = function(config) {
           }
         });
        
-	// end DHSI
+      // end DHSI
       },
 			
       doctype: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',

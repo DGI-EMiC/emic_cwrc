@@ -41,6 +41,7 @@ function emic_cwrc_menu() {
 function emic_cwrc_perm() {
   return array(
     'use CWRC',
+    'edit CWRC'
   );
 }
 

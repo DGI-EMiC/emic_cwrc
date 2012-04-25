@@ -38,12 +38,14 @@ $('document').ready(function(){
 
   });
 
-$('#shared_canvas_iframe').attr('src', base + '/sites/all/modules/emic_canvas/impl/index.html?PID=' + PID);
-$(this).attr("title", cwrc_params.title);
-$('#header h1').text( cwrc_params.title + " - Page 1");
+  $('#shared_canvas_iframe').attr('src', base + '/sites/all/modules/emic_canvas/impl/index.html?PID=' + PID);
+  $(this).attr("title", cwrc_params.title);
+  $('#header h1').text( cwrc_params.title + " - Page 1");
   // instantiate and initialize writer object
 
-  writer = new Writer({'project':'EMiC'});
+  writer = new Writer({
+    'project':'EMiC'
+  });
   writer.init();
 
 
@@ -70,7 +72,7 @@ $('#header h1').text( cwrc_params.title + " - Page 1");
   // add page choice behavior to dropdown
   $('#page_choose').change(function(e){
     selector = "#page_choose option[value='" + cwrc_params.position + "']";
-   // $(selector).removeAttr('selected');  // this was necessary with ealry versions, but breaks the display now.
+    // $(selector).removeAttr('selected');  // this was necessary with ealry versions, but breaks the display now.
    
     cwrc_params.position = $('#page_choose :selected').attr('value');
     PID = cwrc_params.pages[ cwrc_params.position];
@@ -91,6 +93,10 @@ $('#header h1').text( cwrc_params.title + " - Page 1");
 
 
   });
+
+
+ 
+
 
 });
      

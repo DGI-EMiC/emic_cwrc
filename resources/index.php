@@ -28,7 +28,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link type="text/css" rel="stylesheet" href="css/screen.css" />
     <link type="text/css" rel="stylesheet" href="css/style.css" />
-    <link type="text/css" rel="stylesheet" href="css/gzoom.css" />
+  
 
   </head>
   <body>
@@ -50,6 +50,7 @@
               <ul>
                 <li><a href="#entities">Entities</a></li>
                 <li><a href="#structure">Structure</a></li>
+              
               </ul>
               <div id="entities">
                 <div id="sortBy">
@@ -62,11 +63,12 @@
               <div id="structure">
                 <div id="tree"></div>
               </div>
+
             </div>
             <div id="separator" class="arrowLeft" title="Click to expand/contract"></div>
           </div>
           <div class="col3">
-              <div id="page_selector">Loading....</div>
+            <div id="page_selector">Loading....</div>
             <!-- Column 3 start -->
             <input type="button" id="full-screen" value="Full Width"/>
             <iframe id="shared_canvas_iframe" src="" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>

@@ -40,10 +40,12 @@
       <div class="colmid">
         <div class="colleft">
           <div class="col1">
-            <!-- Column 1 start -->
-            <form method="post" action="">
-              <textarea id="editor" name="editor" class="tinymce"></textarea>
-            </form><!-- Column 1 end -->
+            <div class="text-annotation-wrapper">
+              <!-- Column 1 start -->
+              <form method="post" action="">
+                <textarea id="editor" name="editor" class="tinymce"></textarea>
+              </form><!-- Column 1 end -->
+            </div>
           </div>
           <div class="col2">
             <div id="tabs">
@@ -66,11 +68,12 @@
             <div id="separator" class="arrowLeft" title="Click to expand/contract"></div>
           </div>
           <div class="col3">
-              <div id="page_selector">Loading....</div>
+            <div id="page_selector">Loading....</div>
             <!-- Column 3 start -->
             <input type="button" id="full-screen" value="Full Width"/>
-            <iframe id="shared_canvas_iframe" src="" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>
-
+            <div class="image-annotation-wrapper">
+              <iframe id="shared_canvas_iframe" src="" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>
+            </div>
             <!-- Column 3 end -->
           </div>
         </div>

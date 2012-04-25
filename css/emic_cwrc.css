@@ -1,13 +1,13 @@
 /* Full Screen Styling */
 
-#full-screen-button
+#full-window-button
 {
   float: left;
   margin: 5px 5px 5px 0px;
 }
 
 
-.cwrc-fullscreen
+.cwrc-fullwindow
 {
   position: fixed;
   bottom: 0px;
@@ -19,12 +19,12 @@
   background: #fff;
 }
 
-.admin-menu .cwrc-fullscreen
+.admin-menu .cwrc-fullwindow
 {
   top: 20px;
 }
 
-.cwrc-fullscreen .cwrc-iframe-wrapper
+.cwrc-fullwindow .cwrc-iframe-wrapper
 {
   position: absolute;
   bottom: 0px;
@@ -38,7 +38,7 @@
   background: #fff;
 }
 
-.cwrc-fullscreen .cwrc-iframe-wrapper iframe
+.cwrc-fullwindow .cwrc-iframe-wrapper iframe
 {
   position: absolute;
   width: 100%;

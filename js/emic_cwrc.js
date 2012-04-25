@@ -10,19 +10,19 @@ Drupal.behaviors.emic = function(context){
   });
 };
 
-// toggle full screen
-Drupal.behaviors.emicCwrcFullScreen = function(context) {
+// toggle full window
+Drupal.behaviors.emicCwrcFullWindow = function(context) {
 
-  $('#full-screen-button').click(function() {
+  $('#full-window-button').click(function() {
     
-    $('.emic-cwrc-wrapper').toggleClass('cwrc-fullscreen');
+    $('.emic-cwrc-wrapper').toggleClass('cwrc-fullwindow');
   
-    if ($(this).val() == Drupal.t('Full Screen')) {
-      $(this).val(Drupal.t('Exit Full Screen'));
+    if ($(this).val() == Drupal.t('Full Window')) {
+      $(this).val(Drupal.t('Exit Full Window'));
 
     }
     else {
-      $(this).val(Drupal.t('Full Screen'));
+      $(this).val(Drupal.t('Full Window'));
     }
   });  
 };

@@ -74,7 +74,7 @@
             <!-- Column 3 start -->
             <input type="button" id="full-screen" value="Full Width"/>
             <div class="image-annotation-wrapper">
-              <iframe id="shared_canvas_iframe" src="" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanavas</iframe>
+              <iframe id="shared_canvas_iframe" src="" scrolling="0" frameborder="0" style="width: 100%; height: 800px;">Errors: unable to load SharedCanvas</iframe>
             </div>
             <!-- Column 3 end -->
           </div>

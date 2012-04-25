@@ -28,7 +28,7 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <link type="text/css" rel="stylesheet" href="css/screen.css" />
     <link type="text/css" rel="stylesheet" href="css/style.css" />
-    <link type="text/css" rel="stylesheet" href="css/gzoom.css" />
+  
 
   </head>
   <body>
@@ -52,6 +52,7 @@
               <ul>
                 <li><a href="#entities">Entities</a></li>
                 <li><a href="#structure">Structure</a></li>
+              
               </ul>
               <div id="entities">
                 <div id="sortBy">
@@ -64,6 +65,7 @@
               <div id="structure">
                 <div id="tree"></div>
               </div>
+
             </div>
             <div id="separator" class="arrowLeft" title="Click to expand/contract"></div>
           </div>

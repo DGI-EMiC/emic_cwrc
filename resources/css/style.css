@@ -36,11 +36,15 @@ label {
   height: 17px;
   padding: 5px 0;
   color: #eee;
-  background-color: #455372;
+  background-color: #000;
   border-bottom: 1px solid #ccc;
 }
-#header h1 {
+
+#header h1
+{
   float: left;
+  font-weight: normal;
+  padding: 2px 20px 0px;
 }
 
 #settingsLink {
@@ -567,7 +571,15 @@ div.mceDropDown {
 
 
 
-.entitiesList li .box {
+
+
+
+
+/* Entities */
+
+
+.entitiesList li .box
+{
   width: 22px;
   height: 22px;
   margin-right: 2px;
@@ -577,28 +589,34 @@ div.mceDropDown {
 }
 
 
-#entitiesConverter {
-display: none;
+#entitiesConverter
+{
+  display: none;
 }
 
-#lookupServices > div {
-margin-bottom: 0px;
+#lookupServices > div
+{
+  margin-bottom: 0px;
 }
 
-#lookupServices .ui-accordion-content {
-padding: 5px 10px;
+#lookupServices .ui-accordion-content
+{
+  padding: 5px 10px;
 }
 
-#lookup_alternate input[type='radio'] {
-float: left;
-margin-top: 10px;
-margin-left: 0px;
+#lookup_alternate input[type='radio']
+{
+  float: left;
+  margin-top: 10px;
+  margin-left: 0px;
 }
 
-#lookup_alternate input[type='text'] {
-width: 225px;
+#lookup_alternate input[type='text']
+{
+  width: 225px;
 }
 
-#lookup_alternate ins {
-display: inline-block;
+#lookup_alternate ins
+{
+  display: inline-block;
 }

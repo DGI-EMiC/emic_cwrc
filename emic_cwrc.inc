@@ -65,7 +65,7 @@ function setupCWRC($pid) {
   $book = $books[0];
   $item = new Fedora_Item($book);
   $title = $item->objectProfile->objLabel;
-  $pages = get_page_pids($book);
+  $pages = get_sorted_pages($book);
   $position = array_search($pid, $pages);
   $results = array();
   $results['BASE_PATH'] = $base_url;

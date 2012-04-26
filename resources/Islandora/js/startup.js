@@ -25,6 +25,7 @@ base = base[0];
 $('document').ready(function(){
 
   PID = $.urlParam('PID');
+  console.log(PID);
   $.ajax({
     url: base +'/cwrc/setupCWRC/' + PID,
     async:false,

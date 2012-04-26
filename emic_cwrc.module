@@ -92,7 +92,7 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
     $content_model_pids[] = $content_model->pid;
   }
   if (in_array('islandora:bookCModel', $content_model_pids)) {
-    $page_pids = get_page_pids($pid);
+    $page_pids = get_sorted_pages($pid);
     $page_pid = $page_pids[0];
     $valid = TRUE;
   }

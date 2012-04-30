@@ -505,6 +505,46 @@ div.mceDropDown {
 
 
 
+
+/* new layout */
+
+.threecol .colleft
+{
+  position: absolute;
+  right: auto;
+  width: 250px;
+}
+
+.threecol .colleft .col2
+{
+  left: auto;
+  width: 100%;
+}
+
+.threecol .colright
+{
+  position: absolute;
+  left: 250px;
+  right: 0px;
+  height: 100%;
+  width: auto;
+}
+
+.threecol .col1
+{
+  left: auto;
+  width: 50%;
+}
+
+.threecol .col3
+{
+  left: auto;
+  width: 50%;
+}
+
+
+
+
 /* Fullscreen Image Annotation */
 
 #full-screen
@@ -524,12 +564,15 @@ div.mceDropDown {
   /*   position: relative; */
 }
 
+/*
 .annotation-fullscreen #footer
 {
   position: absolute;
   bottom: 0px;
 }
+*/
 
+/*
 .annotation-fullscreen .colmask
 {
   position: absolute;
@@ -538,26 +581,35 @@ div.mceDropDown {
   width: 100%;
 
 }
+*/
 
+/*
 .annotation-fullscreen .colmask .colmid
 {
   right: auto;
   height: 100%;
 }
 
-.annotation-fullscreen .colmask .colmid .colleft
+.annotation-fullscreen .colmask .colleft
 {
   right: auto;
   height: 100%;
 }
+*/
 
-.annotation-fullscreen .colmask .colmid .col1,
-.annotation-fullscreen .colmask .colmid .col2
+.annotation-fullscreen .colmask .col1,
+.annotation-fullscreen .colmask .col2,
+.annotation-fullscreen .colleft
 {
   display: none;
 }
 
-.annotation-fullscreen .colmask .colmid .col3
+.annotation-fullscreen .threecol .colright
+{
+  left: 0px;
+}
+
+.annotation-fullscreen .colmask .col3
 {
   width: 100%;
   height: 100%;

@@ -105,11 +105,14 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
   }
   module_load_include('inc', 'islandora_book', 'book_pack_utils');
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
-
+  $tab_text = t("Critical Edition");
+ if(user_access('edit CWRC')){
+   $tab_text = t('Editor');
+ }
   $src = $base_url . '/sites/all/modules/emic_cwrc/resources/index.php?PID=' . $page_pid;
   $tabset['all_edits_tab'] = array(
     '#type' => 'tabpage',
-    '#title' => t("Critical Edition"),
+    '#title' => $tab_text,
     '#content' => theme('emic_cwrc', $src),
     '#weight' => 25,
   );

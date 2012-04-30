@@ -111,6 +111,7 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
     '#type' => 'tabpage',
     '#title' => t("Critical Edition"),
     '#content' => theme('emic_cwrc', $src),
+    '#weight' => 25,
   );
   return $tabset;
 }

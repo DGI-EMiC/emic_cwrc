@@ -37,22 +37,12 @@
       <h1>DHSI CWRCWriter</h1>
     </div>
     <div class="colmask threecol">
-      <div class="colmid">
         <div class="colleft">
-          <div class="col1">
-            <div class="text-annotation-wrapper">
-              <!-- Column 1 start -->
-              <form method="post" action="">
-                <textarea id="editor" name="editor" class="tinymce"></textarea>
-              </form><!-- Column 1 end -->
-            </div>
-          </div>
           <div class="col2">
             <div id="tabs">
               <ul>
                 <li><a href="#entities">Entities</a></li>
                 <li><a href="#structure">Structure</a></li>
-              
               </ul>
               <div id="entities">
                 <div id="sortBy">
@@ -65,9 +55,18 @@
               <div id="structure">
                 <div id="tree"></div>
               </div>
-
             </div>
             <div id="separator" class="arrowLeft" title="Click to expand/contract"></div>
+          </div>
+        </div>
+        <div class="colright">
+          <div class="col1">
+            <div class="text-annotation-wrapper">
+              <!-- Column 1 start -->
+              <form method="post" action="">
+                <textarea id="editor" name="editor" class="tinymce"></textarea>
+              </form><!-- Column 1 end -->
+            </div>
           </div>
           <div class="col3">
             <div id="page_selector">Loading....</div>
@@ -79,10 +78,9 @@
             <!-- Column 3 end -->
           </div>
         </div>
-      </div>
     </div>
     <div id="footer">
-      <p>Brought to you  by EMIC</p>
+      <p>Brought to you by EMiC</p>
     </div>
 
   </body>

@@ -29,7 +29,7 @@ function emic_cwrc_menu() {
     'type' => MENU_CALLBACK,
     'access arguments' => array('use CWRC'),
   );
-    $items['cwrc/authorities'] = array(
+  $items['cwrc/authorities'] = array(
     'file' => 'emic_cwrc.inc',
     'page callback' => 'emic_cwrc_get_authorities',
     'type' => MENU_CALLBACK,
@@ -82,8 +82,6 @@ function emic_cwrc_islandora_book_links($pid) {
   return $link;
 }
 
-
-
 function emic_cwrc_islandora_tabs($content_models, $pid) {
   global $base_url;
   $valid = FALSE;
@@ -94,21 +92,23 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
   if (in_array('islandora:bookCModel', $content_model_pids)) {
     $page_pids = get_sorted_pages($pid);
     $page_pid = $page_pids[0];
-    $valid = TRUE;
+    if (count($page_pids > 0)) {
+      $valid = TRUE;
+    }
   }
   if (in_array('islandora:pageCModel', $content_model_pids)) {
     $page_pid = $pid;
     $valid = TRUE;
   }
-  if(!$valid){
+  if (!$valid) {
     return;
   }
   module_load_include('inc', 'islandora_book', 'book_pack_utils');
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $tab_text = t("Critical Edition");
- if(user_access('edit CWRC')){
-   $tab_text = t('Editor');
- }
+  if (user_access('edit CWRC')) {
+    $tab_text = t('Editor');
+  }
   $src = $base_url . '/sites/all/modules/emic_cwrc/resources/index.php?PID=' . $page_pid;
   $tabset['all_edits_tab'] = array(
     '#type' => 'tabpage',

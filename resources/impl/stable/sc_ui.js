@@ -795,7 +795,7 @@ function paint_commentAnno(anno, canvasId) {
 	
 	txt = txt.replace('\n', '<br/>')
 	block = '<div class="comment_title" id="anno_'+myid+'"><span class="comment_showhide">+ </span>' + title + '</div>';
-	block += ('<div class="comment_text">('+tgttxt+')<br/>'+txt+'<br /><span id="delete_anno_'+myid+'"><img alt="Remove Annotation" src="impl/imgs/cross.png" class="mceIcon"></span></div>');
+	block += ('<div class="comment_text">'+txt+'<br /><span id="delete_anno_'+myid+'"><img alt="Remove Annotation" src="impl/imgs/cross.png" class="mceIcon"> Delete</span></div>');
         
 	$('#comment_annos_block').append(block)
 	$('#anno_'+myid).attr('canvas', canvasId);

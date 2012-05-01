@@ -851,62 +851,7 @@ var Writer = function(config) {
             }
           });
 				
-       
 
-  
-        // DHSI buttons
-
-        ed.addButton('prevpage', {
-          title: 'Previous Page',
-          image: 'img/prev_arrow.gif',
-          'class': 'prevButton',
-          onclick: function() {
-
-            var selector = "#page_choose option[value='" + cwrc_params.position + "']";
-            $(selector).removeAttr('selected');
-            PID = cwrc_params.pages[--cwrc_params.position];
-            $('#shared_canvas_iframe').attr('src', base + '/sites/all/modules/emic_canvas/impl/index.html?PID=' + PID);
-
-            selector = "#page_choose option[value='" + cwrc_params.position + "']";
-            $(selector).attr('selected','selected');
-            $('.nextButton').css('opacity', '1');
-            if(cwrc_params.position >= 0){
-              w.fm.loadEMICDocument();
-              $('#reference_image').attr('src', cwrc_params.fedora_url + '/objects/' + PID + '/datastreams/JPEG/content');
-              if(cwrc_params.position == 0){
-                $('.prevButton').css('opacity', '.2');
-              }
-            }
-          }
-        });
-
-
-     
-        ed.addButton('nextpage', {
-          title: 'Next Page',
-          image: 'img/next_arrow.gif',
-          'class': 'nextButton',
-          onclick: function() {
-            var selector = "#page_choose option[value='" + cwrc_params.position + "']";
-            $(selector).removeAttr('selected');
-            PID = cwrc_params.pages[++cwrc_params.position];
-            $('#shared_canvas_iframe').attr('src', base + '/sites/all/modules/emic_canvas/impl/index.html?PID=' + PID);
-
-            selector = "#page_choose option[value='" + cwrc_params.position + "']";
-            $(selector).attr('selected','selected');
-            $('.prevButton').css('opacity', '1');
-            if(cwrc_params.position < cwrc_params.pages.length){
-              w.fm.loadEMICDocument();
-              $('#reference_image').attr('src', cwrc_params.fedora_url + '/objects/' + PID + '/datastreams/JPEG/content');
-              if(cwrc_params.position == cwrc_params.pages.length -1){
-                $('.nextButton').css('opacity', '.2');
-              }
-            }
-
-          }
-        });
-       
-      // end DHSI
       },
 			
       doctype: '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
@@ -928,7 +873,7 @@ var Writer = function(config) {
       plugins: 'paste,-entitycontextmenu,-customtags,-schematags,-viewsource',
       theme_advanced_blockformats: 'p,h1,blockquote',
       //altered for DHSI
-      theme_advanced_buttons1: 'customtags,|,addperson,addplace,adddate,addevent,addorg,addcitation,addnote,addtitle,|,editTag,removeTag,|,viewsource,|,savebutton,|,prevpage,nextpage',
+      theme_advanced_buttons1: 'customtags,|,addperson,addplace,adddate,addevent,addorg,addcitation,addnote,addtitle,|,editTag,removeTag,|,viewsource,|,savebutton',
       theme_advanced_buttons2: '',
       theme_advanced_buttons3: '',
       theme_advanced_toolbar_location: 'top',

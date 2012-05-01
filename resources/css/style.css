@@ -765,7 +765,7 @@ A:hover
 #tabs .comment_title
 {
   cursor: pointer;
-  padding: 5px 5px 5px 5px;
+  padding: 8px;
   margin: 3px 0px 0px 0px;
   
   background: #ececec;

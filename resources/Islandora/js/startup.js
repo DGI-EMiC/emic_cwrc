@@ -84,16 +84,30 @@ $('document').ready(function(){
 
   $('#page-prev').click(function(e){
     e.preventDefault();
-    if(cwrc_params.position > 1){
+    if(cwrc_params.position > 0){
+      $('#page-next').css('opacity', '1')
       cwrc_params.position--;
       PID = cwrc_params.pages[ cwrc_params.position];
       writer.fm.loadEMICDocument();
       init_canvas_div();
+      if(cwrc_params.position == 0){
+        $('#page-prev').css('opacity', '.2');
+      }
     }
-    
-
   });
-
+  $('#page-next').click(function(e){
+    e.preventDefault();
+    if(cwrc_params.position < cwrc_params.pages.length){
+      $('#page-prev').css('opacity', '1');
+      cwrc_params.position++;
+      PID = cwrc_params.pages[ cwrc_params.position];
+      writer.fm.loadEMICDocument();
+      init_canvas_div();
+      if(cwrc_params.position == cwrc_params.pages.length -1){
+        $('#page-next').css('opacity', '.2');
+      }
+    }
+  });
 
 });
 

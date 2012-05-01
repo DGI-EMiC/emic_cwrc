@@ -21,16 +21,9 @@
 
 /* Image annotation dialog boxes */
 
-#comment_annos
-{
-  top: 3px;
-  left: 115px;
-  right: auto; 
-}
-
 #create_annotation_box
 {
-  top: 115px;
+  top: 100px;
   left: auto;
   right: 50px;
 }

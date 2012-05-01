@@ -512,19 +512,20 @@ div.mceDropDown {
 {
   position: absolute;
   right: auto;
-  width: 285px;
+  width: 315px;
 }
 
 .threecol .colleft .col2
 {
   left: auto;
   width: 100%;
+  overflow: auto;
 }
 
 .threecol .colright
 {
   position: absolute;
-  left: 285px;
+  left: 315px;
   right: 0px;
   height: 100%;
   width: auto;
@@ -587,6 +588,7 @@ A:hover
   float: left;
   height: 35px;
   width: 60px;
+  margin: 0px 0px 0px 20px;
 }
 
 #header .header-nav a
@@ -621,6 +623,11 @@ A:hover
   padding: 8px 20px 0px;
 }
 
+#header h2
+{
+  padding: 8px 15px 0px 0px;
+}
+
 
 
 /* Footer */
@@ -628,9 +635,18 @@ A:hover
 
 #footer
 {
-  background: 
+  background: url('../imgs/emic-logo') 20px 7px no-repeat transparent;
 }
 
+#footer p
+{
+  padding: 10px 10px 10px 50px;
+}
+
+#footer a
+{
+  text-decoration: underline;
+}
 
 
 
@@ -703,7 +719,7 @@ A:hover
 .image-annotation-wrapper #canvas-body
 {
   position: relative;
-  padding: 15px;
+  padding:0px 15px 15px 15px;
 }
 
 .image-annotation-wrapper .shared-canvas-logo
@@ -716,9 +732,19 @@ A:hover
 
 /* Sidebar Left Tabs */
 
+#tabs
+{
+  width: 100%;
+}
+
 #tabs a
 {
   cursor: pointer;
+}
+
+#tabs > ul
+{
+  padding: 3px 10px 0 !important;
 }
 
 #tabs li.ui-state-active
@@ -736,9 +762,32 @@ A:hover
 
 }
 
-.comment_title
+#tabs .comment_title
 {
   cursor: pointer;
+  padding: 4px 4px 4px 4px;
+  
+  background: #eee;
+  border-bottom: 0px;
+  border-top: 2px solid white;
+}
+
+#tabs .comment_text
+{
+  margin: 0px 0px 0px 0px;
+  padding: 5px 10px 5px 10px;
+
+  border-left: 0px; 
+  border-bottom: 0px;
+  border-right: 0px;
+  
+  background: #f6f6f6;
+}
+
+#tabs #comment_annos_block .mycolor
+{
+  width: 13px !important;
+  height: 13px !important;
 }
 
 #tabs .comment_text span img /* should get proper class - title/tooltip could be nice too */
@@ -746,10 +795,40 @@ A:hover
   cursor: pointer;
 }
 
+#tabs .title
+{
+  margin-left: 10px;
+  
+  background: transparent;
+  border: 0px;
+  
+  left: auto;
+  position: inherit;
+  text-align: left;
+}
+
+#tabs .title.box
+{
+  margin-left: 0px;
+  vertical-align: 0px;
+}
+
+#tabs .ui-tabs-panel
+{
+  float: none;
+  width: 285px;
+  padding: 5px 0px 10px !important;
+  margin: 0 auto;
+}
+
+
+
+
+
+
 
 
 /* Text annotation */
-
 
 .text-annotation-wrapper
 {
@@ -773,7 +852,6 @@ A:hover
 {
 
 }
-
 
 .defaultSkin .mceIframeContainer
 {
@@ -810,7 +888,6 @@ A:hover
 
 /* Entities */
 
-
 .entitiesList li .box
 {
   width: 22px;
@@ -820,7 +897,6 @@ A:hover
   background-position: 3px 3px;
   background-repeat: no-repeat;
 }
-
 
 #entitiesConverter
 {

@@ -80,7 +80,7 @@
         </div>
     </div>
     <div id="footer">
-      <p>Brought to you by EMiC</p>
+      <p>Brought to you by <a href="http://editingmodernism.ca/" title="Editing Modernism in Canada" target="_blank">EMiC</a></p>
     </div>
 
   </body>

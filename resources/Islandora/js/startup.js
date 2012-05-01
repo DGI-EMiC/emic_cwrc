@@ -19,15 +19,15 @@ if(splitter > 0){
 }else{
   splitter = '/modules/';
 }
-var base = here.split(splitter);
-base = base[0];
+base = here.split(splitter);
+basedir = base[0];
+
 
 $('document').ready(function(){
-
   PID = $.urlParam('PID');
   console.log(PID);
   $.ajax({
-    url: base +'/cwrc/setupCWRC/' + PID,
+    url: basedir +'/cwrc/setupCWRC/' + PID,
     async:false,
     success: function(data, status, xhr) {
       cwrc_params = data;
@@ -39,7 +39,6 @@ $('document').ready(function(){
 
   });
 
-  $('#shared_canvas_iframe').attr('src', base + '/sites/all/modules/emic_canvas/impl/index.html?PID=' + PID);
   $(this).attr("title", cwrc_params.title);
   $('#header h1').text( cwrc_params.title + " - Page 1");
   // instantiate and initialize writer object
@@ -48,15 +47,7 @@ $('document').ready(function(){
     'project':'EMiC'
   });
   writer.init();
-
-
-  // Supply reference image from Fedora - could rewrite to pull in fom Drupal callbak
-  $('#reference_image').attr('src', cwrc_params.fedora_url + '/objects/' + PID + '/datastreams/JPEG/content');
-
-  // prevent drag and drop behaviour from zoomed image
-  $('#zoom01').mousedown(function(e){
-    e.preventDefault();
-  });
+  init_canvas_div();
 
 
   // build and populate page choice dropdown
@@ -73,11 +64,11 @@ $('document').ready(function(){
   // add page choice behavior to dropdown
   $('#page_choose').change(function(e){
     selector = "#page_choose option[value='" + cwrc_params.position + "']";
-    // $(selector).removeAttr('selected');  // this was necessary with ealry versions, but breaks the display now.
    
     cwrc_params.position = $('#page_choose :selected').attr('value');
     PID = cwrc_params.pages[ cwrc_params.position];
     writer.fm.loadEMICDocument();
+    init_canvas_div();
     $('#header h1').text( cwrc_params.title + " - Page " + (parseInt(cwrc_params.position) +1));
     $('.nextButton').css('opacity', '1');
     $('.prevButton').css('opacity', '1');
@@ -89,16 +80,102 @@ $('document').ready(function(){
     }
     selector = "#page_choose option[value='" + cwrc_params.position + "']";
     $(selector).attr('selected','selected');
-    $('#reference_image').attr('src', cwrc_params.fedora_url + '/objects/' + PID + '/datastreams/JPEG/content');
-    $('#shared_canvas_iframe').attr('src', base + '/sites/all/modules/emic_canvas/impl/index.html?PID=' + PID);
+  });
 
+  $('#page-prev').click(function(e){
+    e.preventDefault();
+    if(cwrc_params.position > 1){
+      cwrc_params.position--;
+      PID = cwrc_params.pages[ cwrc_params.position];
+      writer.fm.loadEMICDocument();
+      init_canvas_div();
+    }
+    
 
   });
 
 
- 
-
-
 });
-     
+
+
+function init_canvas_div(){
+  pagePid =cwrc_params.pages[ cwrc_params.position];
+  $.ajax({
+    url: basedir +'/emic/shared/setup/' + pagePid,
+    async:false,
+    success: function(data, status, xhr) {
+      emic_canvas_params = data;
+    },
+    error: function() {
+      alert("Please Login to EMiC site");
+    },
+    dataType: 'json'
+
+  });
+
+  if(emic_canvas_params.no_edit == true){
+    $('#create_annotation').hide();
+  }
+  opts.base = emic_canvas_params.object_base;
+
+
+
+  // build and populate page choice dropdown
+  $('#canvas_page_selector').html('<select id="canvas_page_choose"></select>');
+  $.each(emic_canvas_params.pages, function(key, value){
+    $('#canvas_page_choose').append('<option  value="' + key + '">Page ' + (key + 1) + '</option>');
+  });  // build and populate page choice dropdown
+  $('#canvas_page_selector').html('<select id="canvas_page_choose"></select>');
+  $.each(emic_canvas_params.pages, function(key, value){
+    $('#canvas_page_choose').append('<option  value="' + key + '">Page ' + (key + 1) + '</option>');
+  });
+
+
+  // RDF Initializationc
+  var rdfbase = $.rdf(opts);
+  topinfo['query'] = rdfbase;
+
+
+
+
+  var l = $(location).attr('hash');
+  var uriparams = {};
+  var nCanvas = 1;
+  var start = 0;
+  if (l[0] == '#' && l[1] == '!') {
+    // Process initialization
+    var params = l.substr(2,l.length).split('&');
+    for (var p=0,prm;prm=params[p];p++) {
+      var tup = prm.split('=');
+      var key = tup[0];
+      var val = tup[1];
+      if (key == 's') {
+        start = parseInt(val);
+        uriparams['s'] = start;
+      } else if (key == 'n') {
+        nCanvas = parseInt(val);
+        uriparams['n'] = nCanvas;
+      }
+    }
+  }
+  topinfo['uriParams'] = uriparams
+
+  // Initialize UI
+  init_ui();
+  // Setup a basic Canvas with explicit width to scale to from browser width
+  initCanvas(nCanvas)
+
+  // Manifest Initialization
+  var manuri = emic_canvas_params.manifest_url;
+  if (manuri != undefined) {
+    fetchTriples(manuri, rdfbase, cb_process_manifest);
+  } else {
+    repouri = $('#repository').attr('href');
+    fetchTriples(repouri, rdfbase, cb_process_repository);
+  }
+
+
+
+
+}
 

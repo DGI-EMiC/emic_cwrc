@@ -506,7 +506,7 @@ div.mceDropDown {
 
 
 
-/* new layout */
+/* New Layout */
 
 .threecol .colleft
 {
@@ -545,6 +545,26 @@ div.mceDropDown {
 .colmask
 {
   top: 35px;
+}
+
+
+
+/* General elements */
+
+a,
+a:visited,
+a:link,
+A:link
+{
+  color: #000;
+}
+
+a:hover,
+A:hover
+{
+  color: #000;
+  background: transparent;
+  text-decoration: underline;
 }
 
 
@@ -600,6 +620,19 @@ div.mceDropDown {
 {
   padding: 8px 20px 0px;
 }
+
+
+
+/* Footer */
+
+
+#footer
+{
+  background: 
+}
+
+
+
 
 
 /* Fullscreen Image Annotation */
@@ -677,6 +710,40 @@ div.mceDropDown {
 {
   width: 100%;
   margin-top: 15px;
+}
+
+
+
+/* Sidebar Left Tabs */
+
+#tabs a
+{
+  cursor: pointer;
+}
+
+#tabs li.ui-state-active
+{
+
+}
+
+#tabs li.ui-state-hover
+{
+
+}
+
+#tabs li.ui-state-active.ui-state-hover
+{
+
+}
+
+.comment_title
+{
+  cursor: pointer;
+}
+
+#tabs .comment_text span img /* should get proper class - title/tooltip could be nice too */
+{
+  cursor: pointer;
 }
 
 

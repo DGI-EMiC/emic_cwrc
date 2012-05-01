@@ -29,13 +29,7 @@
     <script type="text/javascript" src="Islandora/js/startup.js"></script>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     
-    <!-- CWRC stylesheets -->
-    <link type="text/css" rel="stylesheet" href="css/screen.css" />
-    <link type="text/css" rel="stylesheet" href="css/style.css" />
-  
-  
     <!-- Canvas js -->
-    
     <script src="impl/js/jquery.rdfquery.rdfa.min-1.1.js" type="text/javascript"></script>
     <script src="impl/js/jquery.rdf.turtle.js" type="text/javascript"></script>
     
@@ -61,6 +55,11 @@
     <!-- Canvas css -->
     <link rel="stylesheet" href="impl/css/sc.css" type="text/css" />
     <link rel="stylesheet" href="impl/css/emic_canvas.css" type="text/css" />
+
+    <!-- CWRC stylesheets -->
+    <link type="text/css" rel="stylesheet" href="css/screen.css" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+
 
   </head>
   <body>
@@ -241,7 +240,7 @@
 
 
     <div id="footer">
-      <p>Brought to you by EMiC</p>
+      <p>Brought to you by <a href="http://editingmodernism.ca/" title="Editing Modernism in Canada">EMiC</a></p>
     </div>
 
   </body>

@@ -176,8 +176,9 @@ A:link {
 }
 
 
-.menu_button {
-	border:1px solid #998675;
+.menu_button
+{
+/* 	border:1px solid #998675; */
 }
 
 .menu_body {

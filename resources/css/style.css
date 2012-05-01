@@ -96,7 +96,7 @@ label {
 
 #tabs {
   float: left;
-  width: 244px;
+  width: 285px;
   border: none !important;
   padding: 0 !important;
 }
@@ -512,7 +512,7 @@ div.mceDropDown {
 {
   position: absolute;
   right: auto;
-  width: 250px;
+  width: 285px;
 }
 
 .threecol .colleft .col2
@@ -524,7 +524,7 @@ div.mceDropDown {
 .threecol .colright
 {
   position: absolute;
-  left: 250px;
+  left: 285px;
   right: 0px;
   height: 100%;
   width: auto;
@@ -542,16 +542,80 @@ div.mceDropDown {
   width: 50%;
 }
 
+.colmask
+{
+  top: 35px;
+}
 
+
+
+/* Header */
+
+#header
+{
+  height: 35px;
+  padding: 0px 0px 0px 0px;
+}
+
+#header #page_selector
+{
+  margin: 8px 0px 0px 15px;
+}
+
+#header .header-nav
+{
+  float: left;
+  height: 35px;
+  width: 60px;
+}
+
+#header .header-nav a
+{
+  float: left;
+  width: 30px;
+  height: 35px;
+
+  background-image: url('../imgs/nav-arrows.png'); /* 38px x 85px */ 
+  background-position: 0px 0px;
+  background-repeat: no-repeat;
+  background-color: transparent;
+}
+
+#header .header-nav a#page-prev
+{
+  background-position: -9px -1px;
+}
+
+#header .header-nav a#page-next
+{
+  background-position: -42px -1px;
+}
+
+#header #header-inner
+{
+  
+}
+
+#header #header-inner h1
+{
+  padding: 8px 20px 0px;
+}
 
 
 /* Fullscreen Image Annotation */
 
-#full-screen
+#full-screen,
+#create_annotation
 {
   float: left;
-  margin: 5px 0px 0px 0px;
+  margin: 5px 5px 0px 0px;
 }
+
+#full-screen
+{
+  margin: 5px 5px 0px 15px;
+}
+
 
 #page_selector
 {
@@ -559,16 +623,9 @@ div.mceDropDown {
   margin: 5px 10px 0px 10px;
 }
 
-.annotation-fullscreen .colmask .col1,
-.annotation-fullscreen .colmask .col2,
-.annotation-fullscreen .colleft
+.annotation-fullscreen .colmask .col1
 {
   display: none;
-}
-
-.annotation-fullscreen .threecol .colright
-{
-  left: 0px;
 }
 
 .annotation-fullscreen .colmask .col3
@@ -612,6 +669,7 @@ div.mceDropDown {
 
 .image-annotation-wrapper #canvas-body
 {
+  position: relative;
   padding: 15px;
 }
 

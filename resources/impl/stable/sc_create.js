@@ -57,7 +57,7 @@ function startAnnotating() {
   });
   $('#create_annotation').empty().append('Annotating');
   $('#create_annotation_box').show();
-  $('#create_annotation_box').offset({
+  $('#create_annotation_box').position({
     top:200,
     left:35
   });

@@ -774,7 +774,7 @@ A:hover
 {
   float: none;
   width: 285px;
-  padding: 5px 0px 10px !important;
+  padding: 5px 0px 15px !important;
   margin: 0 auto;
 }
 
@@ -791,6 +791,7 @@ A:hover
   margin: 3px 0px 0px 0px;
   
   background: #eee;
+  color: #555;
   border-bottom: 1px solid #ddd;
   border-top: 1px solid #ddd;
   border-left: 1px solid #ddd;
@@ -805,6 +806,7 @@ A:hover
 #tabs .comment_title:hover /* I know that's a div - maybe change to <a> ? */
 {
   background: #e3e3e3;
+  color: #212121;
 }
 
 #tabs .comment_title.annotation-opened
@@ -812,6 +814,7 @@ A:hover
   -webkit-border-radius: 5px 5px 0px 0px; /* Saf3-4, iOS 1-3.2, Android ²1.6 */
           border-radius: 5px 5px 0px 0px; /* Opera 10.5, IE9, Saf5, Chrome, FF4+, iOS 4, Android 2.1+ */
 
+  color: #212121;
   border-bottom: 0px solid #ddd;
 }
 

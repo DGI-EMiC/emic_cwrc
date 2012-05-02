@@ -765,11 +765,26 @@ A:hover
 #tabs .comment_title
 {
   cursor: pointer;
-  padding: 4px 4px 4px 4px;
+  padding: 8px;
+  margin: 3px 0px 0px 0px;
   
-  background: #eee;
+  background: #ececec;
   border-bottom: 0px;
-  border-top: 2px solid white;
+  border-top: 0px;
+  
+  -webkit-border-radius: 5px 5px 5px 5px; /* Saf3-4, iOS 1-3.2, Android ²1.6 */
+          border-radius: 5px 5px 5px 5px; /* Opera 10.5, IE9, Saf5, Chrome, FF4+, iOS 4, Android 2.1+ */
+}
+
+#tabs .comment_title:hover /* I know that's a div - maybe change to <a> ? */
+{
+  background: #ddd;
+}
+
+#tabs .comment_title.annotation-opened
+{
+  -webkit-border-radius: 5px 5px 0px 0px; /* Saf3-4, iOS 1-3.2, Android ²1.6 */
+          border-radius: 5px 5px 0px 0px; /* Opera 10.5, IE9, Saf5, Chrome, FF4+, iOS 4, Android 2.1+ */
 }
 
 #tabs .comment_text
@@ -782,17 +797,38 @@ A:hover
   border-right: 0px;
   
   background: #f6f6f6;
+
+  -webkit-border-radius: 0px 0px 5px 5px; /* Saf3-4, iOS 1-3.2, Android ²1.6 */
+          border-radius: 0px 0px 5px 5px; /* Opera 10.5, IE9, Saf5, Chrome, FF4+, iOS 4, Android 2.1+ */
 }
+
 
 #tabs #comment_annos_block .mycolor
 {
-  width: 13px !important;
-  height: 13px !important;
+  width: 14px !important;
+  height: 14px !important;
+  margin-top: 0px !important;
+  margin-right: 0px !important;
+  
+  -webkit-border-radius: 8px; /* Saf3-4, iOS 1-3.2, Android ²1.6 */
+          border-radius: 8px; /* Opera 10.5, IE9, Saf5, Chrome, FF4+, iOS 4, Android 2.1+ */
 }
 
-#tabs .comment_text span img /* should get proper class - title/tooltip could be nice too */
+#tabs .comment_text a.delete-annotation
+{
+  margin: 0px 0px 0px 0px;
+}
+
+#tabs .comment_text a.delete-annotation:hover
+{
+  text-decoration: underline;
+}
+
+#tabs .comment_text a.delete-annotation img
 {
   cursor: pointer;
+  margin: 10px 0px 0px 0px;
+  vertical-align: bottom;
 }
 
 #tabs .title

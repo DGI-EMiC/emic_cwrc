@@ -74,13 +74,14 @@ $('document').ready(function(){
     writer.fm.loadEMICDocument();
     init_canvas_div();
     $('#header h1').text( cwrc_params.title + " - Seq# " + (parseInt(cwrc_params.position) +1));
-    $('.nextButton').css('opacity', '1');
-    $('.prevButton').css('opacity', '1');
+    $('#page-prev').css('opacity', '1');
+    $('#page-next').css('opacity', '1');
+    
     if(cwrc_params.position ==0){
-      $('.prevButton').css('opacity', '.6');
+      $('#page-prev').css('opacity', '.6');
     }
     if(cwrc_params.position == cwrc_params.pages.length -1){
-      $('.nextButton').css('opacity', '.2');
+      $('#page-next').css('opacity', '.2');
     }
     selector = "#page_choose option[value='" + cwrc_params.position + "']";
     $(selector).attr('selected','selected');
@@ -107,7 +108,7 @@ $('document').ready(function(){
   });
   $('#page-next').click(function(e){
     e.preventDefault();
-    if(cwrc_params.position < cwrc_params.pages.length){
+    if(cwrc_params.position < cwrc_params.pages.length -1){
       $('#page-prev').css('opacity', '1');
      
       var selector = "#page_choose option[value='" + cwrc_params.position + "']";

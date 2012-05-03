@@ -145,15 +145,17 @@ function destroyAll(canvas) {
   if ( topinfo['raphaels']['comment'][canvas]){
     var r = topinfo['raphaels']['comment'][canvas];
     var bg = r.annotateRect;
-    for (var x in bg.myShapes) {
-      var sh = bg.myShapes[x];
-      if (sh.set != undefined) {
-        sh.set.remove();
-      } else {
-        sh.remove();
-      }
-    };
-    bg.remove();
+    if(bg){
+      for (var x in bg.myShapes) {
+        var sh = bg.myShapes[x];
+        if (sh.set != undefined) {
+          sh.set.remove();
+        } else {
+          sh.remove();
+        }
+      };
+      bg.remove();
+    }
     $(r.wrapperElem).remove();
     $(r).remove();
   }
@@ -187,7 +189,7 @@ function saveAnnotation() {
   var tgt = rinfo[1];
 	
   if (tgt == null) {
-    alert('You must either check "About Canvas" or draw a shape around the target.');
+    alert('You must draw a shape around the target.');
     return 0;
   }
 	

@@ -282,6 +282,7 @@ var SearchDialog = function(config) {
 
   var createNew = function() {
     w.d.show('add'+currentType, {});
+  
   };
 
   return {

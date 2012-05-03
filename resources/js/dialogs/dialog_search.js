@@ -187,8 +187,8 @@ var SearchDialog = function(config) {
         $.each(r,function(i, val){
           formattedResults += '<span>'+val+'</span><br />';
         });
-      //  formattedResults += '<span>'+label+'</span><br />';
-      //  formattedResults += '<span>'+r.Place+'</span><br />';
+        //  formattedResults += '<span>'+label+'</span><br />';
+        //  formattedResults += '<span>'+r.Place+'</span><br />';
         formattedResults += '</li>';
       }
 
@@ -324,6 +324,8 @@ var SearchDialog = function(config) {
         text: 'Tag '+config.title,
         click: function() {
           searchResult();
+          var tabs = $('#tabs').tabs();
+          tabs.tabs('select', 0);
         }
       }]);
       if (config.pos) {

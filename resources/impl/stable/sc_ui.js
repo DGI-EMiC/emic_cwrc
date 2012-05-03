@@ -843,7 +843,6 @@ function paint_commentAnnoTargets(ttldiv, canvasId, annoId) {
 				var col = '#a0f060';
 			} else {
 				var col = svgAreaColors.splice(0,1)[0];
-				console.log(col);
 			}
 			$(ttldiv).append('<span color="' + col + '" class="mycolor" style="margin-right: 2px; margin-top: 2px; background: '+col+';float:right;width:15px;height:15px;">&nbsp;</span>');
 			for (var t = 0, tgt; tgt = anno.targets[t]; t++) {

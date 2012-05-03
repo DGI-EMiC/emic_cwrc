@@ -30,6 +30,7 @@ function maybe_config_create_annotation() {
   $('#cancelAnno').click(closeAndEndAnnotating);
   $('#saveAnno').click(saveAndEndAnnotating);
 
+
   $('.annoShape').click(function() {
     var typ = $(this).attr('id').substr(10,5);
     topinfo['svgAnnoShape'] = typ;
@@ -100,6 +101,10 @@ function closeAndEndAnnotating() {
   $('#anno_text').val('');
   $('#anno_aboutCanvas').prop('checked', false);
   $('#anno_isResource').prop('checked', false);
+  $('#annotation_tab').tabs('select', 0);
+  var tabs = $('#tabs').tabs();
+  tabs.tabs('select', 2);
+
     
 }
 	

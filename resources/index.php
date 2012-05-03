@@ -82,7 +82,7 @@
               <ul>
                 <li><a href="#entities">Entities</a></li>
                 <li><a href="#structure">Structure</a></li>
-                <li><a href="#image-annotations">Image Annotations</a></li>
+                <li id="annotation_tab"><a href="#image-annotations">Image Annotations</a></li>
               </ul>
               <div id="entities">
                 <div id="sortBy">

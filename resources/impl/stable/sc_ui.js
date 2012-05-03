@@ -794,21 +794,20 @@ function paint_commentAnno(anno, canvasId) {
 	
 	
 	txt = txt.replace('\n', '<br/>')
-	block = '<div class="comment_title" id="anno_'+myid+'"><span class="comment_showhide">+ </span>' + title + '</div>';
-	block += ('<div class="comment_text">'+txt+'<br /><a href="#" id="delete_anno_'+myid+'" class="delete-annotation"><img alt="Remove Annotation" src="impl/imgs/cross.png" class="mceIcon"> Delete</a></div>');
+	block = '<div class="comment_title" id="anno_' + myid + '"><span class="comment_showhide">+ </span>' + title + '</div>';
+	block += '<div class="comment_text">' + txt + '<br /><a href="#" id="delete_anno_' + myid + '" class="delete-annotation"><img alt="Remove Annotation" src="impl/imgs/cross.png" class="mceIcon"> Delete</a></div>';
         
 	$('#comment_annos_block').append(block)
-	$('#anno_'+myid).attr('canvas', canvasId);
+	$('#anno_' + myid).attr('canvas', canvasId);
 
-        $('#delete_anno_'+myid).click(function(e){
-          if (confirm("Permananently Delete This Annotation?")){
-            pb_deleteAnno(myid);
-          }
-          e.preventDefault();
-        });
+  $('#delete_anno_'+myid).click(function(e){
+    if (confirm("Permananently Delete This Annotation?")) {
+      pb_deleteAnno(myid);
+    }
+    e.preventDefault();
+  });
 
-
-	$('#anno_'+myid).click(function() {
+	$('#anno_' + myid).click(function() {
 			$(this).toggleClass('annotation-opened').next().toggle();
 			var pm = $(this).find('.comment_showhide');
 			if (pm.text() == '+ ') {
@@ -832,21 +831,22 @@ function paint_commentAnno(anno, canvasId) {
 }
 
 
-var svgAreaColors = ['#a0a000','#00a0a0', '#a000a0', '#0000a0', '#00a000', '#a00000', '#a0a0a0']
+var svgAreaColors = ['#FF0000', '#FF6600', '#FF9400', '#FEC500', '#FFFF00', '#8CC700', '#0FAD00', '#00A3C7', '#0064B5', '#0010A5', '#6300A5', '#C5007C']
 
 function paint_commentAnnoTargets(ttldiv, canvasId, annoId) { 
 	var canvas = $('#' + canvasId).attr('canvas');
 	var annos = topinfo['annotations']['comment'][canvas];
-	for (var a=0,anno;anno=annos[a];a++) {
+	for (var a = 0, anno; anno = annos[a]; a++) {
 		if (anno.id == 'urn:uuid:' + annoId) {
 			// Paint it up
 			if (!svgAreaColors) {
 				var col = '#a0f060';
 			} else {
 				var col = svgAreaColors.splice(0,1)[0];
+				console.log(col);
 			}
-			$(ttldiv).append('<span color="'+col+'" class="mycolor" style="margin-right: 2px; margin-top: 2px; background: '+col+';float:right;width:15px;height:15px;">&nbsp;</span>');
-			for (var t=0,tgt;tgt=anno.targets[t];t++) {
+			$(ttldiv).append('<span color="' + col + '" class="mycolor" style="margin-right: 2px; margin-top: 2px; background: '+col+';float:right;width:15px;height:15px;">&nbsp;</span>');
+			for (var t = 0, tgt; tgt = anno.targets[t]; t++) {
 				if (tgt.partOf != null) {
 					if (tgt.constraint != null) {
 						// paint SVG

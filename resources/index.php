@@ -84,7 +84,7 @@
               <ul>
                 <li><a href="#entities">Entities</a></li>
                 <li><a href="#structure">Structure</a></li>
-                <li id="annotation_tab"><a href="#image-annotations">Image Annotations</a></li>
+                <li id="annotation_tab"><a href="">Image Annotations</a></li>
               </ul>
               <!-- Entities Panel -->
               <div id="entities">
@@ -198,7 +198,7 @@
       <div id="create_annotation_box" style="width: 380px" class="dragBox ui-dialog ui-widget ui-corner-all ui-draggable ui-resizable">
         <div id="create_annos_header" class="dragHead ui-dialog-titlebar ui-widget-header ui-corner-all">
           <span>Annotate</span>
-          <span class="dragShade" style="float:right;">[-]</span>
+          
         </div>
         <!-- Annotation shapes -->
         <div style="display:inline; margin-top: 3px; padding-left: 5px;">

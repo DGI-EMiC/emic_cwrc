@@ -268,11 +268,8 @@ A:link {
 }
 
 .dragHead {
-	text-align: center;
-	background: #b0b0b0;
-	border-bottom: 1px solid black;
-	padding: 2 2 2 2;
-	}
+
+}
 
 .dragBlock {
 	background: white;

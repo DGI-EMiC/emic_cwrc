@@ -63,7 +63,7 @@
 
   </head>
   <body>
-
+    <!-- Header -->
     <div id="header">
       <div id="page_selector">Loading....</div>
       <div id="header-inner">
@@ -75,15 +75,18 @@
       </div>
       
     </div>
+    <!-- Body -->
     <div class="colmask threecol">
         <div class="colleft">
           <div class="col2">
+            <!-- Tabs -->
             <div id="tabs">
               <ul>
                 <li><a href="#entities">Entities</a></li>
                 <li><a href="#structure">Structure</a></li>
                 <li id="annotation_tab"><a href="#image-annotations">Image Annotations</a></li>
               </ul>
+              <!-- Entities Panel -->
               <div id="entities">
                 <div id="sortBy">
                   <span>Sort By</span>
@@ -92,33 +95,31 @@
                 </div>
                 <ul></ul>
               </div>
+              <!-- Structure Panel -->
               <div id="structure">
                 <div id="tree"></div>
               </div>
-              
+              <!-- Image Annotations Panel -->
               <div id="image-annotations">
                 <div id="comment_annos_block" class="dragBlock"></div>
               </div>
-              
             </div>
-            <div id="separator" class="arrowLeft" title="Click to expand/contract"></div>
           </div>
         </div>
         <div class="colright">
           <div class="col1">
+            <!-- Text Annotation -->
             <div class="text-annotation-wrapper">
-              <!-- Column 1 start -->
               <form method="post" action="">
                 <textarea id="editor" name="editor" class="tinymce"></textarea>
-              </form><!-- Column 1 end -->
+              </form>
             </div>
           </div>
           <div class="col3">
-            <!-- Column 3 start -->
+            <!-- Image annotation -->
             <input type="button" id="full-screen" value="Full Width"/>
             <button id="create_annotation" class="menu_button">Annotate</button>
             <div class="image-annotation-wrapper">
-            
 
               <!-- Persist a single player and build new interface to it -->
               <div id="canvas-body-wrapper" style="width: 100%; height: 800px;"><div id="canvas-body">
@@ -166,7 +167,6 @@
                   <li>Show Canvas URI: <span style="float:right"><input id="check_view_uri" type="checkbox"></input></li>
                 </ul>
           
-          
                 <!--  Wrapper to create Canvas divs in -->
                 <div id="canvases"></div>
           
@@ -178,57 +178,57 @@
           
                 <!-- Progress bar -->
                 <div id="loadprogress"></div>
-          
-   
-          
                         
               <!--  At least one visible image needed for GData transport -->
               <div class="shared-canvas-logo" style="font-size:8pt">
                 <img height="25" src="impl/imgs/small-logo.png" style="padding: 0px; margin: 0px; border: 0px; border-top: 2px;" />
                 Powered by SharedCanvas
               </div>
-
-            
             
             </div>
             </div>
             </div>
-            <!-- Column 3 end -->
           </div>
         </div>
     </div>
 
     <div id="dialogs" width="500">
           
+      <!-- Image annotation box -->
       <div id="create_annotation_box" style="width: 380px" class="dragBox ui-dialog ui-widget ui-corner-all ui-draggable ui-resizable">
         <div id="create_annos_header" class="dragHead ui-dialog-titlebar ui-widget-header ui-corner-all">
           <span>Annotate</span>
           <span class="dragShade" style="float:right;">[-]</span>
         </div>
-        <div style="height: 3px;"></div>
-  
+        <!-- Annotation shapes -->
         <div style="display:inline; margin-top: 3px; padding-left: 5px;">
           <img id="annoShape_rect" class="annoShape" src="impl/imgs/draw_rect.png" style="padding-left: 2px; padding-top: 1px;"/>
           <img id="annoShape_circ" class="annoShape" src="impl/imgs/draw_circ.png" style="padding-left: 1px;"/>
           <img id="annoShape_poly" class="annoShape" src="impl/imgs/draw_poly.png" style="padding: 2px;"/>
-          <span style="float:right">
-            <span style="font-size:9pt;color:#707070;">About Canvas:<input type="checkbox" id="anno_aboutCanvas"></input></span>
-            
-          </span>
           <hr style="margin: 0px; padding: 0px; height: 1px;"/>
         </div>
         <div id="create_annos_block" class="dragBlock">
-          <span style="font-size: 11pt;">Title: <input id="anno_title" type="text" size="28"></input></span>
+          <!-- Annotation Title -->
+          <div class="element-wrap">
+            <label for="anno_title">Title:</label>
+            <input id="anno_title" type="text" size="28"></input>
+          </div>
+          <!-- Annotation Type - to be removed -->
           <span style="float:right" hidden ="true"><select id="anno_type">
               <option value="comment">Commentary</option>
               <option value="transcription">Transcription</option>
-            </select></span>
-          <textarea id = "anno_text" cols="40" rows="5"></textarea>
-          <hr style="margin: 0px; padding: 0px; height: 1px; padding-bottom: 2px;"/>
+          </select></span>
+          <!-- Annotation textarea -->
+          <div class="element-wrap">
+            <label for="anno_text">Annotation:</label>
+            <textarea id="anno_text" cols="40" rows="5"></textarea>
+          </div>
+          <!-- Services - to be removed -->
           <span style="width:200px;margin:0px;padding:0px;float:left">
             <ul id="create_body" style="width: 200px; list-style:none;font-size:10pt;margin:0;padding:0;">
             </ul>
           </span>
+          <!-- Cancel/Save buttons -->
           <span style="float: right; padding-top: 3px;">
             <button class="diabutton" id="cancelAnno">Cancel</button>
             <button class="diabutton" id="saveAnno">Save</button>
@@ -237,11 +237,9 @@
       </div>
     </div>
 
-
-
+    <!-- Footer -->
     <div id="footer">
       <p>Brought to you by <a href="http://editingmodernism.ca/" title="Editing Modernism in Canada" target="_blank">EMiC</a></p>
     </div>
-
   </body>
 </html>

@@ -699,7 +699,8 @@ A:hover
 
 .annotation-fullscreen .colmask .col1
 {
-  display: none;
+  position: absolute;
+  width: 1px;
 }
 
 .annotation-fullscreen .colmask .col3
@@ -975,7 +976,7 @@ A:hover
 .defaultSkin .mceIframeContainer
 {
   position: absolute;
-  top: 27px;
+  top: 29px;
   bottom: 21px;
   left: 1px;
   right: 1px;

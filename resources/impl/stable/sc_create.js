@@ -5,7 +5,7 @@
 
 // Raphael overwrites CSS with defaults :(
 var outsideStyle = {
-  fill: '#FFBBFF',
+  fill: '#fff',
   opacity: 0.7,
   'stroke-width': 2,
   stroke: 'black'

@@ -49,10 +49,10 @@ $('document').ready(function(){
   writer.init();
   init_canvas_div();
   if(cwrc_params.position == 0){
-    $('#page-prev').css('opacity', '.6');
+    $('#page-prev').css('opacity', '.6').addClass('disabled');
   }
   if(cwrc_params.position == cwrc_params.pages.length -1){
-    $('#page-next').css('opacity', '.6');
+    $('#page-next').css('opacity', '.6').addClass('disabled');
   }
   // build and populate page choice dropdown
   $('#page_selector').html('<select id="page_choose"></select>');
@@ -74,14 +74,14 @@ $('document').ready(function(){
     writer.fm.loadEMICDocument();
     init_canvas_div();
     $('#header h1').text( cwrc_params.title + " - Seq# " + (parseInt(cwrc_params.position) +1));
-    $('#page-prev').css('opacity', '1');
-    $('#page-next').css('opacity', '1');
+    $('#page-prev').css('opacity', '1').removeClass('disabled');
+    $('#page-next').css('opacity', '1').removeClass('disabled');
     
     if(cwrc_params.position ==0){
-      $('#page-prev').css('opacity', '.6');
+      $('#page-prev').css('opacity', '.6').addClass('disabled');
     }
     if(cwrc_params.position == cwrc_params.pages.length -1){
-      $('#page-next').css('opacity', '.2');
+      $('#page-next').css('opacity', '.2').addClass('disabled');
     }
     selector = "#page_choose option[value='" + cwrc_params.position + "']";
     $(selector).attr('selected','selected');
@@ -90,7 +90,7 @@ $('document').ready(function(){
   $('#page-prev').click(function(e){
     e.preventDefault();
     if(cwrc_params.position > 0){
-      $('#page-next').css('opacity', '1')
+      $('#page-next').css('opacity', '1').removeClass('disabled');
       
       var selector = "#page_choose option[value='" + cwrc_params.position + "']";
       $(selector).removeAttr('selected');
@@ -102,14 +102,14 @@ $('document').ready(function(){
       init_canvas_div();
       $('#header h1').text( cwrc_params.title + " - Seq# " + (parseInt(cwrc_params.position) +1));
       if(cwrc_params.position == 0){
-        $('#page-prev').css('opacity', '.6');
+        $('#page-prev').css('opacity', '.6').addClass('disabled');
       }
     }
   });
   $('#page-next').click(function(e){
     e.preventDefault();
     if(cwrc_params.position < cwrc_params.pages.length -1){
-      $('#page-prev').css('opacity', '1');
+      $('#page-prev').css('opacity', '1').removeClass('disabled');
      
       var selector = "#page_choose option[value='" + cwrc_params.position + "']";
       $(selector).removeAttr('selected');
@@ -121,7 +121,7 @@ $('document').ready(function(){
       init_canvas_div();
       $('#header h1').text( cwrc_params.title + " - Seq # " + (parseInt(cwrc_params.position) +1));
       if(cwrc_params.position == cwrc_params.pages.length -1){
-        $('#page-next').css('opacity', '.2');
+        $('#page-next').css('opacity', '.2').addClass('disabled');
       }
     }
   });

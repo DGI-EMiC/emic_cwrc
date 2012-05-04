@@ -608,6 +608,23 @@ A:hover
   background-position: 0px 0px;
   background-repeat: no-repeat;
   background-color: transparent;
+  
+  opacity: 0.85 !important; /* Chrome 4+, FF2+, Saf3.1+, Opera 9+, IE9, iOS 3.2+, Android 2.1+ */
+  filter: alpha(opacity=85) !important; /* IE6-IE8 */
+
+}
+
+#header .header-nav a.disabled,
+#header .header-nav a.disabled:hover
+{
+  opacity: 0.6 !important; /* Chrome 4+, FF2+, Saf3.1+, Opera 9+, IE9, iOS 3.2+, Android 2.1+ */
+  filter: alpha(opacity=60) !important; /* IE6-IE8 */
+}
+
+#header .header-nav a:hover
+{
+  opacity: 1 !important; /* Chrome 4+, FF2+, Saf3.1+, Opera 9+, IE9, iOS 3.2+, Android 2.1+ */
+  filter: alpha(opacity=100) !important; /* IE6-IE8 */
 }
 
 #header .header-nav a#page-prev

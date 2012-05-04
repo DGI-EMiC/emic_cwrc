@@ -639,7 +639,7 @@
                 <properties>
                     <type>hidden</type>
                     <access>true</access>
-                    <default_value>entities.png</default_value>
+                    <default_value>entity.png</default_value>
                     <required>false</required>
                     <tree>true</tree>
                 </properties>

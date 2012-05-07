@@ -97,7 +97,11 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
       $valid = TRUE;
     }
   }
-  if (in_array('islandora:pageCModel', $content_model_pids)&& user_access('use CWRC')) {
+  if (in_array('islandora:pageCModel', $content_model_pids) && user_access('use CWRC')) {
+    $page_pid = $pid;
+    $valid = TRUE;
+  }
+  if (in_array('islandora:bd_pageCModel', $content_model_pids) && user_access('use CWRC')) {
     $page_pid = $pid;
     $valid = TRUE;
   }

@@ -96,7 +96,7 @@ function make_cwrc_datastream($pid) {
   if (is_array($lines)) {
     foreach ($lines as $line) {
       $line = preg_replace('/&£/', '£', $line);
-      $line = preg_replace('/[^(\x20-\x7F)]*/', '', $line);
+  //    $line = preg_replace('/[^(\x20-\x7F)]*/', '', $line);
       $line = htmlspecialchars($line);
       $ocr .= $line . '<br />';
     }
@@ -152,7 +152,8 @@ function emic_cwrc_get_authorities($dataType) {
 }
 
 function emic_cwrc_return_places() {
-  $results[] = array('identifier' => "islandora:27", 'Place' => 'Summerside');
+  $link = l('Collection', 'fedora/repository/books:collection');
+  $results[] = array('identifier' => "islandora:27", 'Place' => $link);
   $results[] = array('identifier' => "islandora:28", 'Place' => 'Elmwood');
   $results[] = array('identifier' => "islandora:29", 'Place' => 'Rice Point');
   $results[] = array('identifier' => "islandora:30", 'Place' => 'Cavendish');

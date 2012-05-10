@@ -75,8 +75,8 @@ function setupCWRC($pid) {
   $results['pages'] = $pages;
   $results['title'] = $title;
   $results['authority_url'] = $base_url . '/cwrc/authorities/';
-  $results['no_edit'] = !user_access('edit CWRC');
-
+ // $results['no_edit'] = !user_access('edit CWRC');
+  $results['no_edit'] = FALSE;
   $json = json_encode($results);
   echo $json;
 }

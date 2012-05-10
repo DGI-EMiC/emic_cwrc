@@ -402,7 +402,7 @@ function cb_process_annoList(qry, uri) {
 						}
 				    },
 			    	error:  function(XMLHttpRequest, status, errorThrown) {
-			            alert('Can not fetch data from ' + uri);
+			            //alert('Can not fetch data from ' + uri);
 			    	}
 				}	
 		);

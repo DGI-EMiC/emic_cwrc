@@ -25,7 +25,6 @@ basedir = base[0];
 
 $('document').ready(function(){
   PID = $.urlParam('PID');
-  console.log(PID);
   $.ajax({
     url: basedir +'/cwrc/setupCWRC/' + PID,
     async:false,

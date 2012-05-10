@@ -111,7 +111,7 @@ function fetchTriples(uri, qry, fn) {
         	return;
         },
         error:  function(XMLHttpRequest, status, errorThrown) {
-                alert('Can not fetch any data from ' + uri + ': ' + errorThrown);
+                //alert('Can not fetch any data from ' + uri + ': ' + errorThrown);
         } 
     });
 }

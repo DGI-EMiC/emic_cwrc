@@ -18,7 +18,7 @@ function pb_postData(title, data) {
       pb_getPaste(data);
     },
     error: function(data,status,xhr) {
-      alert('Failed to post')
+      //alert('Failed to post')
     }
   });
 }
@@ -46,7 +46,7 @@ function pb_getList() {
       }
     },
     error: function(data,status,xhr) {
-      alert('Failed to retrieve List')
+     // alert('Failed to retrieve List')
     }
   });
 }
@@ -81,7 +81,7 @@ function pb_deleteAnno(urn) {
       $(classSelector).remove();
     },
     error: function(data,status,xhr) {
-      alert('Failed to delete annotation')
+   //   alert('Failed to delete annotation')
     }
   });
 }

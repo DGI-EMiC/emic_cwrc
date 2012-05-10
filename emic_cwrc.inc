@@ -75,8 +75,8 @@ function setupCWRC($pid) {
   $results['pages'] = $pages;
   $results['title'] = $title;
   $results['authority_url'] = $base_url . '/cwrc/authorities/';
-  $results['no_edit'] = !user_access('edit CWRC');
-
+  // $results['no_edit'] = !user_access('edit CWRC');
+  $results['no_edit'] = FALSE;
   $json = json_encode($results);
   echo $json;
 }
@@ -143,10 +143,11 @@ function guarantee_cwrc_datastream($pid) {
 function emic_cwrc_get_authorities($dataType) {
   $mappings = array(
     'Tag Place' => array('pid' => 'islandora:4401', 'type' => t('Place')),
-    'Tag Person' => array('pid' => 'islandora:4398','type' => t('Person')),
-    'Tag Event' => array('pid' => 'islandora:4404','type' => t('Event')),
-    'Tag Organization' => array('pid' => 'islandora:4407','type' => t('Organization')),
+    'Tag Person' => array('pid' => 'islandora:4398', 'type' => t('Person')),
+    'Tag Event' => array('pid' => 'islandora:4404', 'type' => t('Event')),
+    'Tag Organization' => array('pid' => 'islandora:4407', 'type' => t('Organization')),
   );
+
   $authorities = cwrc_get_authorities_list($dataType);
   if ($authorities) {
     $json = json_encode($authorites);
@@ -221,3 +222,4 @@ EOF;
   }
   return $records;
 }
+

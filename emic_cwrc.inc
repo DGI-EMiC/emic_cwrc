@@ -142,83 +142,49 @@ function guarantee_cwrc_datastream($pid) {
 
 function emic_cwrc_get_authorities($dataType) {
   $mappings = array(
-    'Tag Place' => array('pid' => 'islandora:4401', 'type' => t('Place')),
-    'Tag Person' => array('pid' => 'islandora:4398', 'type' => t('Person')),
-    'Tag Event' => array('pid' => 'islandora:4404', 'type' => t('Event')),
-    'Tag Organization' => array('pid' => 'islandora:4407', 'type' => t('Organization')),
+    'Tag Place' => array('cmodel' => 'islandora:place-entityCModel', 'type' => t('Place')),
+    'Tag Person' => array('cmodel' => 'islandora:person-entityCModel', 'type' => t('Person')),
+    'Tag Event' => array('cmodel' => 'islandora:event-entityCModel', 'type' => t('Event')),
+    'Tag Organization' => array('cmodel' => 'islandora:organization-entityCModel', 'type' => t('Organization')),
   );
 
-  $authorities = cwrc_get_authorities_list($dataType);
+  $authorities = cwrc_get_authorities_list($mappings[$dataType]);
   if ($authorities) {
-    $json = json_encode($authorites);
+    $json = json_encode($authorities);
+     echo $json;
   }
 }
 
-function emic_cwrc_return_places() {
-  $results[] = array('identifier' => "islandora:27", 'Place' => $link);
-  $results[] = array('identifier' => "islandora:28", 'Place' => 'Elmwood');
-  $results[] = array('identifier' => "islandora:29", 'Place' => 'Rice Point');
-  $results[] = array('identifier' => "islandora:30", 'Place' => 'Cavendish');
-  $results[] = array('identifier' => "islandora:31", 'Place' => 'Elmira');
-  $json = json_encode($results);
-  echo $json;
-}
 
-function emic_cwrc_return_people() {
-  $results[] = array('identifier' => "islandora:40", 'Name' => 'John Smith');
-  $results[] = array('identifier' => "islandora:41", 'Name' => 'Ralph Klein');
-  $results[] = array('identifier' => "islandora:42", 'Name' => 'Carmen Miranda');
-  $results[] = array('identifier' => "islandora:43", 'Name' => 'Joe Shmengi');
-  $results[] = array('identifier' => "islandora:44", 'Name' => 'Ford Prefect');
-  $json = json_encode($results);
-  echo $json;
-}
-
-function emic_cwrc_return_event() {
-  $results[] = array('identifier' => "islandora:50", 'Event' => 'Islandora Conference');
-  $results[] = array('identifier' => "islandora:51", 'Event' => 'Interedition');
-  $results[] = array('identifier' => "islandora:52", 'Event' => 'Robertson Treaty Signing');
-  $results[] = array('identifier' => "islandora:53", 'Event' => 'Toyota Red Tag Days');
-  $results[] = array('identifier' => "islandora:54", 'Event' => 'Belfast Bread Riots');
-  $json = json_encode($results);
-  echo $json;
-}
-
-function emic_cwrc_return_org() {
-  $results[] = array('Organization' => "académie de musique de Québec");
-  $results[] = array('Organization' => "Académie Française", 'Place' => 'Académie');
-  $results[] = array('Organization' => "Académie Goncourt", 'Variations' => 'Académie des Goncourt');
-  $results[] = array('Organization' => "Académie Française", 'Variations' => 'Académie');
-  $results[] = array('Organization' => "L'Action Française", "variations" => 'L\'action française', 'What' => 'Review');
-  $results[] = array('Organization' => "The Atalantic Monthly");
-  $results[] = array('Organization' => "L'Avenir du Nord");
-  $results[] = array('Organization' => "Le Canada", 'What' => 'review');
-  $json = json_encode($results);
-  echo $json;
-}
 
 function cwrc_get_authorities_list($setup_data) {
-  $pid = $setup_data['pid'];
+  module_load_include('inc', 'fedora_repository', 'CollectionClass');
+  $cmodel = $setup_data['cmodel'];
   $type = $setup_data['type'];
-  $collection =
-      $query = <<< EOF
+  $collection = new CollectionClass($pid);
+  $query = <<< EOF
   select \$object \$title from <#ri>
 	where (\$object <dc:title> \$title
-		and \$object <fedora-rels-ext:isMemberOf> <info:fedora/$pid>
+		and \$object <info:fedora/fedora-system:def/model#hasModel> <info:fedora/$cmodel>
 		and \$object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>)
 	order by \$title
 EOF;
 
   module_load_include('inc', 'fedora_repository', 'CollectionClass');
-  $collection = new CollectionClass($book_pid);
+ 
   $contents = $collection->getRelatedItems($pid, $query);
   $results_xml = simplexml_load_string($contents);
   $records = array();
+    $options = array(
+    'attributes' => array('target' => '_blank'),
+
+  );
   foreach ($results_xml->results->result as $result) {
     $auth_pid = str_replace('info:fedora/', '', $result->object->attributes()->uri);
-    $title = str_replace('info:fedora/', '', $result->title->attributes()->uri);
-    $link = l($title, "/fedora/repository/$auth_pid");
-    $records[] = array("$type" => $link);
+    $title = str_replace('info:fedora/', '', $result->title);
+    $link = l($title, "/fedora/repository/$auth_pid", $options);
+    $records[] = array('identifier' => $auth_pid, $type => $link );
+
   }
   return $records;
 }

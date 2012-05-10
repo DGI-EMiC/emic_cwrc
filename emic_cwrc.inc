@@ -52,11 +52,11 @@ function get_cwrc_data($pid) {
 function setupCWRC($pid) {
   global $base_url;
   global $user;
-  if(!user_access('use CWRC')){
+  if (!user_access('use CWRC')) {
     return;
   }
 
-  $can_edit = user_access('edit CWRC')?'true':'false';
+  $can_edit = user_access('edit CWRC') ? 'true' : 'false';
   module_load_include('inc', 'islandora_book', 'book_pack_utils');
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
@@ -96,7 +96,7 @@ function make_cwrc_datastream($pid) {
   if (is_array($lines)) {
     foreach ($lines as $line) {
       $line = preg_replace('/&£/', '£', $line);
-  //    $line = preg_replace('/[^(\x20-\x7F)]*/', '', $line);
+      //    $line = preg_replace('/[^(\x20-\x7F)]*/', '', $line);
       $line = htmlspecialchars($line);
       $ocr .= $line . '<br />';
     }
@@ -142,17 +142,18 @@ function guarantee_cwrc_datastream($pid) {
 
 function emic_cwrc_get_authorities($dataType) {
   $mappings = array(
-    'Tag Place' => 'emic_cwrc_return_places',
-    'Tag Person' => 'emic_cwrc_return_people',
-    'Tag Event' => 'emic_cwrc_return_event',
-    'Tag Organization' => 'emic_cwrc_return_org',
+    'Tag Place' => array('pid' => 'islandora:4401', 'type' => t('Place')),
+    'Tag Person' => array('pid' => 'islandora:4398','type' => t('Person')),
+    'Tag Event' => array('pid' => 'islandora:4404','type' => t('Event')),
+    'Tag Organization' => array('pid' => 'islandora:4407','type' => t('Organization')),
   );
-
-  call_user_func($mappings[$dataType]);
+  $authorities = cwrc_get_authorities_list($dataType);
+  if ($authorities) {
+    $json = json_encode($authorites);
+  }
 }
 
 function emic_cwrc_return_places() {
-  $link = l('Collection', 'fedora/repository/books:collection');
   $results[] = array('identifier' => "islandora:27", 'Place' => $link);
   $results[] = array('identifier' => "islandora:28", 'Place' => 'Elmwood');
   $results[] = array('identifier' => "islandora:29", 'Place' => 'Rice Point');
@@ -193,4 +194,30 @@ function emic_cwrc_return_org() {
   $results[] = array('Organization' => "Le Canada", 'What' => 'review');
   $json = json_encode($results);
   echo $json;
+}
+
+function cwrc_get_authorities_list($setup_data) {
+  $pid = $setup_data['pid'];
+  $type = $setup_data['type'];
+  $collection =
+      $query = <<< EOF
+  select \$object \$title from <#ri>
+	where (\$object <dc:title> \$title
+		and \$object <fedora-rels-ext:isMemberOf> <info:fedora/$pid>
+		and \$object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>)
+	order by \$title
+EOF;
+
+  module_load_include('inc', 'fedora_repository', 'CollectionClass');
+  $collection = new CollectionClass($book_pid);
+  $contents = $collection->getRelatedItems($pid, $query);
+  $results_xml = simplexml_load_string($contents);
+  $records = array();
+  foreach ($results_xml->results->result as $result) {
+    $auth_pid = str_replace('info:fedora/', '', $result->object->attributes()->uri);
+    $title = str_replace('info:fedora/', '', $result->title->attributes()->uri);
+    $link = l($title, "/fedora/repository/$auth_pid");
+    $records[] = array("$type" => $link);
+  }
+  return $records;
 }

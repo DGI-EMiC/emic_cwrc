@@ -182,7 +182,7 @@ EOF;
   foreach ($results_xml->results->result as $result) {
     $auth_pid = str_replace('info:fedora/', '', $result->object->attributes()->uri);
     $title = str_replace('info:fedora/', '', $result->title);
-    $link = l($title, "/fedora/repository/$auth_pid", $options);
+    $link = l($title, "fedora/repository/$auth_pid", $options);
     $records[] = array('identifier' => $auth_pid, $type => $link );
 
   }

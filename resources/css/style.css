@@ -529,6 +529,8 @@ div.mceDropDown {
   right: 0px;
   height: 100%;
   width: auto;
+  
+  background-color: #F4F4F4;
 }
 
 .threecol .col1
@@ -683,43 +685,17 @@ A:hover
 
 /* Fullscreen Image Annotation */
 
-#full-screen,
 #create_annotation
 {
   float: left;
-  margin: 5px 5px 0px 0px;
-}
-
-#full-screen
-{
   margin: 5px 5px 0px 15px;
 }
-
 
 #page_selector
 {
   float: left;
   margin: 5px 10px 0px 10px;
 }
-
-.annotation-fullscreen .colmask .col1
-{
-  position: absolute;
-  width: 1px;
-}
-
-.annotation-fullscreen .colmask .col3
-{
-  width: 100%;
-  height: 100%;
-  left: auto;
-}
-
-.annotation-fullscreen .colmask .colmid .col3 #shared_canvas_iframe
-{
-  height: 100%!important;
-}
-
 
 
 
@@ -731,8 +707,8 @@ A:hover
   position: absolute;
   top: 30px;
   bottom: 0;
-  left: 0;
-  right: 0;
+  width: 100%;
+
 }
 
 .image-annotation-wrapper iframe,
@@ -1010,6 +986,48 @@ A:hover
 
 
 
+
+/* Column Separator */
+
+#column-separator
+{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  width: 8px;
+  left: 49.5%;
+  z-index: 100;
+  
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  
+  background-image: url('../imgs/separator.png'); 
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #fff;
+
+  cursor: col-resize;  
+}
+
+.col1
+{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: auto;
+  width: 50%;
+}
+
+.col3
+{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: auto;
+  right: 0px;
+  width: 50%;
+}
 
 
 /* Entities */

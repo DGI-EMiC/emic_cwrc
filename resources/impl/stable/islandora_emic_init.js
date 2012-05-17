@@ -125,7 +125,7 @@ function initCanvas(nCanvas) {
 
 function init_ui() {
 
-  $('.dragBox').draggable().resizable();
+  $('.dragBox').draggable({ containment: ".threecol", scroll: false }).resizable();
   $('.dragBox').hide();
 
   $('.dragShade').click(function() {
@@ -317,27 +317,24 @@ function init_ui() {
   // Refresh Canvas if browser is resized
   // We're called as per move... so need wait till finished resizing
   $(window).resize(function() {
-    closeAndEndAnnotating();
-    var w = $('#canvas-body').width();
-    topinfo['bodyWidth'] = w;
-    if (toid != null) {
-      // Be considerate and clear previous timeout
-      window.clearTimeout(toid)
-    }
-    toid = window.setTimeout(maybeResize, 1000)
+    // call resize function
+    resizeCanvas();
   });
 
-  $('#full-screen').click(function() {
-    closeAndEndAnnotating();
-    var w = $('#canvas-body').width();
-    topinfo['bodyWidth'] = w;
-    if (toid != null) {
-      // Be considerate and clear previous timeout
-      window.clearTimeout(toid)
-    }
-    toid = window.setTimeout(maybeResize, 1000)
   
-  });
+
+}
+
+
+function resizeCanvas() {
+  closeAndEndAnnotating();
+  var w = $('#canvas-body').width();
+  topinfo['bodyWidth'] = w;
+  if (toid != null) {
+    // Be considerate and clear previous timeout
+    window.clearTimeout(toid)
+  }
+  toid = window.setTimeout(maybeResize, 500)
 }
 
 

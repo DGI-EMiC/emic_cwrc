@@ -895,3 +895,4 @@ var Writer = function(config) {
 	
   return w;
 };
+

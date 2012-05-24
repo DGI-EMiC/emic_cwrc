@@ -77,6 +77,7 @@ function setupCWRC($pid) {
   $results['authority_url'] = $base_url . '/cwrc/authorities/';
   // $results['no_edit'] = !user_access('edit CWRC');
   $results['no_edit'] = FALSE;
+  $results['page_count'] = count($pages);
   $json = json_encode($results);
   echo $json;
 }
@@ -114,9 +115,11 @@ function make_cwrc_datastream($pid) {
  * @param xml $cwrc_stream
  */
 function save_cwrc_to_fedora($pid, $cwrc_stream) {
+  global $base_url;
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $cwrc_stream = preg_replace("/&/", '&amp;', $cwrc_stream);
   $cwrc_stream = preg_replace("/<>/", '', $cwrc_stream);
+  $ocr = get_ocr_from_cwrc($cwrc_stream);
   $item = new Fedora_Item($pid);
   if ($item->datastreams['CWRC']) {
     $item->modify_datastream_by_value($cwrc_stream, 'CWRC', 'CWRC', 'text/plain');
@@ -124,6 +127,10 @@ function save_cwrc_to_fedora($pid, $cwrc_stream) {
   else {
     $item->add_datastream_from_string($cwrc_stream, 'CWRC', 'CWRC', 'text/plain', 'X');
   }
+  $path = file_directory_path() . "/ocrtmp/ocr.txt";
+  mkdir(file_directory_path() . "/ocrtmp/");
+  file_put_contents($path, $ocr);
+  $item->add_or_modify_by_reference("$base_url/$path", 'OCR', 'Scanned Text', 'text/plain', 'M');
 }
 
 /**
@@ -151,11 +158,9 @@ function emic_cwrc_get_authorities($dataType) {
   $authorities = cwrc_get_authorities_list($mappings[$dataType]);
   if ($authorities) {
     $json = json_encode($authorities);
-     echo $json;
+    echo $json;
   }
 }
-
-
 
 function cwrc_get_authorities_list($setup_data) {
   module_load_include('inc', 'fedora_repository', 'CollectionClass');
@@ -171,21 +176,26 @@ function cwrc_get_authorities_list($setup_data) {
 EOF;
 
   module_load_include('inc', 'fedora_repository', 'CollectionClass');
- 
+
   $contents = $collection->getRelatedItems($pid, $query);
   $results_xml = simplexml_load_string($contents);
   $records = array();
-    $options = array(
+  $options = array(
     'attributes' => array('target' => '_blank'),
-
   );
   foreach ($results_xml->results->result as $result) {
     $auth_pid = str_replace('info:fedora/', '', $result->object->attributes()->uri);
     $title = str_replace('info:fedora/', '', $result->title);
     $link = l($title, "fedora/repository/$auth_pid", $options);
-    $records[] = array('identifier' => $auth_pid, $type => $link );
-
+    $records[] = array('identifier' => $auth_pid, $type => $link);
   }
   return $records;
 }
 
+function get_ocr_from_cwrc($cwrc) {
+  $xml = simplexml_load_string($cwrc);
+  $body = $xml->body->asXML();
+  $body = preg_replace('/<br.>/', "\n", $body);
+  $ocr = strip_tags($body);
+  return $ocr;
+}

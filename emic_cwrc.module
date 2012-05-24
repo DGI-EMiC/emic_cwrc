@@ -89,9 +89,9 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
   foreach ($content_models as $content_model) {
     $content_model_pids[] = $content_model->pid;
   }
-  if (in_array('islandora:bookCModel', $content_model_pids) && user_access('use CWRC')) {
+  if ((in_array('islandora:bookCModel', $content_model_pids) || in_array('islandora:iaBookCModel', $content_model_pids)) && user_access('use CWRC')) {
     $page_pids = get_sorted_pages($pid);
-    $page_pid = $page_pids[0];
+    $page_pid = $page_pids[1];
     $count = count($page_pids);
     if (count($page_pids) > 0) {
       $valid = TRUE;
@@ -124,13 +124,3 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
   return $tabset;
 }
 
-function emic_cwrc_form_islandora_book_admin_settings_alter(&$form, &$form_state) {
-  global $base_url;
-  $form['manifest_url'] = array(
-    '#title' => t('Domain Name'),
-    '#type' => 'textfield',
-    '#description' => t("The domain name to be included in Canvas manifests"),
-    '#default_value' => $base_url,
-    '#weight' => 0,
-  );
-}

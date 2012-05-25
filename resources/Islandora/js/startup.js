@@ -133,7 +133,7 @@ $('document').ready(function(){
 
 
 function init_canvas_div(){
-  console.dir(cwrc_params)
+ 
   pagePid =cwrc_params.pages[ cwrc_params.position];
   $.ajax({
     url: basedir +'/emic/shared/setup/' + pagePid,

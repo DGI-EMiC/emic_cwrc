@@ -6,7 +6,8 @@ var DialogManager = function(config) {
 	var dialogs = null;
 	
 	var scripts = ['dialog_addevent.js', 'dialog_addorg.js', 'dialog_addperson.js', 'dialog_addplace.js',
-	               'dialog_date.js', 'dialog_message.js', 'dialog_note.js', 'dialog_search.js', 'dialog_title.js'];
+	               'dialog_date.js', 'dialog_message.js', 'dialog_note.js', 'dialog_search.js',
+	               'dialog_title.js', 'dialog_triple.js', 'dialog_teiheader.js'];
 	var loadCount = 0;
 	for (var i = 0; i < scripts.length; i++) {
 		var url = 'js/dialogs/'+scripts[i];
@@ -28,7 +29,9 @@ var DialogManager = function(config) {
 			addperson: new AddPersonDialog(config),
 			addplace: new AddPlaceDialog(config),
 			addevent: new AddEventDialog(config),
-			addorg: new AddOrganizationDialog(config)
+			addorg: new AddOrganizationDialog(config),
+			triple: new TripleDialog(config),
+			teiheader: new TeiHeaderDialog(config)
 		};
 		
 		dialogs.person = dialogs.search;
@@ -48,6 +51,10 @@ var DialogManager = function(config) {
 				currentType = type;
 				dialogs[type].show(config);
 			}
+		},
+		confirm: function(config) {
+			currentType = 'message';
+			dialogs.message.confirm(config);
 		},
 		hideAll: function() {
 			for (var key in dialogs) {

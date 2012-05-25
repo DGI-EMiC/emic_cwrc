@@ -25,8 +25,9 @@ function cwrc_page_select_form($form, $pid) {
 function save_cwrc_data() {
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $data = html_entity_decode(stripslashes($_POST['text']), ENT_QUOTES, 'UTF-8');
+  $cwrc = str_replace('<br>', '<br />', $data);
   $pid = ($_POST['file_pid']);
-  save_cwrc_to_fedora($pid, $data);
+  save_cwrc_to_fedora($pid, $cwrc);
   echo "Success";
 }
 
@@ -91,8 +92,8 @@ function make_cwrc_datastream($pid) {
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
   $ocr_url = $fedora_url . "/objects/$pid/datastreams/OCR/content";
   $preface = '<?xml version="1.0"?><html><head><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:w="http://cwrctc.artsrn.ualberta.ca/#"></rdf:RDF></head>
-    <body><p class="paraTag" id="struct_1">';
-  $postscript = '</p></body></html>';
+<body><tei _struct="true" _display="TEI" _tag="TEI" id="struct_9"><span _display="text" id="struct_10" _struct="true" _tag="text"></span></tei>';
+  $postscript = '</body></html>';
   $lines = @file($ocr_url);
   if (is_array($lines)) {
     foreach ($lines as $line) {
@@ -193,7 +194,11 @@ EOF;
 }
 
 function get_ocr_from_cwrc($cwrc) {
-  $xml = simplexml_load_string($cwrc);
+  $doc = new DOMDocument();
+  $doc->strictErrorChecking = FALSE;
+  $doc->loadHTML($cwrc);
+  $xml = simplexml_import_dom($doc);
+ // $xml = simplexml_load_string($cwrc);
   $body = $xml->body->asXML();
   $body = preg_replace('/<br.>/', "\n", $body);
   $ocr = strip_tags($body);

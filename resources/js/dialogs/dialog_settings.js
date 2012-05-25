@@ -1,13 +1,18 @@
-var SettingsDialog = function(config) {
-	var w = config.writer;
+var SettingsDialog = function(writer, config) {
+	var w = writer;
 	
 	var settings = {
 		fontSize: '11pt',
-		fontFamily: 'Book Antiqua'
+		fontFamily: 'Book Antiqua',
+		showEntityBrackets: false,
+		showStructBrackets: false
 	};
 	
+	jQuery.extend(settings, config);
+	
 	$('#header').append(''+
-		'<div id="settingsLink"><h2>Settings</h2></div>');
+	'<div id="helpLink"><img src="img/help.png" title="Help"/><h2>Help</h2></div>'+
+	'<div id="settingsLink"><h2>Settings</h2></div>');
 	
 	$(document.body).append(''+
 	'<div id="settingsDialog">'+
@@ -33,18 +38,44 @@ var SettingsDialog = function(config) {
 	'</select>'+
 	'</div>'+
 	'<div style="margin-top: 10px;">'+
+	'<label for="showentitybrackets">Show Entity Brackets</label>'+
+	'<input type="checkbox" id="showentitybrackets" />'+
+	'</div>'+
+	'<div style="margin-top: 10px;">'+
+	'<label for="showstructbrackets">Show Tags</label>'+
+	'<input type="checkbox" id="showstructbrackets" />'+
+	'</div>'+
+	'<div style="margin-top: 10px;">'+
 	'<label>Editor Mode</label><select name="editormode">'+
 	'<option value="0">XML & RDF (overlapping entities)</option>'+
 	'<option value="1">XML (no overlap)</option>'+
 	'</select>'+
 	'</div>'+
+	'<div style="margin-top: 10px;">'+
+	'<label>Schema</label><select name="schema">'+
+	'<option value="common">Common Schema</option>'+
+	'<option value="events">Events Schema</option>'+
+	'</select>'+
+	'</div>'+
+	'</div>'+
+	'<div id="helpDialog">'+
 	'</div>');
 	
 	$('#settingsLink').click(function() {
 		$('select[name="fontsize"] > option[value="'+settings.fontSize+'"]', $('#settingsDialog')).attr('selected', true);
 		$('select[name="fonttype"] > option[value="'+settings.fontFamily+'"]', $('#settingsDialog')).attr('selected', true);
+		$('#showentitybrackets').prop('checked', settings.showEntityBrackets);
+		$('#showstructbrackets').prop('checked', settings.showStructBrackets);
 		$('select[name="editormode"] > option[value="'+w.mode+'"]', $('#settingsDialog')).attr('selected', true);
+		$('select[name="schema"] > option[value="'+w.validationSchema+'"]', $('#settingsDialog')).attr('selected', true);
 		$('#settingsDialog').dialog('open');
+	});
+	
+	$('#helpLink').click(function() {
+		if ($('#helpDialog iframe').length == 0) {
+			$('#helpDialog').html('<iframe src="http://docs.google.com/document/d/1kJpewMUkUtC1rzVgxDw8HaVf5xKDwGBrH4mI-Piiu9w/edit"/>');
+		}
+		$('#helpDialog').dialog('open');
 	});
 	
 	$('#settingsDialog').dialog({
@@ -52,7 +83,7 @@ var SettingsDialog = function(config) {
 		modal: true,
 		resizable: false,
 		closeOnEscape: true,
-		height: 200,
+		height: 270,
 		width: 325,
 		autoOpen: false,
 		buttons: {
@@ -62,6 +93,21 @@ var SettingsDialog = function(config) {
 			},
 			'Cancel': function() {
 				$('#settingsDialog').dialog('close');
+			}
+		}
+	});
+	
+	$('#helpDialog').dialog({
+		title: 'Help',
+		modal: true,
+		resizable: true,
+		closeOnEscape: true,
+		height: 500,
+		width: 900,
+		autoOpen: false,
+		buttons: {
+			'Close': function() {
+				$('#helpDialog').dialog('close');
 			}
 		}
 	});
@@ -87,6 +133,19 @@ var SettingsDialog = function(config) {
 		
 		settings.fontSize = $('select[name="fontsize"]', $('#settingsDialog')).val();
 		settings.fontFamily = $('select[name="fonttype"]', $('#settingsDialog')).val();
+		
+		if (settings.showEntityBrackets != $('#showentitybrackets').prop('checked')) {
+			w.editor.$('body').toggleClass('showEntityBrackets');
+		}
+		settings.showEntityBrackets = $('#showentitybrackets').prop('checked');
+		
+		if (settings.showStructBrackets != $('#showstructbrackets').prop('checked')) {
+			w.editor.$('body').toggleClass('showStructBrackets');
+		}
+		settings.showStructBrackets = $('#showstructbrackets').prop('checked');
+		
+		w.validationSchema = $('select[name="schema"]', $('#settingsDialog')).val();
+		
 		var styles = {
 			fontSize: settings.fontSize,
 			fontFamily: settings.fontFamily
@@ -115,7 +174,7 @@ var SettingsDialog = function(config) {
 	
 	return {
 		getSettings: function() {
-			return this.settings;
+			return settings;
 		}
 	};
 };

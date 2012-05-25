@@ -6,9 +6,9 @@ var EntitiesList = function(config) {
 	
 	$(document.body).append(''+
 		'<div id="entitiesMenu" class="contextMenu" style="display: none;"><ul>'+
-		'<li id="editEntity"><ins style="background:url(img/tag_blue_edit.png) center center no-repeat;" />Edit Tag</li>'+
-		'<li id="removeEntity"><ins style="background:url(img/cross.png) center center no-repeat;" />Remove Tag</li>'+
-		'<li class="separator" id="copyEntity"><ins style="background:url(img/tag_blue_copy.png) center center no-repeat;" />Copy Tag</li>'+
+		'<li id="editEntity"><ins style="background:url(img/tag_blue_edit.png) center center no-repeat;" />Edit Entity</li>'+
+		'<li id="removeEntity"><ins style="background:url(img/cross.png) center center no-repeat;" />Remove Entity</li>'+
+		'<li class="separator" id="copyEntity"><ins style="background:url(img/tag_blue_copy.png) center center no-repeat;" />Copy Entity</li>'+
 		'</ul></div>'
 	);
 	
@@ -21,11 +21,8 @@ var EntitiesList = function(config) {
 		w.highlightEntity(w.editor.currentEntity);
 	});
 	$('#sortBy').buttonset();
-
-
-
+	
 	entitiesList.update = function(sort) {
-       
 		if (sort == null) {
 			if ($('#sequence').prop('checked')) {
 				sort = 'sequence';
@@ -33,63 +30,61 @@ var EntitiesList = function(config) {
 				sort = 'category';
 			}
 		}
-
+		
 		$('#entities > ul').empty(); // remove previous nodes and event handlers
 		
-		var id, entry, i, infoKey, infoString;
+		var id, entry, i;
 		var entitiesString = '';
+		
+		var entityTags = w.editor.$('span[class~=start]');
 		if (sort == 'category') {
 			var categories = {};
-			for (id in w.entities) {
-				entry = w.entities[id];
+			entityTags.each(function(index, el) {
+				id = $(el).attr('name');
+				if (w.entities[id] == null) {
+					entry = _createEntityFromTag(el);
+				} else {
+					entry = w.entities[id];
+				}
 				if (categories[entry.props.type] == null) {
 					categories[entry.props.type] = [];
 				}
 				categories[entry.props.type].push(entry);
-			}
+			});
 			var category;
-                       
 			for (id in categories) {
 				category = categories[id];
 				for (i = 0; i < category.length; i++) {
 					entry = category[i];
-					infoString = '<ul>';
-					for (infoKey in entry.info) {
-						infoString += '<li><strong>'+infoKey+'</strong>: '+entry.info[infoKey]+'</li>';
-					}
-					infoString += '</ul>';
-					entitiesString += '<li class="" name="'+entry.props.id+'">'+
-						'<span class="'+entry.props.type+' box"/><span class="title">'+entry.props.title+'</span><div class="info">'+infoString+'</div>'+
-					'</li>';
+					entitiesString += _buildEntity(entry);
 				}
 			}
 		} else if (sort == 'sequence') {
-			var nodes = w.editor.dom.select('entity[class*="start"]');
-			for (i = 0; i < nodes.length; i++) {
-				id = nodes[i].getAttribute('name');
-				entry = w.entities[id];
-				infoString = '<ul>';
-				for (infoKey in entry.info) {
-					infoString += '<li><strong>'+infoKey+'</strong>: '+entry.info[infoKey]+'</li>'; 
+			entityTags.each(function(index, el) {
+				id = $(this).attr('name');
+				if (w.entities[id] == null) {
+					entry = _createEntityFromTag(el);
+				} else {
+					entry = w.entities[id];
 				}
-				infoString += '</ul>';
-				entitiesString += '<li class="" name="'+entry.props.id+'">'+
-					'<span class="'+entry.props.type+' box"/><span class="title">'+entry.props.title+'</span><div class="info">'+infoString+'</div>'+
-				'</li>';
-			}
+				if (entry) {
+					entityTags = entityTags.not('[name='+id+']');
+					entitiesString += _buildEntity(entry);
+				}
+			});
 		}
 		
 		$('#entities > ul').html(entitiesString);
 		$('#entities > ul > li').hover(function() {
 			if (!$(this).hasClass('selected')) {
-				var color = $(this).find('span.box').css('backgroundColor');
-				$(this).css('backgroundColor', color);
+				$(this).addClass('over');
 			}
 		}, function() {
 			if (!$(this).hasClass('selected')) {
-				$(this).css('backgroundColor', '');
+				$(this).removeClass('over');
 			}
 		}).mousedown(function(event) {
+			$(this).removeClass('over');
 			w.highlightEntity(this.getAttribute('name'), null, true);
 		}).contextMenu('entitiesMenu', {
 			bindings: {
@@ -127,7 +122,55 @@ var EntitiesList = function(config) {
 			}
 		});
 	};
-
+	
+	var _createEntityFromTag = function(tag) {
+		var tagEnd = w.getCorrespondingEntityTag(tag);
+		
+		var id = tinymce.DOM.uniqueId('ent_');
+		w.entities[id] = {
+			props: {
+				id: id,
+				type: $(tag).attr('_type'),
+				// TODO add title and content
+				title: '',
+				content: ''
+			},
+			info: {}
+		};
+		var attsToIgnore = ['class', 'name', '_entity', '_type'];
+		var att;
+		for (var i = 0; i < tag.attributes.length; i++) {
+			att = tag.attributes.item(i);
+			if (attsToIgnore.indexOf(att.name) == -1) {
+				w.entities[id]['info'][att.name] = att.value;
+			}
+		}
+		
+		$(tag).attr('name', id);
+		$(tagEnd).attr('name', id);
+		
+		return w.entities[id];
+	};
+	
+	var _buildEntity = function(entity) {
+		var infoString = '<ul>';
+		var buildString = function(infoObject) {
+			for (var infoKey in infoObject) {
+				var info = infoObject[infoKey];
+				if ($.isPlainObject(info)) {
+					buildString(info);
+				} else {
+					infoString += '<li><strong>'+infoKey+'</strong>: '+info+'</li>';
+				}
+			}
+		};
+		buildString(entity.info);
+		infoString += '</ul>';
+		return '<li class="'+entity.props.type+'" name="'+entity.props.id+'">'+
+			'<span class="box"/><span class="entityTitle">'+entity.props.title+'</span><div class="info">'+infoString+'</div>'+
+		'</li>';
+	};
+	
 	entitiesList.remove = function(id) {
 		$('#entities li[name="'+id+'"]').remove();
 	};

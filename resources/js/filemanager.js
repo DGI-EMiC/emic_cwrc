@@ -1,7 +1,7 @@
 var FileManager = function(config) {
-
-  
+	
   var w = config.writer;
+  var currentDoc = null;
   var docNames = [];
 	
   $(document.body).append(''+
@@ -13,6 +13,7 @@ var FileManager = function(config) {
     '<input type="text" name="filename"/>'+
     '<p>Please enter letters only.</p>'+
     '</div>'+
+    '<div id="entitiesConverter"></div>'+
     '<div id="editSourceDialog">'+
     '<textarea style="width: 100%; height: 98%;"></textarea>'+
     '</div>'+
@@ -134,13 +135,22 @@ var FileManager = function(config) {
 	
   var _getDocuments = function(callback) {
     $.ajax({
-      url: 'http://apps.testing.cwrc.ca/editor/documents',
+      url: w.baseUrl+'editor/documents',
       type: 'GET',
       dataType: 'json',
       success: [function(data, status, xhr) {
         docNames = data;
       }, callback]
     });
+  //		var data = {
+  //			response: []
+  //		};
+  //		var length = Math.ceil(Math.random()*10);
+  //		for (var i = 0; i < length; i++) {
+  //			data.response.push('Random Doc '+i);
+  //		}
+  //		docNames = data.response;
+  //		if (callback) callback();
   };
 	
   var _populateLoader = function() {
@@ -187,14 +197,80 @@ var FileManager = function(config) {
     return name.match(/[^A-Za-z]+/) == null;
   };
 	
+  fm.validate = function(isSave) {
+    var docText = _exportDocument();
+    $.ajax({
+      url: w.baseUrl+'services/validator/validate.html',
+      type: 'POST',
+      dataType: 'XML',
+      data: {
+        sch: 'http://cwrc.ca/schema/'+w.validationSchema,
+        type: 'RNG_XML',
+        content: docText
+      },
+      success: function(data, status, xhr) {
+        _validationHandler(data, isSave);
+      },
+      error: function() {
+        w.d.show('message', {
+          title: 'Error',
+          msg: 'An error occurred while trying to validate '+currentDoc+'.'
+        });
+      }
+    });
+  };
+	
+  var _validationHandler = function(data, isSave) {
+    if ($('status', data).text() != 'pass') {
+      var errors = '<ul>';
+      $('error', data).each(function(index, el) {
+        errors += '<li>'+$(this).find('message').text()+'</li>';
+      });
+      errors += '</ul>';
+      if (isSave) {
+        w.d.confirm({
+          title: 'Document Invalid',
+          msg: currentDoc+' is not valid. <b>Save anyways?</b><br/>'+errors,
+          callback: function(yes) {
+            if (yes) {
+              fm.saveDocument();
+            }
+          }
+        });
+      } else {
+        w.d.show('message', {
+          title: 'Document Invalid',
+          msg: currentDoc+' is not valid.<br/>'+errors
+        });
+      }
+    } else {
+      if (isSave) {
+        fm.saveDocument();
+      } else {
+        var warnings = '';
+        if ($('warning', data).length > 0) {
+          warnings += '<ul>';
+          $('warning', data).each(function(index, el) {
+            warnings += '<li>'+$(this).find('message').text()+'</li>';
+          });
+          warnings += '</ul>';
+        }
+        w.d.show('message', {
+          title: 'Document Valid',
+          msg: currentDoc+' is valid.<br/>'+warnings
+        });
+      }
+    }
+  };
+	
   fm.saveDocument = function() {
     if (currentDoc == null) {
       fm.openSaver();
     } else {
-   
       var docText = _exportDocument();
+  
       $.ajax({
-      
+
         url : cwrc_params.BASE_PATH + '/cwrc/save/',
         type: 'POST',
         dataType: 'text',
@@ -223,16 +299,23 @@ var FileManager = function(config) {
   var _exportDocument = function() {
     // remove highlights
     w.highlightEntity();
-    w.highlightStructureTag();
+		
     var doc = w.editor.getDoc();
     var originalDoc = $(doc.body).clone(false, true); // make a copy, don't clone body events, but clone child events
+		
+    _entitiesToUnicode(doc.body);
+		
     var head, content, exportText;
     if (w.mode == w.XMLRDF) {
       var offsets = [];
       _getNodeOffsets($(doc.body), offsets);
-      $(doc.body).find('entity').remove();
+      $(doc.body).find('[_entity]').remove();
       head = '<?xml version="1.0"?><html><head><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:w="http://cwrctc.artsrn.ualberta.ca/#">';
-      content = '\n<body>\n'+w.editor.getContent()+'\n</body>\n</html>';
+      content = '\n<body>\n'+w.editor.getContent({
+        format: 'raw'
+      })+'\n</body>\n</html>';
+			
+      // entities
       for (var i = 0; i < offsets.length; i++) {
         var o = offsets[i];
         head += '\n<rdf:Description rdf:ID="'+o.id+'">';
@@ -248,13 +331,23 @@ var FileManager = function(config) {
         }
         head += '\n</rdf:Description>';
       }
+			
+      // triples
+      for (var i = 0; i < w.triples.length; i++) {
+        var t = w.triples[i];
+        head += '\n<rdf:Description rdf:about="'+t.subject.uri+'" w:external="'+t.subject.external+'">'+
+        '\n<w:'+t.predicate.name+' w:text="'+t.predicate.text+'" w:external="'+t.predicate.external+'">'+
+        '\n<rdf:Description rdf:about="'+t.object.uri+'" w:external="'+t.object.external+'" />'+
+        '\n</w:'+t.predicate.name+'>'+
+        '\n</rdf:Description>';
+      }
+			
       head += '</rdf:RDF></head>';
       exportText = head + content;
-      
     } else {
       head = '<?xml version="1.0"?><html><head></head>';
       for (var id in w.entities) {
-        var markers = w.editor.dom.select('entity[name="'+id+'"]');
+        var markers = w.editor.dom.select('[name="'+id+'"]');
         var start = markers[0];
         var end = markers[1];
 				
@@ -282,14 +375,28 @@ var FileManager = function(config) {
     return exportText;
   };
 	
+  var _entitiesToUnicode = function(parentNode) {
+    var contents = $(parentNode).contents();
+    contents.each(function(index, el) {
+      if (el.nodeType == Node.TEXT_NODE) {
+        if (el.nodeValue.match(/&.+?;/gim)) {
+          $('#entitiesConverter')[0].innerHTML = el.nodeValue;
+          el.nodeValue = $('#entitiesConverter')[0].innerText || $('#entitiesConverter')[0].firstChild.nodeValue;
+        }
+      } else if (el.nodeType == Node.ELEMENT_NODE) {
+        _entitiesToUnicode(el);
+      }
+    });
+  };
+	
   var _getNodeOffsets = function(parent, offsets) {
     var currentOffset = 0;
     parent.contents().each(function(index, element) {
       if (this.nodeType == Node.TEXT_NODE) {
         currentOffset += this.length;
-      } else if ($(this).is('struct, p')) {
+      } else if ($(this).is(w.root) || $(this).attr('_struct')) {
         _getNodeOffsets($(this), offsets);
-      } else if ($(this).is('entity[class*=start]')) {
+      } else if ($(this).attr('_entity') && $(this).hasClass('start')) {
         var id = $(this).attr('name');
         offsets.push({
           id: id,
@@ -306,9 +413,10 @@ var FileManager = function(config) {
 		
     w.entities = {};
     w.structs = {};
+    w.triples = [];
 		
     $.ajax({
-      url: 'http://apps.testing.cwrc.ca/editor/documents/'+docName,
+      url: w.baseUrl+'editor/documents/'+docName,
       type: 'GET',
       success: _loadDocumentHandler,
       error: function(xhr, status, error) {
@@ -325,7 +433,6 @@ var FileManager = function(config) {
   // added for DHSI
 
   fm.loadEMICDocument = function() {
-
     w.entities = {};
     w.structs = {};
     var url = cwrc_params.BASE_PATH + '/cwrc/getCWRC/' + PID;
@@ -333,10 +440,10 @@ var FileManager = function(config) {
     var file_content = '';
     $.ajax({
       url: url,
-     
+
       success: _loadDocumentHandler,
       error: function() {
-        
+
         w.editor.setContent('<p> Page <strong>' +PID + '</strong> contains errors </p>' );
       },
       dataType: 'xml'
@@ -345,21 +452,29 @@ var FileManager = function(config) {
   };
 	
   var _loadDocumentHandler = function(doc) {
-
-    var html = $(doc).find('html');
-    if  (html.length ==0){
-      return;
-    };
+    var all = doc.getElementsByTagName('html')[0];
+    var xmlString = '';
+    try {
+      if (window.ActiveXObject) {
+        xmlString = body.xml;
+      } else {
+        xmlString = (new XMLSerializer()).serializeToString(all);
+      }
+    } catch (e) {
+      alert(e);
+    }
+    alert(xmlString);
     var offsets = {};
 		
     var maxId = 0; // track what the largest id num is
 		
-    var rdfs = $(doc).find('rdf\\:RDF, RDF');
+    var rdfs = $(doc).find('rdf\\:RDF');
+    console.dir(rdfs)
     var docMode;
     if (rdfs.length > 0) {
       docMode = w.XMLRDF;
     } else {
-      docMode = w.XMLRDF;
+      docMode = w.XML;
     }
 		
     if (w.mode != docMode) {
@@ -374,40 +489,67 @@ var FileManager = function(config) {
     }
 		
     rdfs.children().each(function(i1, el1) {
-      
-      var id = $(this).find('w\\:id, id').text();
-      var idNum = parseInt(id.split('_')[1]);
-      if (idNum > maxId) maxId = idNum;
-      var elparent = $(this).find('w\\:parent, parent').text();
-      var eloffset = parseInt($(this).find('w\\:offset, offset').text());
-      var ellength = parseInt($(this).find('w\\:length, length').text());
-
-
-      offsets[id] = {
-        parent: elparent,
-        offset: eloffset,
-        length: ellength
-      };
-      w.entities[id] = {
-        props: {
-          id: id
-        },
-        info: {}
-      };
-      $(this).children('[type="props"]').each(function(i2, el2) {
-        var key = $(this)[0].nodeName.split(':')[1].toLowerCase();
-        if (key == 'content') {
-          var title = w.getTitleFromContent($(this).text());
-          w.entities[id]['props']['title'] = title;
-        }
-        w.entities[id]['props'][key] = $(this).text();
-      });
-      $(this).children('[type="info"]').each(function(i2, el2) {
-        var key = $(this)[0].nodeName.split(':')[1].toLowerCase();
-        w.entities[id]['info'][key] = $(this).text();
-      });
+      // entity
+      if ($(this).attr('rdf:ID')) {
+        var id = $(this).find('w\\:ID').text();
+				
+        var idNum = parseInt(id.split('_')[1]);
+        if (idNum > maxId) maxId = idNum;
+				
+        offsets[id] = {
+          parent: $(this).find('w\\:parent').text(),
+          offset: parseInt($(this).find('w\\:offset').text()),
+          length: parseInt($(this).find('w\\:length').text())
+        };
+        w.entities[id] = {
+          props: {
+            id: id
+          },
+          info: {}
+        };
+        $(this).children('[type="props"]').each(function(i2, el2) {
+          var key = $(this)[0].nodeName.split(':')[1].toLowerCase();
+          if (key == 'content') {
+            var title = w.getTitleFromContent($(this).text());
+            w.entities[id]['props']['title'] = title;
+          }
+          w.entities[id]['props'][key] = $(this).text();
+        });
+        $(this).children('[type="info"]').each(function(i2, el2) {
+          var key = $(this)[0].nodeName.split(':')[1].toLowerCase();
+          w.entities[id]['info'][key] = $(this).text();
+        });
+				
+      // triple
+      } else {
+        var subject = $(this);
+        var subjectUri = subject.attr('rdf:about');
+        var predicate = $(this).children().first();
+        var object = $(this).find('rdf\\:Description');
+        var objectUri = object.attr('rdf:about');
+				
+        var triple = {
+          subject: {
+            uri: subjectUri,
+            text: subject.attr('w:external') == 'false' ? w.entities[subjectUri].props.title : subjectUri,
+            external: subject.attr('w:external')
+          },
+          predicate: {
+            text: predicate.attr('w:text'),
+            name: predicate[0].nodeName.split(':')[1].toLowerCase(),
+            external: predicate.attr('w:external')
+          },
+          object: {
+            uri: objectUri,
+            text: object.attr('w:external') == 'false' ? w.entities[objectUri].props.title : objectUri,
+            external: object.attr('w:external')
+          }
+        };
+				
+        w.triples.push(triple);
+      }
     });
-    $(doc).find('rdf\\:RDF, RDF').remove();
+    $(doc).find('rdf\\:RDF').remove();
 		
     var body = doc.getElementsByTagName('body')[0];
     var xmlString = '';
@@ -418,9 +560,9 @@ var FileManager = function(config) {
         xmlString = (new XMLSerializer()).serializeToString(body);
       }
     } catch (e) {
-      return;
       alert(e);
     }
+  
     w.editor.setContent(xmlString);
 		
     var id, o, range, contents, lengthCount, match, startOffset, endOffset, startNode, endNode;
@@ -491,6 +633,7 @@ var FileManager = function(config) {
 		
     w.entitiesList.update();
     w.tree.update(true);
+    w.relations.update();
   };
 	
   fm.editSource = function() {
@@ -498,7 +641,6 @@ var FileManager = function(config) {
     $('textarea', edit).val(docText);
     edit.dialog('open');
   };
-
 	
   return fm;
 };

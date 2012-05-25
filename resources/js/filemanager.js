@@ -452,24 +452,13 @@ var FileManager = function(config) {
   };
 	
   var _loadDocumentHandler = function(doc) {
-    var all = doc.getElementsByTagName('html')[0];
-    var xmlString = '';
-    try {
-      if (window.ActiveXObject) {
-        xmlString = body.xml;
-      } else {
-        xmlString = (new XMLSerializer()).serializeToString(all);
-      }
-    } catch (e) {
-      alert(e);
-    }
-    alert(xmlString);
+
     var offsets = {};
 		
     var maxId = 0; // track what the largest id num is
 		
-    var rdfs = $(doc).find('rdf\\:RDF');
-    console.dir(rdfs)
+    var rdfs = $(doc).find('rdf\\:RDF, RDF');
+
     var docMode;
     if (rdfs.length > 0) {
       docMode = w.XMLRDF;
@@ -490,17 +479,19 @@ var FileManager = function(config) {
 		
     rdfs.children().each(function(i1, el1) {
       // entity
+     
       if ($(this).attr('rdf:ID')) {
-        var id = $(this).find('w\\:ID').text();
-				
+        var id = $(this).find('w\\:id, id').text();
+	
         var idNum = parseInt(id.split('_')[1]);
         if (idNum > maxId) maxId = idNum;
-				
+			
         offsets[id] = {
-          parent: $(this).find('w\\:parent').text(),
-          offset: parseInt($(this).find('w\\:offset').text()),
-          length: parseInt($(this).find('w\\:length').text())
+          parent: $(this).find('w\\:parent, parent').text(),
+          offset: parseInt($(this).find('w\\:offset, offset').text()),
+          length: parseInt($(this).find('w\\:length, length').text())
         };
+     
         w.entities[id] = {
           props: {
             id: id
@@ -509,6 +500,7 @@ var FileManager = function(config) {
         };
         $(this).children('[type="props"]').each(function(i2, el2) {
           var key = $(this)[0].nodeName.split(':')[1].toLowerCase();
+       
           if (key == 'content') {
             var title = w.getTitleFromContent($(this).text());
             w.entities[id]['props']['title'] = title;
@@ -525,7 +517,7 @@ var FileManager = function(config) {
         var subject = $(this);
         var subjectUri = subject.attr('rdf:about');
         var predicate = $(this).children().first();
-        var object = $(this).find('rdf\\:Description');
+        var object = $(this).find('rdf\\:Description, Description');
         var objectUri = object.attr('rdf:about');
 				
         var triple = {
@@ -549,7 +541,7 @@ var FileManager = function(config) {
         w.triples.push(triple);
       }
     });
-    $(doc).find('rdf\\:RDF').remove();
+    $(doc).find('rdf\\:RDF, RDF').remove();
 		
     var body = doc.getElementsByTagName('body')[0];
     var xmlString = '';
@@ -569,10 +561,11 @@ var FileManager = function(config) {
     for (id in offsets) {
       // get all text nodes
       o = offsets[id];
+    
       contents = w.editor.$('#'+o.parent).contents().filter(function() {
         return this.nodeType == Node.TEXT_NODE;
       });
-			
+		
       startOffset = o.offset;
       lengthCount = 0;
       match = false;

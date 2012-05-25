@@ -1,0 +1,190 @@
+body {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  /* This removes the border around the viewport in old versions of IE */
+  width: 100%;
+  background: #fff;
+  min-width: 600px;
+  /* Minimum width of layout - remove line if not required */
+  /* The min-width property does not work in old versions of Internet Explorer */
+  font-size: 90%;
+}
+
+a {
+  color: #369;
+}
+a:hover {
+  color: #fff;
+  background: #369;
+  text-decoration: none;
+}
+
+h1, h2, h3 {
+  margin: .8em 0 .2em 0;
+  padding: 0;
+}
+
+p {
+  margin: .4em 0 .8em 0;
+  padding: 0;
+}
+
+img {
+  margin: 10px 0 5px;
+}
+
+#ads img {
+  display: block;
+  padding-top: 10px;
+}
+
+/* Header styles */
+#header {
+  clear: both;
+  float: left;
+  width: 100%;
+  border-bottom: 1px solid #000;
+}
+#header p, #header h1, #header h2 {
+  padding: .4em 15px 0 15px;
+  margin: 0;
+}
+#header ul {
+  clear: left;
+  float: left;
+  width: 100%;
+  list-style: none;
+  margin: 10px 0 0 0;
+  padding: 0;
+}
+#header ul li {
+  display: inline;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+#header ul li a {
+  display: block;
+  float: left;
+  margin: 0 0 0 1px;
+  padding: 3px 10px;
+  text-align: center;
+  background: #eee;
+  color: #000;
+  text-decoration: none;
+  position: relative;
+  left: 15px;
+  line-height: 1.3em;
+}
+#header ul li a:hover {
+  background: #369;
+  color: #fff;
+}
+#header ul li a.active {
+  color: #fff;
+  background: #000;
+  font-weight: bold;
+}
+#header ul li a.active:hover {
+  color: #fff;
+  background: #000;
+  font-weight: bold;
+}
+#header ul li a span {
+  display: block;
+}
+
+/* 'widths' sub menu */
+#layoutdims {
+  clear: both;
+  background: #eee;
+  border-top: 4px solid #000;
+  margin: 0;
+  padding: 6px 15px !important;
+  text-align: right;
+}
+
+/* column container */
+.colmask {
+  position: absolute;
+  /* This fixes the IE7 overflow hidden bug */
+  clear: both;
+  float: left;
+  width: 100%;
+  /* width of whole page */
+  overflow: hidden;
+  /* This chops off any overhanging divs */
+  
+  top: 28px;
+  bottom: 35px;
+  left: 0px;
+  right: 0px;
+}
+
+/* common column settings */
+.colright, .colmid, .colleft {
+  float: left;
+  width: 100%;
+  /* width of page */
+  position: relative;
+}
+
+.col1, .col2, .col3 {
+  float: left;
+  position: relative;
+  padding: 0 0 0px 0;
+  /* no left and right padding on columns, we just make them narrower instead
+				only padding top and bottom is included here, make it whatever value you need */
+  overflow: hidden;
+  
+  height: 100%;
+}
+
+/* 3 Column settings */
+.threecol {
+  background: #eee;
+}
+.threecol .colmid {
+  right: 40%;
+  background: #fff;
+  height: 100%;
+}
+.threecol .colleft {
+  right: 42%;
+  background: #f4f4f4;
+  height: 100%;
+}
+.threecol .col1 {
+  width: 42%;
+  left: 100%;
+}
+.threecol .col2 {
+  width: 17.5%;
+  left: 40.5%;
+}
+.threecol .col3 {
+  width: 40%;
+  left: 82.5%;
+}
+
+
+/* Footer styles */
+#footer {
+  clear: both;
+  float: left;
+  width: 100%;
+  border-top: 1px solid #000;
+  
+  position: absolute;
+  bottom: 0px;
+  
+}
+#footer p {
+  padding: 10px;
+  margin: 0;
+}
+
+#page_selector{
+  height: 27px;
+}

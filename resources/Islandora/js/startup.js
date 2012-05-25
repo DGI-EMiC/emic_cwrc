@@ -13,6 +13,7 @@ $.urlParam = function(name){
 //determine base of Drupal installation
 
 var here = window.location.toString();
+
 var splitter = here.indexOf('/sites/');
 if(splitter > 0){
   splitter = '/sites/';
@@ -39,7 +40,7 @@ $('document').ready(function(){
   });
 
   $(this).attr("title", cwrc_params.title);
-  $('#header h1').text( cwrc_params.title + " - Seq# 1");
+  $('#header h1').text( cwrc_params.title + " - Seq# " + cwrc_params.position);
   // instantiate and initialize writer object
 
   writer = new Writer({
@@ -56,7 +57,7 @@ $('document').ready(function(){
   // build and populate page choice dropdown
   $('#page_selector').html('<select id="page_choose"></select>');
   $.each(cwrc_params.pages, function(key, value){
-    $('#page_choose').append('<option  value="' + key + '">Seq# ' + (key + 1) + '</option>');
+    $('#page_choose').append('<option  value="' + key + '">Seq# ' + key + '</option>');
   });
 
   // synchronize displayed page with dropdown
@@ -106,20 +107,23 @@ $('document').ready(function(){
     }
   });
   $('#page-next').click(function(e){
+  
     e.preventDefault();
-    if(cwrc_params.position < cwrc_params.pages.length -1){
+    if(cwrc_params.position < cwrc_params.page_count -1){
       $('#page-prev').css('opacity', '1').removeClass('disabled');
      
       var selector = "#page_choose option[value='" + cwrc_params.position + "']";
       $(selector).removeAttr('selected');
+      
       cwrc_params.position++;
       selector = "#page_choose option[value='" + cwrc_params.position + "']";
       $(selector).attr('selected','selected');
       PID = cwrc_params.pages[ cwrc_params.position];
+    
       writer.fm.loadEMICDocument();
       init_canvas_div();
-      $('#header h1').text( cwrc_params.title + " - Seq # " + (parseInt(cwrc_params.position) +1));
-      if(cwrc_params.position == cwrc_params.pages.length -1){
+      $('#header h1').text( cwrc_params.title + " - Seq # " + (parseInt(cwrc_params.position)));
+      if(cwrc_params.position == cwrc_params.pages_count -1){
         $('#page-next').css('opacity', '.2').addClass('disabled');
       }
     }
@@ -129,6 +133,7 @@ $('document').ready(function(){
 
 
 function init_canvas_div(){
+  console.dir(cwrc_params)
   pagePid =cwrc_params.pages[ cwrc_params.position];
   $.ajax({
     url: basedir +'/emic/shared/setup/' + pagePid,

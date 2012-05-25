@@ -568,6 +568,8 @@ var Writer = function(config) {
 	
   w.insertBoundaryTags = function(id, type, range) {
     var sel = w.editor.selection;
+    console.dir(sel);
+    console.log("complete");
     var bm = sel.getBookmark();
 		
     var start = w.editor.dom.create('span', {

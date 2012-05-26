@@ -5,6 +5,7 @@
     <title>DHSI CWRICWriter</title>
 
     <link type="text/css" rel="stylesheet" href="css/style.css" />
+     <link type="text/css" rel="stylesheet" href="css/style.css" />
     <link type="text/css" rel="stylesheet" href="smoothness/jquery-ui-1.8.13.custom.css" />
     <link type="text/css" rel="stylesheet" href="js/snippet/jquery.snippet.css" />
     <script type="text/javascript" src="js/jquery/jquery-1.6.1.js"></script>
@@ -32,7 +33,7 @@
     <!-- CWRC stylesheets -->
 
 
-    <script type="text/javascript" src="js/gzoom.js"></script>
+ 
 
     <script type="text/javascript" src="js/fullscreen.js"></script>
     <script type="text/javascript" src="Islandora/js/startup.js"></script>

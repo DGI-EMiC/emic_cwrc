@@ -21,6 +21,9 @@
     <script type="text/javascript" src="js/structuretree.js"></script>
     <script type="text/javascript" src="js/entitieslist.js"></script>
     <script type="text/javascript" src="js/relations.js"></script>
+    <script type="text/javascript" src="Islandora/js/startup.js"></script>
+
+      
     <script type="text/javascript">
       window.onbeforeunload = function() {
         if (this.tinymce.get('editor').isDirty()) {
@@ -29,19 +32,8 @@
       }
       $(function() {
         writer = null;
-        $.ajax({
-          url: 'http://apps.testing.cwrc.ca/editor/documents/info/projectname',
-          success: function(data, status, xhr) {
-            writer = new Writer({
-              project: data
-            });
+             writer = new Writer();
             writer.init();
-          },
-          error: function() {
-            writer = new Writer();
-            writer.init();
-          }
-        });
       });
     </script>
   </head>

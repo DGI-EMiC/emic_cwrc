@@ -568,8 +568,7 @@ var Writer = function(config) {
 	
   w.insertBoundaryTags = function(id, type, range) {
     var sel = w.editor.selection;
-    console.dir(sel);
-    console.log("complete");
+
     var bm = sel.getBookmark();
 		
     var start = w.editor.dom.create('span', {
@@ -1029,7 +1028,7 @@ var Writer = function(config) {
       //			mode: 'exact',
       //			elements: 'editor',
       theme: 'advanced',
-      readonly : cwrc_params.no_edit,
+    //  readonly : cwrc_params.no_edit,
       content_css: 'css/editor.css'+', '+w.schemaCSS,
 			
       width: '100%',

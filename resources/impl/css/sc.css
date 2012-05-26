@@ -53,17 +53,7 @@ body {
        position: absolute;
 }
 
-.content {
-	 position: absolute;
-	 top: 130px;
-	 left: 200px;
-	 right: 20px;
-	 background: white;
 
-	 padding: 3px;
-	 border: 2px solid #707070;
-
-}
 
 .contentTitle {
 	      font-family: cursive;

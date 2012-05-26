@@ -121,7 +121,7 @@ $('document').ready(function(){
       PID = cwrc_params.pages[ cwrc_params.position];
     
       writer.fm.loadEMICDocument();
-      init_canvas_div();
+    //  init_canvas_div();
       $('#header h1').text( cwrc_params.title + " - Seq # " + (parseInt(cwrc_params.position)));
       if(cwrc_params.position == cwrc_params.pages_count -1){
         $('#page-next').css('opacity', '.2').addClass('disabled');
@@ -151,7 +151,7 @@ function init_canvas_div(){
   if(emic_canvas_params.no_edit == true){
     $('#create_annotation').hide();
   }
-  opts.base = emic_canvas_params.object_base;
+   opts.base = emic_canvas_params.object_base;
 
 
 

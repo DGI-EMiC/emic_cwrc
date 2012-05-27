@@ -314,11 +314,11 @@ var SearchDialog = function(config) {
         click: function() {
           searchResult(true);
         }
-      },{
-        text: 'Add New '+config.title,
-        click: function() {
-          createNew();
-        }
+//      },{
+//        text: 'Add New '+config.title,
+//        click: function() {
+//          createNew();
+//        }
       },{
         text: 'Tag '+config.title,
         click: function() {

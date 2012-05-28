@@ -117,6 +117,7 @@ function make_cwrc_datastream($pid) {
  */
 function save_cwrc_to_fedora($pid, $cwrc_stream) {
   global $base_url;
+  $flat_pid = str_replace(':', '_', $pid);
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $cwrc_stream = preg_replace("/&/", '&amp;', $cwrc_stream);
   $cwrc_stream = preg_replace("/<>/", '', $cwrc_stream);
@@ -128,10 +129,15 @@ function save_cwrc_to_fedora($pid, $cwrc_stream) {
   else {
     $item->add_datastream_from_string($cwrc_stream, 'CWRC', 'CWRC', 'text/plain', 'X');
   }
-  $path = file_directory_path() . "/ocrtmp/ocr.txt";
-  mkdir(file_directory_path() . "/ocrtmp/");
-  file_put_contents($path, $ocr);
-  $item->add_or_modify_by_reference("$base_url/$path", 'OCR', 'Scanned Text', 'text/plain', 'M');
+  $dir_path = file_directory_path() . "/$flat_pid/ocrtmp/";
+  $file_path = "$dir_path/ocr.txt";
+  if (!is_dir($file_path)) {
+    mkdir($dir_path, 0777, TRUE);
+  }
+  file_put_contents($file_path, $ocr);
+  $item->add_or_modify_by_reference("$base_url/$file_path", 'OCR', 'Scanned Text', 'text/plain', 'M');
+  unlink($file_path);
+  rmdir($dir_path);
 }
 
 /**
@@ -198,7 +204,7 @@ function get_ocr_from_cwrc($cwrc) {
   $doc->strictErrorChecking = FALSE;
   $doc->loadHTML($cwrc);
   $xml = simplexml_import_dom($doc);
- // $xml = simplexml_load_string($cwrc);
+  // $xml = simplexml_load_string($cwrc);
   $body = $xml->body->asXML();
   $body = preg_replace('/<br.>/', "\n", $body);
   $ocr = strip_tags($body);

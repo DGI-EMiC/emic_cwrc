@@ -202,11 +202,11 @@ EOF;
 function get_ocr_from_cwrc($cwrc) {
   $doc = new DOMDocument();
   $doc->strictErrorChecking = FALSE;
-  $doc->loadHTML($cwrc);
-  $xml = simplexml_import_dom($doc);
-  // $xml = simplexml_load_string($cwrc);
+  @$doc->loadHTML($cwrc);
+  $xml = @simplexml_import_dom($doc);
   $body = $xml->body->asXML();
   $body = preg_replace('/<br.>/', "\n", $body);
   $ocr = strip_tags($body);
   return $ocr;
 }
+

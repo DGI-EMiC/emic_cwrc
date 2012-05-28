@@ -53,6 +53,7 @@
 				});
 				
 				for (var i = 0; i < t.schema.elements.length; i++) {
+                              
 					var key = t.schema.elements[i];
 					var menuitem = menu.add({
 						title: key,

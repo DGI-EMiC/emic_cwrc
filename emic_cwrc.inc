@@ -56,8 +56,7 @@ function setupCWRC($pid) {
   if (!user_access('use CWRC')) {
     return;
   }
-
-  $can_edit = user_access('edit CWRC') ? 'true' : 'false';
+  $cant_edit = user_access('edit CWRC') ? false : true;
   module_load_include('inc', 'islandora_book', 'book_pack_utils');
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
@@ -76,8 +75,7 @@ function setupCWRC($pid) {
   $results['pages'] = $pages;
   $results['title'] = $title;
   $results['authority_url'] = $base_url . '/cwrc/authorities/';
-  // $results['no_edit'] = !user_access('edit CWRC');
-  $results['no_edit'] = FALSE;
+  $results['no_edit'] = $cant_edit;
   $results['page_count'] = count($pages);
   $json = json_encode($results);
   echo $json;

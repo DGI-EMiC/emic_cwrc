@@ -41,6 +41,7 @@ var StructureTree = function(config) {
 				}
 				
 				function getSubmenu(keys) {
+                                 
 					var inserts = {};
 					var inserted = false;
 					for (var key in keys) {

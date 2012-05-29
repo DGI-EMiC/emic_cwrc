@@ -89,10 +89,21 @@ function make_cwrc_datastream($pid) {
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
   $ocr_url = $fedora_url . "/objects/$pid/datastreams/OCR/content";
-  $preface = '<?xml version="1.0"?><html><head><rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:w="http://cwrctc.artsrn.ualberta.ca/#"></rdf:RDF></head>
-<body>
-<tei id="struct_9" _tag="TEI" _display="TEI" _struct="true"><span _tag="text" _struct="true" id="struct_10" _display="text">';
-  $postscript = '</span></tei></body></html>';
+  $preface = '<?xml version="1.0"?>
+<html>
+    <head>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+            xmlns:w="http://cwrctc.artsrn.ualberta.ca/#"></rdf:RDF>
+    </head>
+    <body>
+        <tei id="struct_01" _tag="TEI" _display="TEI" _struct="true">
+            <span _tag="text" _struct="true" id="struct_02" _display="text"><span _display="body"
+                    _tag="body" _struct="true" _editable="true" id="struct_03">';
+
+  $postscript = '            </span></span>
+        </tei>
+    </body>
+</html>';
   $lines = @file($ocr_url);
   if (is_array($lines)) {
     foreach ($lines as $line) {

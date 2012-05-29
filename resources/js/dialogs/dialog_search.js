@@ -98,7 +98,7 @@ var SearchDialog = function(config) {
 	
   var doQuery = function() {
     var lookupService = $('#lookupServices div.ui-accordion-content-active').parent()[0].id;
-		
+    var type = $('#ui-dialog-title-searchDialog').text();
     $('div.ui-accordion-content-active div.searchResultsParent').css({
       borderColor: '#fff'
     });
@@ -183,7 +183,7 @@ var SearchDialog = function(config) {
         r = results[i];
 				
         if (lookup == 'project') {
-          label = r.entry.authorityLabel;
+          label = r.identifier;
         } else if (lookup == 'viaf') {
           label = r.term;
         } else {

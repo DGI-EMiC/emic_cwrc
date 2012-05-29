@@ -38,7 +38,7 @@ $('document').ready(function(){
     dataType: 'json'
 
   });
-
+console.log(cwrc_params.no_edit);
   $(this).attr("title", cwrc_params.title);
   $('#header h1').text( cwrc_params.title + " - Seq# " + cwrc_params.position);
   // instantiate and initialize writer object

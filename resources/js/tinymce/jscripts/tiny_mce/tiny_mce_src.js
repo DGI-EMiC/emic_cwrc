@@ -11635,8 +11635,7 @@ tinymce.create('tinymce.ui.Toolbar:tinymce.ui.Container', {
 			bookmark;
 
 		function execCommand(command, ui, value) {
-			var func;
-
+			var func
 			command = command.toLowerCase();
 			if (func = commands.exec[command]) {
 				func(command, ui, value);

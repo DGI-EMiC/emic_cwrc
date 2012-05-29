@@ -38,12 +38,12 @@ var DialogManager = function(config) {
 		dialogs.place = dialogs.search;
 		dialogs.event = dialogs.search;
 		dialogs.org = dialogs.search;
-		
 		dialogs.citation = dialogs.note;
 	};
 	
 	return {
 		getCurrentType: function() {
+               
 			return currentType;
 		},
 		show: function(type, config) {

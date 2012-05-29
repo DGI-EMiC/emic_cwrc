@@ -519,12 +519,12 @@ var Writer = function(config) {
     var result = w.isSelectionValid();
     if (result == w.VALID) {
       w.editor.currentBookmark = w.editor.selection.getBookmark(1);
-      //			w.editor.currentEntity = _addEntityTag(type);
+      // w.editor.currentEntity = _addEntityTag(type);
       w.d.show(type, {
         type: type,
         title: w.titles[type],
         pos: w.editor.contextMenuPos
-      });
+        });
     } else {
       w.showError(result);
     }
@@ -596,6 +596,7 @@ var Writer = function(config) {
   };
 	
   w.finalizeEntity = function(type, info) {
+    
     w.editor.selection.moveToBookmark(w.editor.currentBookmark);
     if (info != null) {
       //			var startTag = w.editor.$('[name='+id+'][class~=start]');

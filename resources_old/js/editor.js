@@ -422,7 +422,7 @@ var Writer = function(config) {
   };
 	
   w.finalizeEntity = function(id, info) {
-   
+   alert("final");
     if (info == null) {
       w.removeEntity(id);
     } else {

@@ -1164,14 +1164,14 @@ var Writer = function(config) {
 				
 
 				
-        ed.addButton('loadbutton', {
-          title: 'Load',
-          image: 'img/folder_page.png',
-          'class': 'entityButton',
-          onclick: function() {
-            w.fm.openLoader();
-          }
-        });
+//        ed.addButton('loadbutton', {
+//          title: 'Load',
+//          image: 'img/folder_page.png',
+//          'class': 'entityButton',
+//          onclick: function() {
+//            w.fm.openLoader();
+//          }
+//        });
 				
         ed.addButton('editsource', {
           title: 'Edit Source',
@@ -1182,14 +1182,14 @@ var Writer = function(config) {
           }
         });
 				
-        ed.addButton('validate', {
-          title: 'Validate',
-          image: 'img/validate.png',
-          'class': 'entityButton',
-          onclick: function() {
-            w.fm.validate();
-          }
-        });
+//        ed.addButton('validate', {
+//          title: 'Validate',
+//          image: 'img/validate.png',
+//          'class': 'entityButton',
+//          onclick: function() {
+//            w.fm.validate();
+//          }
+//        });
 				
         ed.addButton('addtriple', {
           title: 'Add Relation',

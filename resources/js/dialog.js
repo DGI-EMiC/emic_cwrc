@@ -31,7 +31,7 @@ var DialogManager = function(config) {
 			addevent: new AddEventDialog(config),
 			addorg: new AddOrganizationDialog(config),
 			triple: new TripleDialog(config),
-			teiheader: new TeiHeaderDialog(config)
+			//teiheader: new TeiHeaderDialog(config)
 		};
 		
 		dialogs.person = dialogs.search;

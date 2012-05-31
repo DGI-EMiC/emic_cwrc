@@ -38,7 +38,7 @@ $('document').ready(function(){
     dataType: 'json'
 
   });
-console.log(cwrc_params.no_edit);
+
   $(this).attr("title", cwrc_params.title);
   $('#header h1').text( cwrc_params.title + " - Seq# " + cwrc_params.position);
   // instantiate and initialize writer object
@@ -48,10 +48,10 @@ console.log(cwrc_params.no_edit);
   });
   writer.init();
   init_canvas_div();
-  if(cwrc_params.position == 0){
+  if(cwrc_params.position == 1){
     $('#page-prev').css('opacity', '.6').addClass('disabled');
   }
-  if(cwrc_params.position == cwrc_params.pages.length -1){
+  if(cwrc_params.position == cwrc_params.pages.length){
     $('#page-next').css('opacity', '.6').addClass('disabled');
   }
   // build and populate page choice dropdown
@@ -73,14 +73,14 @@ console.log(cwrc_params.no_edit);
     PID = cwrc_params.pages[ cwrc_params.position];
     writer.fm.loadEMICDocument();
     init_canvas_div();
-    $('#header h1').text( cwrc_params.title + " - Seq# " + (parseInt(cwrc_params.position) +1));
+    $('#header h1').text( cwrc_params.title + " - Seq# " + (parseInt(cwrc_params.position)));
     $('#page-prev').css('opacity', '1').removeClass('disabled');
     $('#page-next').css('opacity', '1').removeClass('disabled');
     
-    if(cwrc_params.position ==0){
+    if(cwrc_params.position ==1 ){
       $('#page-prev').css('opacity', '.6').addClass('disabled');
     }
-    if(cwrc_params.position == cwrc_params.pages.length -1){
+    if(cwrc_params.position == cwrc_params.pages.length ){
       $('#page-next').css('opacity', '.2').addClass('disabled');
     }
     selector = "#page_choose option[value='" + cwrc_params.position + "']";
@@ -89,7 +89,7 @@ console.log(cwrc_params.no_edit);
 
   $('#page-prev').click(function(e){
     e.preventDefault();
-    if(cwrc_params.position > 0){
+    if(cwrc_params.position > 1){
       $('#page-next').css('opacity', '1').removeClass('disabled');
       
       var selector = "#page_choose option[value='" + cwrc_params.position + "']";
@@ -100,7 +100,7 @@ console.log(cwrc_params.no_edit);
       PID = cwrc_params.pages[ cwrc_params.position];
       writer.fm.loadEMICDocument();
       init_canvas_div();
-      $('#header h1').text( cwrc_params.title + " - Seq# " + (parseInt(cwrc_params.position) +1));
+      $('#header h1').text( cwrc_params.title + " - Seq# " + (parseInt(cwrc_params.position)));
       if(cwrc_params.position == 0){
         $('#page-prev').css('opacity', '.6').addClass('disabled');
       }
@@ -109,7 +109,7 @@ console.log(cwrc_params.no_edit);
   $('#page-next').click(function(e){
   
     e.preventDefault();
-    if(cwrc_params.position < cwrc_params.page_count -1){
+    if(cwrc_params.position < cwrc_params.page_count){
       $('#page-prev').css('opacity', '1').removeClass('disabled');
      
       var selector = "#page_choose option[value='" + cwrc_params.position + "']";

@@ -77,7 +77,7 @@ var TitleDialog = function(config) {
 //			}
 		}
 		if (!(mode == EDIT && data == null)) {
-			w.finalizeEntity(w.editor.currentEntity, data);
+			w.finalizeEntity('title', data);
 		}
 		title.dialog('close');
 	};

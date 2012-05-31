@@ -1182,14 +1182,14 @@ var Writer = function(config) {
           }
         });
 				
-//        ed.addButton('validate', {
-//          title: 'Validate',
-//          image: 'img/validate.png',
-//          'class': 'entityButton',
-//          onclick: function() {
-//            w.fm.validate();
-//          }
-//        });
+        ed.addButton('validate', {
+          title: 'Validate',
+          image: 'img/validate.png',
+          'class': 'entityButton',
+          onclick: function() {
+            w.fm.validate();
+          }
+        });
 				
         ed.addButton('addtriple', {
           title: 'Add Relation',

@@ -440,7 +440,7 @@ var FileManager = function(config) {
     var file_content = '';
     $.ajax({
       url: url,
-
+      async:false,
       success: _loadDocumentHandler,
       error: function() {
 

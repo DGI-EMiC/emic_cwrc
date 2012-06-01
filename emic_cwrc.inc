@@ -165,10 +165,10 @@ function guarantee_cwrc_datastream($pid) {
 
 function emic_cwrc_get_authorities($dataType) {
   $mappings = array(
-    'Tag Place' => array('cmodel' => 'islandora:place-entityCModel', 'type' => t('Place')),
-    'Tag Person' => array('cmodel' => 'islandora:person-entityCModel', 'type' => t('Person')),
-    'Tag Event' => array('cmodel' => 'islandora:event-entityCModel', 'type' => t('Event')),
-    'Tag Organization' => array('cmodel' => 'islandora:organization-entityCModel', 'type' => t('Organization')),
+    'Tag Place' => array('collection' => 'islandora:9247', 'type' => t('Place')),
+    'Tag Person' => array('collection' => 'islandora:9239', 'type' => t('Person')),
+    'Tag Event' => array('collection' => 'islandora:9242', 'type' => t('Event')),
+    'Tag Organization' => array('collection' => 'islandora:9236', 'type' => t('Organization')),
   );
 
   $authorities = cwrc_get_authorities_list($mappings[$dataType]);
@@ -179,31 +179,27 @@ function emic_cwrc_get_authorities($dataType) {
 }
 
 function cwrc_get_authorities_list($setup_data) {
-  module_load_include('inc', 'fedora_repository', 'CollectionClass');
-  $cmodel = $setup_data['cmodel'];
+  module_load_include('inc', 'islandora_solr_search', 'IslandoraSolrQueryProcessor');
+
+  $collection = $setup_data['collection'];
   $type = $setup_data['type'];
-  $collection = new CollectionClass($pid);
-  $query = <<< EOF
-  select \$object \$title from <#ri>
-	where (\$object <dc:title> \$title
-		and \$object <info:fedora/fedora-system:def/model#hasModel> <info:fedora/$cmodel>
-		and \$object <fedora-model:state> <info:fedora/fedora-system:def/model#Active>)
-	order by \$title
-EOF;
 
-  module_load_include('inc', 'fedora_repository', 'CollectionClass');
+  $query_processor = new IslandoraSolrQueryProcessor();
+  $query_processor->buildAndExecuteQuery("collection:\"$collection\"");
 
-  $contents = $collection->getRelatedItems($pid, $query);
-  $results_xml = simplexml_load_string($contents);
+  $raw_results = $query_processor->solrResult;
+
+  $rawResponse = $raw_results->getRawResponse();
+  $responseArray = json_decode($rawResponse, true);
   $records = array();
   $options = array(
     'attributes' => array('target' => '_blank'),
   );
-  foreach ($results_xml->results->result as $result) {
-    $auth_pid = str_replace('info:fedora/', '', $result->object->attributes()->uri);
-    $title = str_replace('info:fedora/', '', $result->title);
+  foreach ($responseArray['response']['docs'] as $result) {
+    $auth_pid = str_replace('info:fedora/', '', $result['PID']);
+    $title = str_replace('info:fedora/', '', $result['title'][0]);
     $link = l($title, "fedora/repository/$auth_pid", $options);
-    $records[] = array('identifier' => $auth_pid, $type => $link);
+    $records[] = array('identifier' => $title, $type => $auth_pid, 'Link' => $link);
   }
   return $records;
 }

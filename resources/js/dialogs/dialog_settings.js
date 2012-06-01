@@ -9,7 +9,7 @@ var SettingsDialog = function(writer, config) {
   };
 	
   jQuery.extend(settings, config);
-//  if(!cwrc_params.no_edit){
+  if(!cwrc_params.no_edit){
     $('#header').append(''+
       '<div id="helpLink"><img src="img/help.png" title="Help"/><h2>Help</h2></div>');
   }
@@ -172,9 +172,9 @@ var SettingsDialog = function(writer, config) {
     return false;
   };
 	
-  return {
-    getSettings: function() {
-      return settings;
-    }
-  };
+	return {
+		getSettings: function() {
+			return this.settings;
+		}
+	};
 };

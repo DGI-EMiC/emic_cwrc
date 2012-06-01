@@ -198,8 +198,8 @@ function cwrc_get_authorities_list($setup_data) {
   foreach ($responseArray['response']['docs'] as $result) {
     $auth_pid = str_replace('info:fedora/', '', $result['PID']);
     $title = str_replace('info:fedora/', '', $result['title'][0]);
-    $link = l($title, "fedora/repository/$auth_pid", $options);
-    $records[] = array('identifier' => $title, $type => $auth_pid, 'Link' => $link);
+    $link = l($auth_pid, "fedora/repository/$auth_pid", $options);
+    $records[] = array('identifier' => $title, $type . ' Record' => $link);
   }
   return $records;
 }

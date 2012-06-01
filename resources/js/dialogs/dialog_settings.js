@@ -1,19 +1,21 @@
 var SettingsDialog = function(writer, config) {
   var w = writer;
-	
+
   var settings = {
     fontSize: '11pt',
     fontFamily: 'Book Antiqua',
     showEntityBrackets: false,
     showStructBrackets: false
   };
-	
+
   jQuery.extend(settings, config);
-  if(!cwrc_params.no_edit){
+
+  if(cwrc_params.no_edit == false){
     $('#header').append(''+
       '<div id="helpLink"><img src="img/help.png" title="Help"/><h2>Help</h2></div>');
   }
-  $('#header').append(''+ '<div id="settingsLink"><h2>Settings</h2></div>');
+  $('#header').append('<div id="settingsLink"><h2>Settings</h2></div>');
+
   $(document.body).append(''+
     '<div id="settingsDialog">'+
     '<div>'+
@@ -60,7 +62,7 @@ var SettingsDialog = function(writer, config) {
     '</div>'+
     '<div id="helpDialog">'+
     '</div>');
-	
+
   $('#settingsLink').click(function() {
     $('select[name="fontsize"] > option[value="'+settings.fontSize+'"]', $('#settingsDialog')).attr('selected', true);
     $('select[name="fonttype"] > option[value="'+settings.fontFamily+'"]', $('#settingsDialog')).attr('selected', true);
@@ -70,14 +72,14 @@ var SettingsDialog = function(writer, config) {
     $('select[name="schema"] > option[value="'+w.validationSchema+'"]', $('#settingsDialog')).attr('selected', true);
     $('#settingsDialog').dialog('open');
   });
-	
+
   $('#helpLink').click(function() {
     if ($('#helpDialog iframe').length == 0) {
       $('#helpDialog').html('<iframe src="http://docs.google.com/document/d/1kJpewMUkUtC1rzVgxDw8HaVf5xKDwGBrH4mI-Piiu9w/edit"/>');
     }
     $('#helpDialog').dialog('open');
   });
-	
+
   $('#settingsDialog').dialog({
     title: 'Settings',
     modal: true,
@@ -96,7 +98,7 @@ var SettingsDialog = function(writer, config) {
       }
     }
   });
-	
+
   $('#helpDialog').dialog({
     title: 'Help',
     modal: true,
@@ -111,7 +113,7 @@ var SettingsDialog = function(writer, config) {
       }
     }
   });
-	
+
   var applySettings = function() {
     var editorMode = parseInt($('select[name="editormode"]', $('#settingsDialog')).val());
     if (editorMode != w.mode) {
@@ -130,33 +132,33 @@ var SettingsDialog = function(writer, config) {
         w.mode = editorMode;
       }
     }
-		
+
     settings.fontSize = $('select[name="fontsize"]', $('#settingsDialog')).val();
     settings.fontFamily = $('select[name="fonttype"]', $('#settingsDialog')).val();
-		
+
     if (settings.showEntityBrackets != $('#showentitybrackets').prop('checked')) {
       w.editor.$('body').toggleClass('showEntityBrackets');
     }
     settings.showEntityBrackets = $('#showentitybrackets').prop('checked');
-		
+
     if (settings.showStructBrackets != $('#showstructbrackets').prop('checked')) {
       w.editor.$('body').toggleClass('showStructBrackets');
     }
     settings.showStructBrackets = $('#showstructbrackets').prop('checked');
-		
+
     w.validationSchema = $('select[name="schema"]', $('#settingsDialog')).val();
-		
+
     var styles = {
       fontSize: settings.fontSize,
       fontFamily: settings.fontFamily
     };
     w.editor.dom.setStyles(w.editor.dom.getRoot(), styles);
   };
-	
+
   var _doEntitiesOverlap = function() {
     // remove highlights
     w.highlightEntity();
-		
+
     for (var id in w.entities) {
       var markers = w.editor.dom.select('entity[name="'+id+'"]');
       var start = markers[0];
@@ -171,10 +173,10 @@ var SettingsDialog = function(writer, config) {
     }
     return false;
   };
-	
-	return {
-		getSettings: function() {
-			return this.settings;
-		}
-	};
+
+  return {
+    getSettings: function() {
+      return settings;
+    }
+  };
 };

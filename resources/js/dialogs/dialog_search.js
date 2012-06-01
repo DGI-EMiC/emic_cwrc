@@ -44,7 +44,7 @@ var SearchDialog = function(config) {
     '<input type="radio" id="c_speculative" name="certainty" value="speculative" /><label for="c_speculative">Speculative</label>'+
     '</div>'+
     '</div>');
-	
+  $('#lookup_orca, #lookup_alternate').hide();
   var search = $('#searchDialog');
   search.dialog({
     modal: true,
@@ -314,11 +314,11 @@ var SearchDialog = function(config) {
         click: function() {
           searchResult(true);
         }
-//      },{
-//        text: 'Add New '+config.title,
-//        click: function() {
-//          createNew();
-//        }
+      //      },{
+      //        text: 'Add New '+config.title,
+      //        click: function() {
+      //          createNew();
+      //        }
       },{
         text: 'Tag '+config.title,
         click: function() {

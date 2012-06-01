@@ -97,10 +97,9 @@ function make_cwrc_datastream($pid) {
     </head>
     <body>
         <tei id="struct_01" _tag="TEI" _display="TEI" _struct="true">
-            <span _tag="text" _struct="true" id="struct_02" _display="text"><span _display="body"
-                    _tag="body" _struct="true" _editable="true" id="struct_03">';
+            <span _tag="text" _struct="true" id="struct_02" _display="text">';
 
-  $postscript = '            </span></span>
+  $postscript = '            </span>
         </tei>
     </body>
 </html>';

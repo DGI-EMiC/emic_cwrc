@@ -270,6 +270,7 @@ var SearchDialog = function(config) {
       }
       if (data) data.certainty = $('#certainty input:checked').val();
     }
+  
     if (mode == EDIT && data != null) {
       w.editEntity(w.editor.currentEntity, data);
     } else {
@@ -295,7 +296,7 @@ var SearchDialog = function(config) {
       } else {
         query = w.editor.currentBookmark.rng.toString();
       }
-			
+		
       $('div.searchResultsParent').css({
         borderColor: '#fff'
       });
@@ -304,7 +305,7 @@ var SearchDialog = function(config) {
       $('#lookup_alternate input[type="text"]').css({
         borderColor: '#ccc'
       }).val('');
-			
+      query = $.trim(query);
       searchInput.value = query;
 			
       var title = prefix+config.title;

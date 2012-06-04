@@ -320,6 +320,7 @@ var Writer = function(config) {
     tag = $(tag);
     var corrTag;
     if (tag.hasClass('start')) {
+      
       corrTag = _findEntityBoundary('end', tag[0].nextSibling, null, [tag[0].parentNode]);
     } else {
       corrTag = _findEntityBoundary('start', tag[0].previousSibling, null, [tag[0].parentNode]);
@@ -537,7 +538,6 @@ var Writer = function(config) {
 		
     // strip tags
     content = content.replace(/<\/?[^>]+>/gi, '');
-		
     // trim whitespace
     if (range.startContainer == range.endContainer) {
       var leftTrimAmount = content.match(/^\s{0,1}/)[0].length;
@@ -569,7 +569,6 @@ var Writer = function(config) {
 	
   w.insertBoundaryTags = function(id, type, range) {
     var sel = w.editor.selection;
-
     var bm = sel.getBookmark();
 		
     var start = w.editor.dom.create('span', {
@@ -578,11 +577,11 @@ var Writer = function(config) {
       'class': 'entity '+type+' start',
       'name': id
     });
-    range.insertNode(start);
+    range.insertNode(start);  //todo - insert dom before br tags
     w.editor.dom.bind(start, 'click', _doMarkerClick);
-		
+
     w.editor.selection.moveToBookmark(bm);
-		
+    console.dir(range)
     var end = w.editor.dom.create('span', {
       '_entity': true,
       '_type': type,

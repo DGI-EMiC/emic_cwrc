@@ -331,7 +331,7 @@ var FileManager = function(config) {
         }
         head += '\n</rdf:Description>';
       }
-			
+		
       // triples
       for (var i = 0; i < w.triples.length; i++) {
         var t = w.triples[i];
@@ -372,6 +372,7 @@ var FileManager = function(config) {
       exportText = head + content;
     }
     $(doc.body).replaceWith(originalDoc);
+   
     return exportText;
   };
 	
@@ -555,8 +556,7 @@ var FileManager = function(config) {
       alert(e);
     }
   
-    w.editor.setContent(xmlString);
-		
+    w.editor.setContent(xmlString);// body only
     var id, o, range, contents, lengthCount, match, startOffset, endOffset, startNode, endNode;
     for (id in offsets) {
       // get all text nodes

@@ -133,18 +133,18 @@ function save_cwrc_to_fedora($pid, $cwrc_stream) {
   $ocr = get_ocr_from_cwrc($cwrc_stream);
   $item = new Fedora_Item($pid);
   if ($item->datastreams['CWRC']) {
-    $item->modify_datastream_by_value($cwrc_stream, 'CWRC', 'CWRC', 'text/plain');
+    $item->modify_datastream_by_value($cwrc_stream, 'CWRC', 'CWRC', 'text/plain', 'M');
   }
   else {
-    $item->add_datastream_from_string($cwrc_stream, 'CWRC', 'CWRC', 'text/plain', 'X');
+    $item->add_datastream_from_string($cwrc_stream, 'CWRC', 'CWRC', 'text/plain', 'M');
   }
-  $dir_path = file_directory_path() . "/$flat_pid/ocrtmp/";
+  $dir_path = file_directory_path() . "/$flat_pid/ocrtmp";
   $file_path = "$dir_path/ocr.txt";
   if (!is_dir($file_path)) {
     mkdir($dir_path, 0777, TRUE);
   }
   file_put_contents($file_path, $ocr);
-  $item->add_or_modify_by_reference("$base_url/$file_path", 'OCR', 'Scanned Text', 'text/plain', 'M');
+  $value = $item->add_or_modify_by_reference("$base_url/$file_path", 'OCR', 'Scanned Text', 'text/plain', 'M');
   unlink($file_path);
   rmdir($dir_path);
 }
@@ -196,10 +196,25 @@ function cwrc_get_authorities_list($setup_data) {
     'attributes' => array('target' => '_blank'),
   );
   foreach ($responseArray['response']['docs'] as $result) {
+    if ($type == 'Person') {
+      $title = $result['dc.subjectFacet'][0];
+    }
+    else {
+      $title = $result['dc.subjectFacet'][0];
+      $title .= ' - ' . $result['dc.date'][0];
+    }
     $auth_pid = str_replace('info:fedora/', '', $result['PID']);
-    $title = str_replace('info:fedora/', '', $result['title'][0]);
+    if (!$title) {
+      $title = str_replace('info:fedora/', '', $result['title'][0]);
+    }
+    $note = $result['dc.description'][0];
     $link = l($auth_pid, "fedora/repository/$auth_pid", $options);
-    $records[] = array('identifier' => $title, $type . ' Record' => $link);
+
+    $record = array('identifier' => $title, 'Object' => $link);
+    if ($note) {
+      $record['Note'] = $note;
+    }
+    $records[] = $record;
   }
   return $records;
 }

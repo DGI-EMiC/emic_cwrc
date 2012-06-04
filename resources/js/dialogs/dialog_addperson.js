@@ -1,6 +1,6 @@
 var AddPersonDialog = function(config) {
 	var w = config.writer;
-	console.dir(w);
+	
 	$(document.body).append(''+
 	'<div id="addPersonDialog">'+
 		'<div id="personName">'+

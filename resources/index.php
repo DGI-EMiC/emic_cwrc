@@ -8,7 +8,7 @@
     <link type="text/css" rel="stylesheet" href="css/style_2.css" />
     <link type="text/css" rel="stylesheet" href="smoothness/jquery-ui-1.8.13.custom.css" />
     <link type="text/css" rel="stylesheet" href="js/snippet/jquery.snippet.css" />
-    <script type="text/javascript" src="js/jquery/jquery-1.6.1.js"></script>
+    <script type="text/javascript" src="js/jquery/jquery-1.7.js"></script>
     <script type="text/javascript" src="js/jquery/jquery-ui-1.8.13.custom.min.js"></script>
     <script type="text/javascript" src="js/jquery/jquery.contextmenu.js"></script>
     <script type="text/javascript" src="js/jquery/jquery.watermark.min.js"></script>

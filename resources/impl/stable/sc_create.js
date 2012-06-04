@@ -103,7 +103,7 @@ function closeAndEndAnnotating() {
   $('#anno_isResource').prop('checked', false);
   $('#annotation_tab').tabs('select', 0);
   var tabs = $('#tabs').tabs();
-  tabs.tabs('select', 2);
+  tabs.tabs('select', 3);
 
     
 }

@@ -782,7 +782,8 @@ div.mceDropDown {
 {
   position: absolute;
   right: auto;
-  width: 315px;
+  width: 380px;
+  background-color: #fff;
 }
 
 .threecol .colleft .col2
@@ -795,7 +796,7 @@ div.mceDropDown {
 .threecol .colright
 {
   position: absolute;
-  left: 315px;
+  left: 380px;
   right: 0px;
   height: 100%;
   width: auto;
@@ -853,6 +854,7 @@ A:hover
 {
   height: 35px;
   padding: 0px 0px 0px 0px;
+  background-color: #000;
 }
 
 #header #page_selector
@@ -1046,7 +1048,7 @@ A:hover
 
 #tabs > ul
 {
-  padding: 3px 10px 0 !important;
+  padding: 3px 0 0 10px !important;
 }
 
 #tabs li.ui-state-active
@@ -1067,9 +1069,10 @@ A:hover
 #tabs .ui-tabs-panel
 {
   float: none;
-  width: 285px;
+  width: 350px;
+  height: 100% !important;
   padding: 5px 0px 15px !important;
-  margin: 0 auto;
+  margin: 0 0 0 10px;
 }
 
 
@@ -1194,7 +1197,7 @@ A:hover
 
 #tabs #entities ul li
 {
-  margin: 3px 0px;
+  margin: 5px 0px;
 
   -webkit-border-radius: 5px 5px 5px 5px; /* Saf3-4, iOS 1-3.2, Android �1.6 */
           border-radius: 5px 5px 5px 5px; /* Opera 10.5, IE9, Saf5, Chrome, FF4+, iOS 4, Android 2.1+ */
@@ -1219,7 +1222,6 @@ A:hover
 {
   padding: 5px;
 }
-
 
 
 
@@ -1286,11 +1288,11 @@ A:hover
 
 .entitiesList li .box
 {
-  width: 22px;
-  height: 22px;
-  margin-right: 2px;
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
   display: inline-block;
-  background-position: 3px 3px;
+  background-position: 5px 5px;
   background-repeat: no-repeat;
 }
 
@@ -1326,6 +1328,51 @@ A:hover
   display: inline-block;
 }
 
+.entitiesList .entityTitle
+{
+  vertical-align: 7px;
+}
+
+#tripleColumnsParent .entitiesList li.selected,
+.entitiesList li
+{
+  height: 25px;
+}
+
+
+
+/* Relations Tab */
+
+ul.relationsList
+{
+  padding-top: 5px;
+}
+
+ul.relationsList li
+{
+  background: none repeat scroll 0 0 #EEEEEE;
+  border-color: #DDDDDD;
+  border-radius: 5px 5px 5px 5px;
+  border-style: solid;
+  border-width: 1px;
+  color: #555555;
+  cursor: pointer;
+  margin: 3px 0 0;
+  padding: 8px 30px 8px 18px;
+  position: relative;
+  word-wrap: break-word;
+}
+
+ul.relationsList li:nth-child(2n+1)
+{
+  background-color: #eee;
+}
+
+ul.relationsList li:hover
+{
+  background-color: #eee !important;
+  cursor: auto;
+}
 
 
 

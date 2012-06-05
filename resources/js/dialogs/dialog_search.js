@@ -38,7 +38,8 @@ var SearchDialog = function(config) {
     '</div>'+
     '</div>'+
     '<div id="certainty" style="position: absolute; bottom: 0; left: 10px; right: 10px; height: 65px;">'+
-    '<p>This identification is:</p>'+
+    '<p> Marker text </p>' +
+    '<p>This identification is really:</p>'+
     '<input type="radio" id="c_definite" name="certainty" value="definite" /><label for="c_definite">Definite</label>'+
     '<input type="radio" id="c_reasonable" name="certainty" value="reasonable" /><label for="c_reasonable">Reasonably Certain</label>'+
     '<input type="radio" id="c_speculative" name="certainty" value="speculative" /><label for="c_speculative">Speculative</label>'+
@@ -315,11 +316,11 @@ var SearchDialog = function(config) {
         click: function() {
           searchResult(true);
         }
-      //      },{
-      //        text: 'Add New '+config.title,
-      //        click: function() {
-      //          createNew();
-      //        }
+          },{
+              text: 'Add New '+config.title,
+              click: function() {
+                window.open(cwrc_params.BASE_PATH + '/fedora/repository/' + cwrc_params.authority_mappings[config.title]);
+             }
       },{
         text: 'Tag '+config.title,
         click: function() {

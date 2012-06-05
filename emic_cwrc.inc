@@ -77,6 +77,7 @@ function setupCWRC($pid) {
   $results['authority_url'] = $base_url . '/cwrc/authorities/';
   $results['no_edit'] = $cant_edit;
   $results['page_count'] = count($pages);
+  $results['authority_mappings'] = emic_cwrc_get_authority_mappings();
   $json = json_encode($results);
   echo $json;
 }
@@ -230,3 +231,12 @@ function get_ocr_from_cwrc($cwrc) {
   return $ocr;
 }
 
+function emic_cwrc_get_authority_mappings() {
+  $mappings = array(
+    'Place' => 'islandora:9247',
+    'Person' => 'islandora:9239',
+    'Event' => 'islandora:9242',
+    'Organization' => 'islandora:9236',
+  );
+  return $mappings;
+}

@@ -955,14 +955,8 @@ A:hover
 
 /* Fullscreen Image Annotation */
 
-#full-screen,
-#create_annotation
-{
-  float: left;
-  margin: 5px 5px 0px 0px;
-}
 
-#full-screen
+#create_annotation
 {
   margin: 5px 5px 0px 15px;
 }
@@ -1279,6 +1273,57 @@ A:hover
   position: absolute;
   height: 100% !important;
 }
+
+
+
+
+
+
+/* Column Separator */
+
+#column-separator
+{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  width: 8px;
+  left: 49.5%;
+  z-index: 100;
+  
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  
+  background-image: url('../imgs/separator.png'); 
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: #fff;
+
+  cursor: col-resize;  
+}
+
+.col1
+{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: auto;
+  width: 50%;
+}
+
+.col3
+{
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: auto;
+  right: 0px;
+  width: 50%;
+}
+
+
+
+
 
 
 

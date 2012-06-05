@@ -4,11 +4,10 @@
   <head>
     <title>DHSI CWRICWriter</title>
 
-
     <link type="text/css" rel="stylesheet" href="css/style_2.css" />
     <link type="text/css" rel="stylesheet" href="smoothness/jquery-ui-1.8.13.custom.css" />
     <link type="text/css" rel="stylesheet" href="js/snippet/jquery.snippet.css" />
-    <script type="text/javascript" src="js/jquery/jquery-1.7.js"></script>
+    <script type="text/javascript" src="js/jquery/jquery-1.6.1.js"></script>
     <script type="text/javascript" src="js/jquery/jquery-ui-1.8.13.custom.min.js"></script>
     <script type="text/javascript" src="js/jquery/jquery.contextmenu.js"></script>
     <script type="text/javascript" src="js/jquery/jquery.watermark.min.js"></script>
@@ -24,18 +23,9 @@
     <script type="text/javascript" src="js/entitieslist.js"></script>
     <script type="text/javascript" src="js/relations.js"></script>
 
-
-
-
-
-
-
     <!-- CWRC stylesheets -->
 
-
-
-
-    <script type="text/javascript" src="js/fullscreen.js"></script>
+    <script type="text/javascript" src="js/resize-columns.js"></script>
     <script type="text/javascript" src="Islandora/js/startup.js"></script>
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 
@@ -120,7 +110,7 @@
           </div>
         </div>
       </div>
-      <div class="colright">
+      <div id="colright" class="colright">
         <div class="col1">
           <!-- Text Annotation -->
           <div class="text-annotation-wrapper">
@@ -129,9 +119,10 @@
             </form>
           </div>
         </div>
+        <!-- Column Separator -->
+        <div id="column-separator"></div>
         <div class="col3">
           <!-- Image annotation -->
-          <input type="button" id="full-screen" value="Full Width"/>
           <button id="create_annotation" class="menu_button">Annotate</button>
           <div class="image-annotation-wrapper">
 

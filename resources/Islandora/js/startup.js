@@ -67,6 +67,16 @@ $('document').ready(function(){
 
   // add page choice behavior to dropdown
   $('#page_choose').change(function(e){
+    if(!writer.editor.isNotDirty){
+      answer = confirm("You have unsaved changes.  Click Cancel to stay on page, OK to leave page");
+      if (!answer){
+        selector = "#page_choose option[value='" + cwrc_params.position + "']";
+        $(selector).removeAttr('selected');
+        w.editor.isNotDirty = 1;
+        $('#page_choose').val('10');
+        return;
+      }
+    }
     selector = "#page_choose option[value='" + cwrc_params.position + "']";
    
     cwrc_params.position = $('#page_choose :selected').attr('value');
@@ -89,6 +99,13 @@ $('document').ready(function(){
 
   $('#page-prev').click(function(e){
     e.preventDefault();
+    if(!writer.editor.isNotDirty){
+      answer = confirm("You have unsaved changes.  Click Cancel to stay on page, OK to leave");
+      if (!answer){
+     
+        return;
+      }
+    }
     if(cwrc_params.position > 1){
       $('#page-next').css('opacity', '1').removeClass('disabled');
       
@@ -107,8 +124,14 @@ $('document').ready(function(){
     }
   });
   $('#page-next').click(function(e){
-  
     e.preventDefault();
+    if(!writer.editor.isNotDirty){
+      answer = confirm("You have unsaved changes.  Click Cancel to stay on page, OK to leave");
+      if (!answer){
+        return;
+      }
+    }
+
     if(cwrc_params.position < cwrc_params.page_count){
       $('#page-prev').css('opacity', '1').removeClass('disabled');
      
@@ -151,7 +174,7 @@ function init_canvas_div(){
   if(emic_canvas_params.no_edit == true){
     $('#create_annotation').hide();
   }
-   opts.base = emic_canvas_params.object_base;
+  opts.base = emic_canvas_params.object_base;
 
 
 

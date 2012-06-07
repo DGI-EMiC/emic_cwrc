@@ -52,6 +52,15 @@
     <script src="impl/stable/sc_gdata.js" type="text/javascript"></script>
     <script src="impl/stable/sc_pastebin.js" type="text/javascript"></script>
 
+
+    <script type="text/javascript">
+			window.onbeforeunload = function() {
+				if (this.tinymce.get('editor').isDirty()) {
+					return 'You have unsaved changes.';
+				}
+			}
+
+    </script>
     <!-- Canvas css -->
     <link rel="stylesheet" href="impl/css/sc.css" type="text/css" />
     <link rel="stylesheet" href="impl/css/emic_canvas.css" type="text/css" />

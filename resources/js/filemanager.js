@@ -627,6 +627,8 @@ var FileManager = function(config) {
     w.entitiesList.update();
     w.tree.update(true);
     w.relations.update();
+
+    w.editor.isNotDirty = 1;
   };
 	
   fm.editSource = function() {

@@ -111,7 +111,7 @@
         </div>
       </div>
       <div id="colright" class="colright">
-        <div class="col1">
+        <div id="col1" class="col1">
           <!-- Text Annotation -->
           <div class="text-annotation-wrapper">
             <form method="post" action="">
@@ -121,7 +121,7 @@
         </div>
         <!-- Column Separator -->
         <div id="column-separator"></div>
-        <div class="col3">
+        <div id="col3" class="col3">
           <!-- Image annotation -->
           <button id="create_annotation" class="menu_button">Annotate</button>
           <div class="image-annotation-wrapper">

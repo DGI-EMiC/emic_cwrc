@@ -12,6 +12,8 @@ $(document).ready(function() {
     },
   }).data('ratio', {left: 50, right: 50});
 
+
+resizeColumnsDrag();
   // check starting width
   checkInitWidth();
   
@@ -43,8 +45,8 @@ var resizeColumns = function(event, ui) {
   var separatorOffsetRight = widthInit - ($('#column-separator').outerWidth() + separatorOffsetLeft);
   
   // apply width
-  $('.col1').width(separatorOffsetLeft);
-  $('.col3').width(separatorOffsetRight);
+  $('#col1').width(separatorOffsetLeft);
+  $('#col3').width(separatorOffsetRight);
 
   // set ratio
   var leftRatio = (separatorOffsetLeft / widthInit) * 100;
@@ -69,8 +71,8 @@ var resizeColumnsDrag = function() {
   var separatorOffsetRight = widthInit - leftWidth - widthSeparator;
 
   // apply width
-  $('.col1').width(leftWidth + 1);
-  $('.col3').width(separatorOffsetRight);
+  $('#col1').width(leftWidth + 1);
+  $('#col3').width(separatorOffsetRight);
   $('#column-separator').css({left: leftWidth });
 
   // call resize canvas function
@@ -80,34 +82,34 @@ var resizeColumnsDrag = function() {
 
 // check for the left column with on init
 var checkInitWidth = function() {
-  
-  var leftWidth = $('.col1').width();
-  
-  // if the left column is smaller than the editor
-  if (leftWidth < 450) {
 
-    // set variables
-    var widthInit = $('#colright').width();
-    var widthSeparator = $('#column-separator').outerWidth();
-  
+  // set variables  
+  var leftWidth = $('#col1').width();
+
+  var widthInit = $('#colright').width();
+  var widthSeparator = $('#column-separator').outerWidth();
+
+  // if the left column is smaller than the editor
+  if (leftWidth < 450 && widthInit > 0) {
+
     if (450 > widthInit) {
-    
+
       var rightWidth = 0;
       var colSeparatorLeft = widthInit - widthSeparator;
       // apply width
-      $('.col1').width(colSeparatorLeft);
-      $('.col3').width(rightWidth);
+      $('#col1').width(colSeparatorLeft);
+      $('#col3').width(rightWidth);
       $('#column-separator').css({left: colSeparatorLeft});
     }
     else {
-    
+
       var rightWidth = widthInit - 451 - widthSeparator;
       // apply width
-      $('.col1').width(451);
-      $('.col3').width(rightWidth);
+      $('#col1').width(451);
+      $('#col3').width(rightWidth);
       $('#column-separator').css({left: 450});
     }
-  
+
     // set ratio
     var leftRatio = (451 / widthInit) * 100;
     var rightRatio = (rightWidth / widthInit) * 100;

@@ -164,7 +164,7 @@ function guarantee_cwrc_datastream($pid) {
   }
 }
 
-function emic_cwrc_get_authorities($dataType, $query) {
+function emic_cwrc_get_authorities($dataType, $query = "") {
   $mappings = array(
     'Tag Place' => array('collection' => 'islandora:9247', 'type' => t('Place')),
     'Tag Person' => array('collection' => 'islandora:9239', 'type' => t('Person')),

@@ -164,7 +164,7 @@ function guarantee_cwrc_datastream($pid) {
   }
 }
 
-function emic_cwrc_get_authorities($dataType) {
+function emic_cwrc_get_authorities($dataType, $query) {
   $mappings = array(
     'Tag Place' => array('collection' => 'islandora:9247', 'type' => t('Place')),
     'Tag Person' => array('collection' => 'islandora:9239', 'type' => t('Person')),
@@ -172,21 +172,22 @@ function emic_cwrc_get_authorities($dataType) {
     'Tag Organization' => array('collection' => 'islandora:9236', 'type' => t('Organization')),
   );
 
-  $authorities = cwrc_get_authorities_list($mappings[$dataType]);
+  $authorities = cwrc_get_authorities_list($mappings[$dataType], $query);
   if ($authorities) {
     $json = json_encode($authorities);
     echo $json;
   }
 }
 
-function cwrc_get_authorities_list($setup_data) {
+function cwrc_get_authorities_list($setup_data, $query) {
   module_load_include('inc', 'islandora_solr_search', 'IslandoraSolrQueryProcessor');
 
   $collection = $setup_data['collection'];
   $type = $setup_data['type'];
 
   $query_processor = new IslandoraSolrQueryProcessor();
-  $query_processor->buildAndExecuteQuery("collection:\"$collection\"");
+  $query_string = "collection:\"$collection\" AND dc.subject:\"$query\"";
+  $query_processor->buildAndExecuteQuery($query_string);
 
   $raw_results = $query_processor->solrResult;
 

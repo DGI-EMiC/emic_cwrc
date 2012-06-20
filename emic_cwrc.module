@@ -83,6 +83,7 @@ function emic_cwrc_islandora_book_links($pid) {
 }
 
 function emic_cwrc_islandora_tabs($content_models, $pid) {
+  module_load_include('inc', 'islandora_book', 'book_pack_utils');
   global $base_url;
   $valid = FALSE;
   $content_model_pids = array();
@@ -108,7 +109,7 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
   if (!$valid) {
     return;
   }
-  module_load_include('inc', 'islandora_book', 'book_pack_utils');
+
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $tab_text = t("Critical Edition");
   if (user_access('edit CWRC')) {

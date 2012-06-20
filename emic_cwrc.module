@@ -114,7 +114,8 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
   if (user_access('edit CWRC')) {
     $tab_text = t('Editor');
   }
-  $src = $base_url . '/sites/all/modules/emic_cwrc/resources/index.php?PID=' . $page_pid;
+  $path = drupal_get_path('module', 'emic_cwrc');
+  $src = "$base_url/$path/resources/index.php?PID=" . $page_pid;
   $tabset['all_edits_tab'] = array(
     '#type' => 'tabpage',
     '#title' => $tab_text,

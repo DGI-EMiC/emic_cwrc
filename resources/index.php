@@ -82,7 +82,8 @@
         </div>
         <h1>DHSI CWRCWriter</h1>
       </div>
-
+      <div id ="pageChange">
+      </div>
     </div>
     <!-- Body -->
     <div class="colmask threecol">

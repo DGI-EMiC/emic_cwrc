@@ -232,8 +232,5 @@ function init_canvas_div(){
     fetchTriples(repouri, rdfbase, cb_process_repository);
   }
 
-
-
-
 }
 

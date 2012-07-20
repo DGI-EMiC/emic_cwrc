@@ -172,6 +172,10 @@ function emic_cwrc_get_authorities($dataType, $query = "") {
     'Tag Organization' => array('collection' => 'islandora:9236', 'type' => t('Organization')),
   );
 
+  if ($query != ''){
+    $query .= '*';
+  }
+
   $authorities = cwrc_get_authorities_list($mappings[$dataType], $query);
   if ($authorities) {
     $json = json_encode($authorities);

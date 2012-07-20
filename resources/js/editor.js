@@ -581,7 +581,6 @@ var Writer = function(config) {
     w.editor.dom.bind(start, 'click', _doMarkerClick);
 
     w.editor.selection.moveToBookmark(bm);
-    console.dir(range)
     var end = w.editor.dom.create('span', {
       '_entity': true,
       '_type': type,

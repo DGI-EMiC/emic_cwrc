@@ -53,6 +53,8 @@ function get_cwrc_data($pid) {
 function setupCWRC($pid) {
   global $base_url;
   global $user;
+  module_load_include('inc', 'fedora_repository', 'ContentModel');
+
   if (!user_access('use CWRC')) {
     return;
   }
@@ -66,6 +68,11 @@ function setupCWRC($pid) {
   $item = new Fedora_Item($book);
   $title = $item->objectProfile->objLabel;
   $pages = get_sorted_pages($book);
+  $cModels = array();
+  foreach ($pages as $page) {
+    $cm_object = ContentModel::loadFromObject($page);
+    $cModels[] = $cm_object->pid;
+  }
   $position = array_search($pid, $pages);
   $results = array();
   $results['BASE_PATH'] = $base_url;
@@ -73,6 +80,7 @@ function setupCWRC($pid) {
   $results['fedora_url'] = $fedora_url;
   $results['position'] = $position;
   $results['pages'] = $pages;
+  $results['cModels'] =  $cModels;
   $results['title'] = $title;
   $results['authority_url'] = $base_url . '/cwrc/authorities/';
   $results['no_edit'] = $cant_edit;
@@ -172,7 +180,7 @@ function emic_cwrc_get_authorities($dataType, $query = "") {
     'Tag Organization' => array('collection' => 'islandora:9236', 'type' => t('Organization')),
   );
 
-  if ($query != ''){
+  if ($query != '') {
     $query .= '*';
   }
 

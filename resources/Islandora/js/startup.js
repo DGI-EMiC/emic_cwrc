@@ -38,6 +38,12 @@ $('document').ready(function(){
     dataType: 'json'
 
   });
+  // get inital positions of col1 and separator
+  cwrc_params.col_width = $('.col1').css("width");
+  cwrc_params.separator_pos =$('#column-separator').css("left");
+
+
+  testCModel();
 
   $(this).attr("title", cwrc_params.title);
   $('#header h1').text( cwrc_params.title + " - Seq# " + cwrc_params.position);
@@ -78,8 +84,10 @@ $('document').ready(function(){
       }
     }
     selector = "#page_choose option[value='" + cwrc_params.position + "']";
-   
+
+    setReturnParams();
     cwrc_params.position = $('#page_choose :selected').attr('value');
+    testCModel();
     PID = cwrc_params.pages[ cwrc_params.position];
     writer.fm.loadEMICDocument();
     init_canvas_div();
@@ -111,7 +119,9 @@ $('document').ready(function(){
       
       var selector = "#page_choose option[value='" + cwrc_params.position + "']";
       $(selector).removeAttr('selected');
+      setReturnParams()
       cwrc_params.position--;
+      testCModel();
       selector = "#page_choose option[value='" + cwrc_params.position + "']";
       $(selector).attr('selected','selected');
       PID = cwrc_params.pages[ cwrc_params.position];
@@ -137,8 +147,9 @@ $('document').ready(function(){
      
       var selector = "#page_choose option[value='" + cwrc_params.position + "']";
       $(selector).removeAttr('selected');
-      
+      setReturnParams()
       cwrc_params.position++;
+      testCModel();
       selector = "#page_choose option[value='" + cwrc_params.position + "']";
       $(selector).attr('selected','selected');
       PID = cwrc_params.pages[ cwrc_params.position];
@@ -234,3 +245,32 @@ function init_canvas_div(){
 
 }
 
+
+function testCModel(){
+
+  if(cwrc_params.cModels[cwrc_params.position -1] == 'islandora:bd_pageCModel'){
+    closeColumn()
+  }else{
+    openColumn();
+  }
+}
+function closeColumn(){
+
+  $('.col3').css("display","none");
+  $('.col1').css("width","100%");
+  $('#column-separator').css("left","99%");
+}
+
+function openColumn(){
+  $('.col3').css("display","block");
+  $('.col1').css("width",cwrc_params.col_width);
+  $('#column-separator').css("left",cwrc_params.separator_pos);
+}
+
+
+function setReturnParams(){
+  if(cwrc_params.cModels[cwrc_params.position -1] == 'islandora:pageCModel'){
+    cwrc_params.col_width = $('.col1').css("width");
+    cwrc_params.separator_pos =$('#column-separator').css("left");
+  }
+}

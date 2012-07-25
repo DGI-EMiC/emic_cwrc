@@ -67,7 +67,7 @@ $('document').ready(function(){
   });
 
   // synchronize displayed page with dropdown
-
+  
   var selector = "#page_choose option[value='" + cwrc_params.position + "']";
   $(selector).attr('selected','selected');
 
@@ -259,12 +259,14 @@ function closeColumn(){
   $('.col3').css("display","none");
   $('.col1').css("width","100%");
   $('#column-separator').css("left","99%");
+  $("#annotation_tab").hide()
 }
 
 function openColumn(){
   $('.col3').css("display","block");
   $('.col1').css("width",cwrc_params.col_width);
   $('#column-separator').css("left",cwrc_params.separator_pos);
+  $("#annotation_tab").show()
 }
 
 

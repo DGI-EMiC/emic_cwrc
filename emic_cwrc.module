@@ -35,6 +35,14 @@ function emic_cwrc_menu() {
     'type' => MENU_CALLBACK,
     'access arguments' => array('use CWRC'),
   );
+
+  $items['cwrc/editor'] = array(
+    'file' => 'emic_cwrc.module',
+    'page callback' => 'editor_as_link',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('use CWRC'),
+  );
+
   return $items;
 }
 
@@ -93,19 +101,13 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
   if ((in_array('islandora:bookCModel', $content_model_pids) || in_array('islandora:iaBookCModel', $content_model_pids)) && user_access('use CWRC')) {
     $page_pids = get_sorted_pages($pid);
     $page_pid = $page_pids[1];
+    $book_pid = $pid;
     $count = count($page_pids);
     if (count($page_pids) > 0) {
       $valid = TRUE;
     }
   }
-  if (in_array('islandora:pageCModel', $content_model_pids) && user_access('use CWRC')) {
-    $page_pid = $pid;
-    $valid = TRUE;
-  }
-  if (in_array('islandora:bd_pageCModel', $content_model_pids) && user_access('use CWRC')) {
-    $page_pid = $pid;
-    $valid = TRUE;
-  }
+
   if (!$valid) {
     return;
   }
@@ -117,12 +119,31 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
   }
   $path = drupal_get_path('module', 'emic_cwrc');
   $src = "$base_url/$path/resources/index.php?PID=" . $page_pid;
+  $link = l(t('Editor'), "cwrc/editor/$page_pid/$pid");
   $tabset['all_edits_tab'] = array(
+    '#id' => 'editor_tab',
     '#type' => 'tabpage',
     '#title' => $tab_text,
-    '#content' => theme('emic_cwrc', $src),
+    '#content' => $link,
     '#weight' => 25,
   );
   return $tabset;
 }
 
+function editor_as_link($pid, $book_pid = null) {
+  global $base_url;
+  $path = drupal_get_path('module', 'emic_cwrc');
+  $src = "$base_url/$path/resources/index.php?PID=" . $pid;
+  $variables = array('src' => $src, 'pid' => $pid, 'book_pid' => $book_pid);
+  return theme('emic_cwrc', $variables);
+}
+
+function emic_cwrc_islandora_book_get_pageview_links($pid) {
+  $text = t("Critical Edition");
+  if (user_access('use CWRC')) {
+    $text = t("Editor");
+  }
+  $path = drupal_get_path('module', 'emic_cwrc');
+  $link = l($text, "cwrc/editor/$pid");
+  return $link;
+}

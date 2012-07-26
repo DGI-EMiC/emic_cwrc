@@ -42,8 +42,7 @@ $('document').ready(function(){
   cwrc_params.col_width = $('.col1').css("width");
   cwrc_params.separator_pos =$('#column-separator').css("left");
 
-
-  testCModel();
+ 
 
   $(this).attr("title", cwrc_params.title);
   $('#header h1').text( cwrc_params.title + " - Seq# " + cwrc_params.position);
@@ -53,7 +52,9 @@ $('document').ready(function(){
     'project':'EMiC'
   });
   writer.init();
+
   init_canvas_div();
+  testCModel();
   if(cwrc_params.position == 1){
     $('#page-prev').css('opacity', '.6').addClass('disabled');
   }
@@ -263,6 +264,7 @@ function closeColumn(){
 }
 
 function openColumn(){
+ 
   $('.col3').css("display","block");
   $('.col1').css("width",cwrc_params.col_width);
   $('#column-separator').css("left",cwrc_params.separator_pos);

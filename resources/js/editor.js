@@ -525,7 +525,7 @@ var Writer = function(config) {
         type: type,
         title: w.titles[type],
         pos: w.editor.contextMenuPos
-        });
+      });
     } else {
       w.showError(result);
     }
@@ -1025,8 +1025,8 @@ var Writer = function(config) {
     $('#editor').tinymce({
       script_url : 'js/tinymce/jscripts/tiny_mce/tiny_mce.js',
       //		tinyMCE.init({
-      //			mode: 'exact',
-      //			elements: 'editor',
+      mode: 'textareas',
+      elements: 'editor',
       theme: 'advanced',
       readonly : cwrc_params.no_edit,
       content_css: 'css/editor.css'+', '+w.schemaCSS,
@@ -1162,14 +1162,14 @@ var Writer = function(config) {
 				
 
 				
-//        ed.addButton('loadbutton', {
-//          title: 'Load',
-//          image: 'img/folder_page.png',
-//          'class': 'entityButton',
-//          onclick: function() {
-//            w.fm.openLoader();
-//          }
-//        });
+        //        ed.addButton('loadbutton', {
+        //          title: 'Load',
+        //          image: 'img/folder_page.png',
+        //          'class': 'entityButton',
+        //          onclick: function() {
+        //            w.fm.openLoader();
+        //          }
+        //        });
 				
         ed.addButton('editsource', {
           title: 'Edit Source',
@@ -1180,14 +1180,14 @@ var Writer = function(config) {
           }
         });
 				
-//        ed.addButton('validate', {
-//          title: 'Validate',
-//          image: 'img/validate.png',
-//          'class': 'entityButton',
-//          onclick: function() {
-//            w.fm.validate();
-//          }
-//        });
+        //        ed.addButton('validate', {
+        //          title: 'Validate',
+        //          image: 'img/validate.png',
+        //          'class': 'entityButton',
+        //          onclick: function() {
+        //            w.fm.validate();
+        //          }
+        //        });
 				
         ed.addButton('addtriple', {
           title: 'Add Relation',
@@ -1249,7 +1249,9 @@ var Writer = function(config) {
       theme_advanced_buttons2: 'currenttag',
       theme_advanced_buttons3: '',
       theme_advanced_toolbar_location: 'top',
-      theme_advanced_toolbar_align: 'left'
+      theme_advanced_toolbar_align: 'left',
+      theme_advanced_statusbar_location : "bottom",
+      theme_advanced_resizing : true
     });
 		
     $(window).resize(_doResize);

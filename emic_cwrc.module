@@ -127,7 +127,7 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
     '#content' => $link,
     '#weight' => 25,
   );
-  return $tabset;
+  //return $tabset;
 }
 
 function editor_as_link($pid, $book_pid = null) {
@@ -145,5 +145,21 @@ function emic_cwrc_islandora_book_get_pageview_links($pid) {
   }
   $path = drupal_get_path('module', 'emic_cwrc');
   $link = l($text, "cwrc/editor/$pid");
+  return $link;
+}
+
+function emic_cwrc_islandora_book_get_bookview_links($pid) {
+  module_load_include('inc', 'islandora_book', 'book_pack_utils');
+  $pages = get_page_pids($pid);
+  $first_page = $pages[1];
+  if(!$first_page){
+    return;
+  }
+  $text = t("Critical Edition");
+  if (user_access('use CWRC')) {
+    $text = t("Editor");
+  }
+  $path = drupal_get_path('module', 'emic_cwrc');
+  $link = l($text, "cwrc/editor/$first_page");
   return $link;
 }

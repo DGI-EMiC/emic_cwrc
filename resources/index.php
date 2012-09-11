@@ -40,8 +40,8 @@
       <script src="impl/js/scale.raphael.js" type="text/javascript"></script>
       <script src="impl/js/uuid.js" type="text/javascript"></script>
 
-      <script src="impl/js/jQuery-contextMenu/src/jquery.contextMenu.js" type="text/javascript"></script>
-      <link href="impl/js/jQuery-contextMenu/src/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+      <script src="impl/js/ContextMenu/src/jquery.contextMenu.js" type="text/javascript"></script>
+      <link href="impl/js/ContextMenu/src/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
 
       <script src="impl/stable/islandora_emic_init.js" type="text/javascript"></script>
       <script src="impl/stable/sc_ui.js" type="text/javascript"></script>

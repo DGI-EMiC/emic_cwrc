@@ -113,12 +113,13 @@ function make_cwrc_datastream($pid) {
     </body>
 </html>';
   $lines = @file($ocr_url);
+  $count = 100;
   if (is_array($lines)) {
     foreach ($lines as $line) {
       $line = preg_replace('/&£/', '£', $line);
-      //    $line = preg_replace('/[^(\x20-\x7F)]*/', '', $line);
+   
       $line = htmlspecialchars($line);
-      $ocr .= $line . '<br />';
+      $ocr .= $line . '<span _editable="true" struct="true" _tag="lb" id="struct_' . $count++ . '">﻿</span>';
     }
   }
   if (empty($ocr)) {

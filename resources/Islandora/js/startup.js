@@ -42,7 +42,7 @@ $('document').ready(function(){
   cwrc_params.col_width = $('.col1').css("width");
   cwrc_params.separator_pos =$('#column-separator').css("left");
 
- 
+
 
   $(this).attr("title", cwrc_params.title);
   $('#header h1').text( cwrc_params.title + " - Seq# " + cwrc_params.position);
@@ -68,7 +68,7 @@ $('document').ready(function(){
   });
 
   // synchronize displayed page with dropdown
-  
+
   var selector = "#page_choose option[value='" + cwrc_params.position + "']";
   $(selector).attr('selected','selected');
 
@@ -95,7 +95,7 @@ $('document').ready(function(){
     $('#header h1').text( cwrc_params.title + " - Seq# " + (parseInt(cwrc_params.position)));
     $('#page-prev').css('opacity', '1').removeClass('disabled');
     $('#page-next').css('opacity', '1').removeClass('disabled');
-    
+
     if(cwrc_params.position ==1 ){
       $('#page-prev').css('opacity', '.6').addClass('disabled');
     }
@@ -111,13 +111,13 @@ $('document').ready(function(){
     if(!writer.editor.isNotDirty){
       answer = confirm("You have unsaved changes.  Click Cancel to stay on page, OK to leave");
       if (!answer){
-     
+
         return;
       }
     }
     if(cwrc_params.position > 1){
       $('#page-next').css('opacity', '1').removeClass('disabled');
-      
+
       var selector = "#page_choose option[value='" + cwrc_params.position + "']";
       $(selector).removeAttr('selected');
       setReturnParams()
@@ -145,7 +145,7 @@ $('document').ready(function(){
 
     if(cwrc_params.position < cwrc_params.page_count){
       $('#page-prev').css('opacity', '1').removeClass('disabled');
-     
+
       var selector = "#page_choose option[value='" + cwrc_params.position + "']";
       $(selector).removeAttr('selected');
       setReturnParams()
@@ -154,7 +154,7 @@ $('document').ready(function(){
       selector = "#page_choose option[value='" + cwrc_params.position + "']";
       $(selector).attr('selected','selected');
       PID = cwrc_params.pages[ cwrc_params.position];
-   
+
       writer.fm.loadEMICDocument();
       init_canvas_div();
       $('#header h1').text( cwrc_params.title + " - Seq # " + (parseInt(cwrc_params.position)));
@@ -163,12 +163,86 @@ $('document').ready(function(){
       }
     }
   });
+  $(function(){
+    $.contextMenu({
+      selector: '.comment_title',
+      callback: function(key, options) {
+        console.log(this)
+        var urn = $(this).parent('div').attr('urn');
+        var title = $(this).text().substring(2,100);
+        title = title.trim();
+        var comment_text = $(this).next('.comment_text');
+        if(key == 'delete'){
+          if (confirm("Permananently Delete Annotation '" + title + "'")) {
+            pb_deleteAnno(urn);
+          }
+       
+        }
 
+        if(key == 'edit'){
+          $(this).addClass('annotation-opened').next().show();
+          var annotation = comment_text.text();
+          var pm = $(this).find('.comment_showhide');
+          if (pm.text() == '+ ') {
+            pm.empty().append('- ');
+            console.log(this);
+            var id = $(this).attr('id').substring(5,100);
+            var canvas = $(this).attr('canvas');
+            paint_commentAnnoTargets(this, canvas, id);
+          }
+          startEditting(title, annotation, urn)
+        }
+      },
+      items: {
+        "edit": {
+          name: "Edit",
+          icon: "edit",
+          accesskey: "e"
+        },
+        "delete": {
+          name: "Delete annotation",
+          icon: "delete"
+        }
+
+      }
+    });
+  });
+
+  $(function(){
+    $.contextMenu({
+      selector: '.comment_edit',
+      callback: function(key, options) {
+        var urn = $(this).parent('div').attr('urn');
+        var new_text = $(this).val()
+        pb_update_anno(urn, new_text);
+
+      },
+      items: {
+        "paste": {
+          name: "Save Changes",
+          icon: "paste"
+        }
+
+      }
+    });
+  });
+
+  $(function() {
+    var availableTypes = [
+    "Textual Notes",
+    "Explanatory Notes",
+    "Marginalia",
+    "Speculative"
+    ];
+    $( "#anno_classification" ).autocomplete({
+      source: availableTypes
+    });
+  });
 });
 
 
 function init_canvas_div(){
- 
+
   pagePid =cwrc_params.pages[ cwrc_params.position];
   $.ajax({
     url: basedir +'/emic/shared/setup/' + pagePid,
@@ -264,7 +338,7 @@ function closeColumn(){
 }
 
 function openColumn(){
- 
+
   $('.col3').css("display","block");
   $('.col1').css("width",cwrc_params.col_width);
   $('#column-separator').css("left",cwrc_params.separator_pos);

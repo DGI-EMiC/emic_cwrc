@@ -85,7 +85,6 @@ function initCanvas(nCanvas) {
   var w = w/perrow - (5*perrow);
   var h = $(window).height() - 50;
   h = h/rows;
-	
   for (var x=0;x<nCanvas;x++) {
     $('#canvases').append('<div id="canvas_' + x + '" class="canvas"></div>')
     $('#canvas_'+x).width(w);

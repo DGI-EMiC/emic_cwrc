@@ -7,7 +7,7 @@
       <link type="text/css" rel="stylesheet" href="css/style_2.css" />
       <link type="text/css" rel="stylesheet" href="smoothness/jquery-ui-1.8.13.custom.css" />
       <link type="text/css" rel="stylesheet" href="js/snippet/jquery.snippet.css" />
-      <script type="text/javascript" src="js/jquery/jquery-1.6.1.js"></script>
+      <script type="text/javascript" src="js/jquery/jquery-1.7.js"></script>
       <script type="text/javascript" src="js/jquery/jquery-ui-1.8.13.custom.min.js"></script>
       <script type="text/javascript" src="js/jquery/jquery.contextmenu.js"></script>
       <script type="text/javascript" src="js/jquery/jquery.watermark.min.js"></script>
@@ -40,7 +40,8 @@
       <script src="impl/js/scale.raphael.js" type="text/javascript"></script>
       <script src="impl/js/uuid.js" type="text/javascript"></script>
 
-      <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+      <script src="impl/js/jQuery-contextMenu/src/jquery.contextMenu.js" type="text/javascript"></script>
+      <link href="impl/js/jQuery-contextMenu/src/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
 
       <script src="impl/stable/islandora_emic_init.js" type="text/javascript"></script>
       <script src="impl/stable/sc_ui.js" type="text/javascript"></script>
@@ -171,8 +172,7 @@
                     </li>
                   </ul>
 
-                  <ul class="menu_body" id="jump_body">
-                  </ul>
+
 
                   <ul class="menu_body" id="view_body">
                     <li>Show Image Selection: <span style="float:right"><input id="check_view_imgSel" type="checkbox"></input></li>
@@ -233,11 +233,18 @@
                 <option value="comment">Commentary</option>
                 <option value="transcription">Transcription</option>
               </select></span>
+
+            <div class="element-wrap">
+              <label for="anno_text">Type:</label>
+              <input id="anno_classification" type="text" size="28"></input>
+            </div>
             <!-- Annotation textarea -->
             <div class="element-wrap">
               <label for="anno_text">Annotation:</label>
               <textarea id="anno_text" cols="40" rows="5"></textarea>
             </div>
+
+
             <!-- Services - to be removed -->
             <span style="width:200px;margin:0px;padding:0px;float:left">
               <ul id="create_body" style="width: 200px; list-style:none;font-size:10pt;margin:0;padding:0;">

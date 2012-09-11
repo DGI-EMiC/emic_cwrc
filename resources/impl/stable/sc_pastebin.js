@@ -5,7 +5,7 @@ function init_pb() {
 
 }
 
-function pb_postData(title, data) {
+function pb_postData(title, data, type) {
 
   data = encodeURI(data);
   $.ajax({
@@ -13,13 +13,15 @@ function pb_postData(title, data) {
     url:emic_canvas_params.islandora_post_url,
     data: {
       title:title,
-      data:data
+      data:data,
+      type:type
     },
     success: function(data,status,xhr) {
+  
       pb_getPaste(data);
     },
     error: function(data,status,xhr) {
-    //alert('Failed to post')
+    alert('Failed to post')
     }
   });
 }
@@ -52,11 +54,11 @@ function pb_getList() {
   });
 }
 
-function pb_getPaste(pid) {
-
+function pb_getPaste(urn) {
+    
   $.ajax({
     type:'GET',
-    url: emic_canvas_params.islandora_get_annotation +pid,
+    url: emic_canvas_params.islandora_get_annotation + urn,
     success: function(data,status,xhr) {
    
       load_commentAnno(data);
@@ -65,12 +67,13 @@ function pb_getPaste(pid) {
       console.dir(data)
     }
   });
+     
 }
 
-// unimplemented.
+
 
 function pb_deleteAnno(urn) {
-
+ 
   var selector = '#anno_'+urn;
   var classSelector = '.svg_'+urn;
   $.ajax({
@@ -85,5 +88,34 @@ function pb_deleteAnno(urn) {
     error: function(data,status,xhr) {
     //   alert('Failed to delete annotation')
     }
+  });
+}
+
+
+function pb_update_annotation(urn, title, content){
+  $.ajax({
+    type:'POST',
+    url:emic_canvas_params.islandora_update_annotation,
+    data: {
+      urn:urn,
+      title:title,
+      content:content
+    },
+    success: function(data,status,xhr) {
+      $('#create_annotation_box').hide();
+      var selector = '#anno_'+urn;
+      var text = $(selector).text().trim().substring(2,100);
+      old_title = $(selector).html();
+      new_title = old_title.replace(text, title);
+      $(selector).html(new_title);
+      $(selector).next('.comment_text').text(content);
+    },
+    error: function(data,status,xhr) {
+      alert('Failed to update annotation')
+    }
+  });
+  $('#create_annotation').empty().append('Annotate');
+  $('#create_annotation').css({
+    color:'#000000'
   });
 }

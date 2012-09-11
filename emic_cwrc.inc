@@ -32,7 +32,7 @@ function save_cwrc_data() {
 }
 
 /**
- * Retrieves CWRC datasgram from object
+ * Retrieves CWRC datastream from object
  * @param string $pid
  */
 function get_cwrc_data($pid) {

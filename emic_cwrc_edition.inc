@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Creates Critical Edition, based on book object
  * @global user $user
@@ -73,7 +74,6 @@ function emic_cwrc_create_edition_submit($form, &$form_state) {
   batch_process("cwrc/editor/$first_pid/$edition_pid");
 }
 
-
 /**
  * Created individual page objects for new Critical Edition
  * @global user $user
@@ -94,7 +94,6 @@ function emic_cwrc_create_edition_page($page, $sequence_number, $edition_pid, $n
   $item = new Fedora_Item($page);
   $sequence_number = get_page_number($page);
   $label = $item->objectProfile->objLabel;
-//  $nextPid = FEDORA_ITEM::get_next_PID_in_namespace($namespace);
   $page_item = fedora_item::ingest_new_item($nextPid, 'A', $label, $user->name);
   $page_item->add_relationship('hasModel', 'islandora:criticalEditionCModelPage', FEDORA_MODEL_URI);
   $page_item->add_relationship('isSequenceNumber', $sequence_number, 'http://islandora.ca/ontology/relsext#', 3);
@@ -103,10 +102,17 @@ function emic_cwrc_create_edition_page($page, $sequence_number, $edition_pid, $n
   $page_item->add_relationship('isPageOf', $edition_pid, 'http://islandora.ca/ontology/relsext#');
   $page_item->add_relationship('isEditionOf', $page, 'http://islandora.ca/ontology/relsext#');
   $page_item->add_relationship('isMemberOf', $edition_pid, RELS_EXT_URI);
-  $page_item->add_datastream_from_url("$base_url/fedora/repository/$page/OCR", 'OCR', 'Scanned Text', 'text/plain', 'M', NULL);
-  $page_item->add_datastream_from_url("$base_url/fedora/repository/$page/TN", 'TN', 'Thumbnail Image', 'image/png', 'M', NULL);
-  if(array_key_exists('CWRC', $item->datastreams)){
-    $page_item->add_datastream_from_url("$base_url/fedora/repository/$page/CWRC", 'CWRC', 'CWRC Image', 'text/plain', 'M', NULL);
+  $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
+  $base_file_url = "$fedora_url/objects/$page/datastreams";
+  if (array_key_exists('OCR', $item->datastreams)) {
+    $page_item->add_datastream_from_url("$base_file_url/OCR/content", 'OCR', 'Scanned Text', 'text/plain', 'M', NULL);
+  }
+  if (array_key_exists('TN', $item->datastreams)) {
+    $page_item->add_datastream_from_url("$base_file_url/TN/content", 'TN', 'Thumbnail Image', 'image/png', 'M', NULL);
+  }
+
+  if (array_key_exists('CWRC', $item->datastreams)) {
+    $page_item->add_datastream_from_url("$base_file_url/CWRC/content", 'CWRC', 'CWRC', 'text/plain', 'M', NULL);
   }
 }
 
@@ -177,7 +183,7 @@ function emic_cwrc_manage_editions_submit($form, &$form_state) {
     foreach ($pids_to_process as $pid) {
 
       $batch['operations'][] = array('emic_cwrc_delete_pid', array($pid['edition']));
-      foreach($pid['pages'] as $page){
+      foreach ($pid['pages'] as $page) {
         $batch['operations'][] = array('emic_cwrc_delete_pid', array($page));
       }
     }

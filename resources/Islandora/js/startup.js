@@ -167,11 +167,14 @@ $('document').ready(function(){
     $.contextMenu({
       selector: '.comment_title',
       callback: function(key, options) {
-        console.log(this)
+     
         var urn = $(this).parent('div').attr('urn');
         var title = $(this).text().substring(2,100);
         title = title.trim();
+
         var comment_text = $(this).next('.comment_text');
+        var anno_type = comment_text.find('.comment_type').text();
+   
         if(key == 'delete'){
           if (confirm("Permananently Delete Annotation '" + title + "'")) {
             pb_deleteAnno(urn);
@@ -181,7 +184,8 @@ $('document').ready(function(){
 
         if(key == 'edit'){
           $(this).addClass('annotation-opened').next().show();
-          var annotation = comment_text.text();
+          var annotation = comment_text.find('.comment_content').text();
+          alert(annotation)
           var pm = $(this).find('.comment_showhide');
           if (pm.text() == '+ ') {
             pm.empty().append('- ');
@@ -190,7 +194,7 @@ $('document').ready(function(){
             var canvas = $(this).attr('canvas');
             paint_commentAnnoTargets(this, canvas, id);
           }
-          startEditting(title, annotation, urn)
+          startEditting(title, annotation, anno_type, urn)
         }
       },
       items: {
@@ -202,25 +206,6 @@ $('document').ready(function(){
         "delete": {
           name: "Delete annotation",
           icon: "delete"
-        }
-
-      }
-    });
-  });
-
-  $(function(){
-    $.contextMenu({
-      selector: '.comment_edit',
-      callback: function(key, options) {
-        var urn = $(this).parent('div').attr('urn');
-        var new_text = $(this).val()
-        pb_update_anno(urn, new_text);
-
-      },
-      items: {
-        "paste": {
-          name: "Save Changes",
-          icon: "paste"
         }
 
       }

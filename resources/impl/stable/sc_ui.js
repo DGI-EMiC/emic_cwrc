@@ -851,7 +851,9 @@ function paint_audioAnno(anno, canvasId) {
 // when selected, paint targets (if any)
 
 function paint_commentAnno(anno, canvasId) {
+  
   var title = anno.title;
+  var annoType = anno.annoType;
   var txt = anno.body.value;
   var myid = anno.id.substring(9, 100);
   var tgttxt = '';
@@ -872,7 +874,8 @@ function paint_commentAnno(anno, canvasId) {
   txt = txt.replace('\n', '<br/>')
   block = '<div class = "canvas_annotation" ' + 'urn ="' + myid + '" '+ ' >';
   block += '<div class="comment_title" id="anno_' + myid + '"><span class="comment_showhide">+ </span>' + title + '</div>';
-  block += '<div class="comment_text">' + txt + '</div>';
+
+  block += '<div class="comment_text">' + '<div class="comment_type">' + annoType + '</div><div class="comment_content">' + txt + '</div></div>';
   block += '</div>';
 
   $('#comment_annos_block').append(block);

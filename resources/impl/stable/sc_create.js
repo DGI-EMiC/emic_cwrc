@@ -69,7 +69,7 @@ function startAnnotating() {
   });
 }
 
-function startEditting(title, annotation, urn) {
+function startEditting(title, annotation, annoType, urn) {
 
   if ($('#create_annotation').text() == 'Annotating') {
     return;
@@ -86,6 +86,7 @@ function startEditting(title, annotation, urn) {
   });
   $('#anno_title').val(title);
   $('#anno_text').val(annotation);
+  $('#anno_classification').val(annoType);
   $('#saveAnno').html('<span class="ui-button-text">Update Annotation</span>');
   $('#saveAnno').attr('urn', urn);
   $('#canvases .canvas').each(function() {
@@ -183,9 +184,10 @@ function saveAnnotation() {
   // Basic Sanity Check
   var title = $('#anno_title').val();
   var content = $('#anno_text').val();
+  var annoType = $('#anno_classification').val();
   if($('#saveAnno').text() == 'Update Annotation'){
     urn = $('#saveAnno').attr('urn');
-    pb_update_annotation(urn, title, content);
+    pb_update_annotation(urn, title, annoType, content);
     return;
   }
 

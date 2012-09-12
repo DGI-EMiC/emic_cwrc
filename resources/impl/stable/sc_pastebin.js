@@ -92,13 +92,14 @@ function pb_deleteAnno(urn) {
 }
 
 
-function pb_update_annotation(urn, title, content){
+function pb_update_annotation(urn, title,annoType, content){
   $.ajax({
     type:'POST',
     url:emic_canvas_params.islandora_update_annotation,
     data: {
       urn:urn,
       title:title,
+      annoType:annoType,
       content:content
     },
     success: function(data,status,xhr) {

@@ -21,7 +21,7 @@ function pb_postData(title, data, type) {
       pb_getPaste(data);
     },
     error: function(data,status,xhr) {
-    alert('Failed to post')
+      alert('Failed to post')
     }
   });
 }
@@ -109,7 +109,10 @@ function pb_update_annotation(urn, title,annoType, content){
       old_title = $(selector).html();
       new_title = old_title.replace(text, title);
       $(selector).html(new_title);
-      $(selector).next('.comment_text').text(content);
+
+      $(selector).next('.comment_text').find('.comment_type').text(annoType);
+      $(selector).next('.comment_text').find('.comment_content').text(content);
+     
     },
     error: function(data,status,xhr) {
       alert('Failed to update annotation')

@@ -185,7 +185,6 @@ $('document').ready(function(){
         if(key == 'edit'){
           $(this).addClass('annotation-opened').next().show();
           var annotation = comment_text.find('.comment_content').text();
-          alert(annotation)
           var pm = $(this).find('.comment_showhide');
           if (pm.text() == '+ ') {
             pm.empty().append('- ');

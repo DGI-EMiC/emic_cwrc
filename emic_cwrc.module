@@ -196,6 +196,9 @@ function emic_cwrc_islandora_tabs($content_models, $pid) {
 function get_emic_management_content($pid) {
 
   $links = emic_cwrc_links($pid);
+  if(!isset($links)){
+    return;
+  }
   $list = theme_item_list($links);
   $form['manage_page_tab'] = array(
     '#type' => 'tabpage',

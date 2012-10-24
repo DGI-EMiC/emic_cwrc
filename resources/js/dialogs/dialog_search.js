@@ -106,7 +106,7 @@ var SearchDialog = function(config) {
     $('div.ui-accordion-content-active ul').first().html('<li class="unselectable last"><span>Searching...</span></li>');
 		
     var query = searchInput.value;
-		
+  
     if (lookupService == 'lookup_project') {
       $.ajax({
         url: cwrc_params.authority_url + type + '/' + query,
@@ -140,6 +140,7 @@ var SearchDialog = function(config) {
         }
       });
     } else if (lookupService == 'lookup_viaf') {
+        query = query.replace(/"/g, "'");
       $.ajax({
         url: 'http://viaf.org/viaf/AutoSuggest',
         data: {
@@ -315,11 +316,11 @@ var SearchDialog = function(config) {
         click: function() {
           searchResult(true);
         }
-          },{
-              text: 'Add New '+config.title,
-              click: function() {
-                window.open(cwrc_params.BASE_PATH + '/fedora/repository/' + cwrc_params.authority_mappings[config.title]);
-             }
+      },{
+        text: 'Add New '+config.title,
+        click: function() {
+          window.open(cwrc_params.BASE_PATH + '/fedora/repository/' + cwrc_params.authority_mappings[config.title]);
+        }
       },{
         text: 'Tag '+config.title,
         click: function() {

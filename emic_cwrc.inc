@@ -36,10 +36,14 @@ function save_cwrc_data() {
  * @param string $pid
  */
 function get_cwrc_data($pid) {
+  module_load_include('inc', 'fedora_repository', 'api/fedora_item');
+  $item = new Fedora_Item($pid);
+  global $base_url;
   guarantee_cwrc_datastream($pid);
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
-  $file_url = $fedora_url . "/objects/$pid/datastreams/CWRC/content";
-  $file = file_get_contents($file_url);
+  $file_url = "$base_url/fedora/repository/$pid/CWRC";
+  $file = $item->get_datastream_dissemination("CWRC");
+
 
   echo $file;
 }
@@ -80,7 +84,7 @@ function setupCWRC($pid) {
   $results['fedora_url'] = $fedora_url;
   $results['position'] = $position;
   $results['pages'] = $pages;
-  $results['cModels'] =  $cModels;
+  $results['cModels'] = $cModels;
   $results['title'] = $title;
   $results['authority_url'] = $base_url . '/cwrc/authorities/';
   $results['no_edit'] = $cant_edit;
@@ -95,9 +99,10 @@ function setupCWRC($pid) {
  * @param string $pid
  */
 function make_cwrc_datastream($pid) {
+  global $base_url;
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
-  $ocr_url = $fedora_url . "/objects/$pid/datastreams/OCR/content";
+  $ocr_url = "$base_url/fedora/repository/$pid/OCR";
   $preface = '<?xml version="1.0"?>
 <html>
     <head>
@@ -117,7 +122,7 @@ function make_cwrc_datastream($pid) {
   if (is_array($lines)) {
     foreach ($lines as $line) {
       $line = preg_replace('/&£/', '£', $line);
-   
+
       $line = htmlspecialchars($line);
       $ocr .= $line . '<span _editable="true" struct="true" _tag="lb" id="struct_' . $count++ . '">﻿</span>';
     }
@@ -136,14 +141,24 @@ function make_cwrc_datastream($pid) {
  */
 function save_cwrc_to_fedora($pid, $cwrc_stream) {
   global $base_url;
+  $xml = simplexml_load_string($cwrc_stream);
+  $xml->registerXPathNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
+  $entities = $xml->xpath("//rdf:Description");
+  foreach($entities as $entity){
+    $urn = emic_cwrc_generate_uuid();
+    $entity->addAttribute('rdf:about', "urn:uuid:$urn", 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
+    $entity->addChild('w:urn',"urn:uuid:$urn", 'http://cwrctc.artsrn.ualberta.ca/#' );
+    $output = $entity->asXML();
+  }
   $flat_pid = str_replace(':', '_', $pid);
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $cwrc_stream = preg_replace("/&/", '&amp;', $cwrc_stream);
   $cwrc_stream = preg_replace("/<>/", '', $cwrc_stream);
   $ocr = get_ocr_from_cwrc($cwrc_stream);
   $item = new Fedora_Item($pid);
+  $string = $xml->asXML();
   if ($item->datastreams['CWRC']) {
-    $item->modify_datastream_by_value($cwrc_stream, 'CWRC', 'CWRC', 'text/plain', 'M');
+    $item->modify_datastream_by_value($xml->asXML(), 'CWRC', 'CWRC', 'text/plain', 'M');
   }
   else {
     $item->add_datastream_from_string($cwrc_stream, 'CWRC', 'CWRC', 'text/plain', 'M');
@@ -165,10 +180,10 @@ function save_cwrc_to_fedora($pid, $cwrc_stream) {
  * @param string $pid
  */
 function guarantee_cwrc_datastream($pid) {
-  $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
-  $file_url = $fedora_url . "/objects/$pid/datastreams/CWRC/content";
-  $file_headers = @get_headers($file_url);
-  if ($file_headers[0] == 'HTTP/1.1 404 Not Found') {
+  global $base_url;
+  module_load_include('inc', 'fedora_repository', 'api/fedora_item');
+  $item = new Fedora_Item($pid);
+  if (!array_key_exists("CWRC", $item->datastreams)) {
     make_cwrc_datastream($pid);
   }
 }
@@ -253,4 +268,18 @@ function emic_cwrc_get_authority_mappings() {
     'Organization' => 'islandora:9236',
   );
   return $mappings;
+}
+
+/**
+ * Generates uuid
+ * @return uuid
+ */
+function emic_cwrc_generate_uuid() {
+  return sprintf('%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
+      mt_rand(0, 0xffff), mt_rand(0, 0xffff),
+      mt_rand(0, 0xffff),
+      mt_rand(0, 0x0fff) | 0x4000,
+      mt_rand(0, 0x3fff) | 0x8000,
+      mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
+  );
 }

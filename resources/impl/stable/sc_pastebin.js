@@ -37,7 +37,7 @@ function islandora_getList() {
     success: function(data,status,xhr) {
       var listdata = $.parseJSON(data);
       var pids = listdata.pids;
-      if( pids != null){
+      if( listdata!= null && pids != null){
         for (var i=0,info;i < pids.length;i++){
           islandora_canvas_params.mappings[pids[i]['urn']] = pids[i]['color']
           var pid = pids[i]['id'];

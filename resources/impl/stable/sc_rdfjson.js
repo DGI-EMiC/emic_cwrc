@@ -2,19 +2,18 @@
 
 function buildAllAnnos(query, type) {
   query.reset();
-	
+
   var dump = query.databank.dump();
-	
   if (type != undefined) {
     var typres = query.where('?anno a ' + type);
   }
   var annos = {};
-  var result = query.where('?anno oac:hasBody ?body')
+  var result = query.where('?anno oa:hasBody ?body')
   .each(function() {
     annos[this.anno.value.toString()]=1;
   });
   query.reset();
-	
+
   return queryToJson(annos, dump);
 }
 
@@ -34,22 +33,22 @@ function uniqueValueList(list) {
 function queryToJson(annos, dump) {
   var nss = opts.namespaces;
   var annoObjs = [];
-	
+
   for (var id in annos) {
     if (topinfo['builtAnnos'].indexOf(id) > -1) {
       continue;
     } else {
       topinfo['builtAnnos'].push(id);
     }
-		
+
     var anno = new jAnno(id);
     anno.extractInfo(dump);
     // Must be exactly one body. Ignore past first
-    var bodid = dump[id][nss['oac']+'hasBody'][0]['value'];
+    var bodid = dump[id][nss['oa']+'hasBody'][0]['value'];
     var bod = new jBodyTarget(bodid);
     bod.extractInfo(dump);
     anno.body = bod;
-    var tgts = dump[id][nss['oac']+'hasTarget'];
+    var tgts = dump[id][nss['oa']+'hasTarget'];
     var uniqtgts = uniqueValueList(tgts);
     for (t in uniqtgts) {
       var tid = uniqtgts[t];
@@ -73,12 +72,11 @@ function jAnno(id) {
   this.zOrder = 0;
   this.finished = 1;
   this.painted = 0;
-  this.annoType = 'Marginalia';
+  this.annoType = '';
 }
 
 
 jAnno.prototype.extractInfo = function(info) {
-
   var nss = opts.namespaces;
   var me = info[this.id];
   var typs = me[nss['rdf']+'type'];
@@ -89,7 +87,7 @@ jAnno.prototype.extractInfo = function(info) {
   if (me[nss['dc']+'type'] != undefined) {
     this.annoType = me[nss['dc']+'type'][0]['value'];
   }
-	
+
 }
 
 var extractSimple = function(info) {
@@ -99,9 +97,9 @@ var extractSimple = function(info) {
     // No info about resource at all
     return;
   }
-	
+
   var nss = opts.namespaces;
-	
+
   if (me[nss['rdf']+'type'] != undefined) {
     var typs = me[nss['rdf']+'type'];
     this.types= uniqueValueList(typs);
@@ -124,7 +122,7 @@ var extractSimple = function(info) {
   if (me[nss['dc']+'extent'] != undefined) {
     this.extent = parseInt(me[nss['dc']+'extent'][0]['value']);
   }
-	
+
   // Regularize
   if (me[nss['dms']+'imageType'] != undefined) {
     this.imageType = me[nss['dms']+'imageType'][0]['value'];
@@ -132,7 +130,7 @@ var extractSimple = function(info) {
   if (me[nss['dms']+'colorSpace'] != undefined) {
     this.imageType = me[nss['dms']+'colorSpace'][0]['value'];
   }
-	
+
 }
 
 
@@ -149,7 +147,7 @@ function jBodyTarget(id) {
   this.options = [];
   this.defaultOpt = null;
   this.rotation = 0;
-	
+
   var hidx = id.indexOf('#');
   if (hidx > -1) {
     // Check for fragment and try to parse
@@ -171,7 +169,7 @@ function jBodyTarget(id) {
       this.fragmentType = 'audio';
     }
   }
-	
+
 }
 
 jBodyTarget.prototype.extractSimple = extractSimple;
@@ -182,7 +180,7 @@ jBodyTarget.prototype.extractInfo = function(info) {
   if (me == undefined) {
     return;
   }
-	
+
   this.extractSimple(info);
 
   if (me[nss['dms']+'option'] != undefined) {
@@ -205,7 +203,7 @@ jBodyTarget.prototype.extractInfo = function(info) {
   if (me[nss['dms']+'rotation'] != undefined) {
     this.rotation = me[nss['dms']+'rotation'][0]['value'];
   }
-	
+
   if (me[nss['dcterms']+'isPartOf'] != undefined) {
     var pid = me[nss['dcterms']+'isPartOf'][0]['value'];
     var partOf = new jResource(pid);
@@ -213,22 +211,22 @@ jBodyTarget.prototype.extractInfo = function(info) {
     partOf.extractInfo(info);
 
   }
-	
+
   // Check for constraint
   if (this.partOf == null) {
-    if (me[nss['oac']+'constrains'] != undefined) {
-      var pid = me[nss['oac']+'constrains'][0]['value'];
+    if (me[nss['oa']+'constrains'] != undefined) {
+      var pid = me[nss['oa']+'constrains'][0]['value'];
       var partOf = new jResource(pid);
       partOf.extractInfo(info);
       this.partOf = partOf;
-			
-      var cid = me[nss['oac']+'constrainedBy'][0]['value'];
+
+      var cid = me[nss['oa']+'constrainedBy'][0]['value'];
       var constraint = new jResource(cid);
       constraint.extractInfo(info);
       this.constraint = constraint;
     }
   }
-	
+
 }
 
 
@@ -238,7 +236,7 @@ function jResource(id) {
   this.title = "";
   this.creator = null;
   this.value = "";
-	
+
   this.format = "";
   this.height = 0;
   this.width = 0;
@@ -247,7 +245,7 @@ function jResource(id) {
 }
 
 jResource.prototype.extractInfo = extractSimple;
-	
+
 
 function jAgent(id) {
   this.name = "";

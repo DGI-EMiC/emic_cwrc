@@ -7,8 +7,10 @@
       <link type="text/css" rel="stylesheet" href="css/style_2.css" />
       <link type="text/css" rel="stylesheet" href="smoothness/jquery-ui-1.8.13.custom.css" />
       <link type="text/css" rel="stylesheet" href="js/snippet/jquery.snippet.css" />
+
       <script type="text/javascript" src="js/jquery/jquery-1.7.js"></script>
       <script type="text/javascript" src="js/jquery/jquery-ui-1.8.13.custom.min.js"></script>
+
       <script type="text/javascript" src="js/jquery/jquery.contextmenu.js"></script>
       <script type="text/javascript" src="js/jquery/jquery.watermark.min.js"></script>
       <script type="text/javascript" src="js/tinymce/jscripts/tiny_mce/jquery.tinymce.js"></script>
@@ -53,6 +55,10 @@
       <script src="impl/stable/sc_gdata.js" type="text/javascript"></script>
       <script src="impl/stable/sc_pastebin.js" type="text/javascript"></script>
 
+
+      <!-- Color selector -->
+      <script type="text/javascript" src="impl/js/jquery_old/jquery.miniColors.js"></script>
+      <link type="text/css" rel="stylesheet" href="impl/css/jquery.miniColors.css" />
 
       <script type="text/javascript">
         window.onbeforeunload = function() {
@@ -217,34 +223,36 @@
           </div>
           <!-- Annotation shapes -->
           <div style="display:inline; margin-top: 3px; padding-left: 5px;">
-            <img id="annoShape_rect" class="annoShape" src="impl/imgs/draw_rect.png" style="padding-left: 2px; padding-top: 1px;"/>
-            <img id="annoShape_circ" class="annoShape" src="impl/imgs/draw_circ.png" style="padding-left: 1px;"/>
-            <img id="annoShape_poly" class="annoShape" src="impl/imgs/draw_poly.png" style="padding: 2px;"/>
+            <img id="annoShape_rect" class="annoShape" src="imgs/draw_rect.png" style="padding-left: 2px; padding-top: 1px;"/>
+            <img id="annoShape_circ" class="annoShape" src="imgs/draw_circ.png" style="padding-left: 1px;"/>
+            <img id="annoShape_poly" class="annoShape" src="imgs/draw_poly.png" style="padding: 2px;"/>
             <hr style="margin: 0px; padding: 0px; height: 1px;"/>
           </div>
           <div id="create_annos_block" class="dragBlock">
             <!-- Annotation Title -->
+
             <div class="element-wrap">
               <label for="anno_title">Title:</label>
               <input id="anno_title" type="text" size="28"></input>
             </div>
-            <!-- Annotation Type - to be removed -->
-            <span style="float:right" hidden ="true"><select id="anno_type">
-                <option value="comment">Commentary</option>
-                <option value="transcription">Transcription</option>
-              </select></span>
 
-            <div class="element-wrap">
-              <label for="anno_text">Type:</label>
+            <div id ="islandora_classification"class="element-wrap">
+              <label for="anno_type">Type:</label>
               <input id="anno_classification" type="text" size="28"></input>
             </div>
-            <!-- Annotation textarea -->
+
+
+            <div id ="color-picker-wrapper" class="element-wrap">
+              <label for="anno_color">Color:</label>
+              <input id ="anno_color" type="hidden" name="color4" value="#91843c" class="color-picker" size="7" />
+              <input id ="anno_color_activated" type="hidden" value ="" size="7" />
+            </div>
+
+
             <div class="element-wrap">
               <label for="anno_text">Annotation:</label>
               <textarea id="anno_text" cols="40" rows="5"></textarea>
             </div>
-
-
             <!-- Services - to be removed -->
             <span style="width:200px;margin:0px;padding:0px;float:left">
               <ul id="create_body" style="width: 200px; list-style:none;font-size:10pt;margin:0;padding:0;">

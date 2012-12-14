@@ -4,6 +4,7 @@ var MAX_TXT_SIZE = 18;
 
 function ping_progressBar(flag) {
   var pb = $('#loadprogress')
+ 
   var c = pb.progressbar('value')
 
   if (flag == 'manifest') {
@@ -60,7 +61,7 @@ function populate_jumpMenu(qry) {
     }
     idxl.sort(function(a,b){
       return a-b
-      });
+    });
     for (var x=0,idx; idx=idxl[x];x++) {
       title = idxs[idx];
       jmp.append('<li><span onclick="jumpPage('+idx+')">' + title + '</span></li>')
@@ -146,28 +147,28 @@ function showPages() {
     'audio':{},
     'zone':{},
     'comment':{}
-};
-topinfo['paintedAnnos'] = [];
+  };
+  topinfo['paintedAnnos'] = [];
 
-// Reset URI to correct #fragment info
-topinfo['uriParams']['s'] = topinfo['current'];
-var hsh = makeUriHash();
-$(location).attr('hash',hsh);
+  // Reset URI to correct #fragment info
+  topinfo['uriParams']['s'] = topinfo['current'];
+  var hsh = makeUriHash();
+  $(location).attr('hash',hsh);
 
-// Initialize to first Canvas div
-topinfo['currentCanvas'] = 0;
-// Show canvases
-for (var x=0;x<topinfo['numCanvases'];x++) {
-  topinfo['currentCanvas'] = x;
-  showPage();
-  topinfo['current'] = topinfo['current'] + 1;
-}
+  // Initialize to first Canvas div
+  topinfo['currentCanvas'] = 0;
+  // Show canvases
+  for (var x=0;x<topinfo['numCanvases'];x++) {
+    topinfo['currentCanvas'] = x;
+    showPage();
+    topinfo['current'] = topinfo['current'] + 1;
+  }
 
-// Current is seq index for *first* canvas
-topinfo['current'] = topinfo['current'] - topinfo['numCanvases'];
-repositionCanvases();
+  // Current is seq index for *first* canvas
+  topinfo['current'] = topinfo['current'] - topinfo['numCanvases'];
+  repositionCanvases();
 
-ping_progressBar('finishReqs');
+  ping_progressBar('finishReqs');
 
 }
 
@@ -459,7 +460,7 @@ function paint_imageAnno(anno, canvasId) {
     // Display choice with best default
     anno.body.options.sort(function(a,b){
       return a.id > b.id ? 1 : -1
-      });
+    });
     if (img == null) {
       if (anno.body.defaultOpt != null) {
         img = anno.body.defaultOpt;
@@ -485,12 +486,14 @@ function paint_imageAnno(anno, canvasId) {
     $('#imgSel_block').append(html);
     $(".imgSelul li:even").addClass("alt");
     $('.imgSelRadio').click(function() {
-      alert($(this).attr('id'))
+    
       })
     if ($('#check_view_imgSel').is(':checked')) {
+      alert("Its checked")
       $('#imgSel').show();
     }
   } else {
+    alert('abnno body')
     img = anno.body;
   }
 
@@ -523,9 +526,9 @@ function paint_imageAnno(anno, canvasId) {
     div.height(sh);
     div.css('z-index', topinfo['zOrders']['image']);
 
-    if (!$('#check_show_baseImg').is(':checked')) {
-      div.hide();
-    }
+    //    if (!$('#check_show_baseImg').is(':checked')) {
+    //      div.hide();
+    //    }
 
     var zpr = '<div id="zpr_'+canvasId+'" style="position:absolute;"><button id="zprb_'+canvasId+'">zoom</button></div>';
     $('#annotations').append(zpr);
@@ -541,7 +544,7 @@ function paint_imageAnno(anno, canvasId) {
     var zprb = $('#zprb_'+canvasId);
     zprb.click(function() {
       show_zpr(imguri)
-      });
+    });
 
 
     if (!$('#check_view_zpr').is(':checked')) {
@@ -604,7 +607,7 @@ function paint_imageAnno(anno, canvasId) {
       img.offset({
         top:div.position().top - imgofftop,
         left:div.position().left-imgoffleft
-        });
+      });
       img.css('clip', clip);
     }
     img.height(imgh);
@@ -801,48 +804,7 @@ function paint_textAnno(anno, canvasId) {
 
 }
 
-function paint_audioAnno(anno, canvasId) {
 
-  var myid = anno.id.substring(9, 1000);
-  var body = '<img src="/imgs/play.png" class="audio_button" id="audio_button_' +
-  myid + '"/><br/><div id="audio_progress_' +
-  myid + '" class="audio_progress"></div>';
-
-  $("#annotations").append('<div class="audio_anno" id="' + myid + '">'
-    + body + '</div>');
-  var aanno = $('#' + myid)
-  aanno.css('z-index', topinfo['zOrders']['audio'] + anno.zOrder)
-
-  var xywh = getRect(anno.targets[0]);
-  if (xywh != null) {
-    var tx = xywh[0], ty = xywh[1], tw = xywh[2], th = xywh[3];
-    var cvs = $('#' + canvasId).attr('canvas');
-    var cvsw = topinfo['sequenceInfo'][cvs][1];
-    var scale = topinfo['canvasWidth'] / cvsw;
-    var offset = "" + Math.floor(tx*scale) + ' ' + Math.floor(ty*scale);
-    aanno.height(Math.floor(th*scale));
-    aanno.width(Math.floor(tw*scale));
-    aanno.position({
-      'of':'#' +canvasId,
-      'my':'left top',
-      'at':'left top',
-      'collision':'none',
-      'offset': offset
-    });
-  }
-
-  $('#audio_button_' + myid).click(audio_button_click);
-  $('#audio_button_' + myid).attr('canvasId', canvasId);
-  $("#audio_progress_" + myid).progressbar({
-    value: 0
-  }).css({
-    height:10,
-    opacity: 0.0
-  });
-  if (!$('#check_show_audio').is(':checked')) {
-    aanno.hide();
-  }
-}
 
 
 // UI for Comment Annotations
@@ -851,9 +813,12 @@ function paint_audioAnno(anno, canvasId) {
 // when selected, paint targets (if any)
 
 function paint_commentAnno(anno, canvasId) {
-  
+
   var title = anno.title;
   var annoType = anno.annoType;
+ 
+  // remove illegal characters
+  var fixed_annotype = annoType.replace(/[^\w]/g,'');
   var txt = anno.body.value;
   var myid = anno.id.substring(9, 100);
   var tgttxt = '';
@@ -869,21 +834,22 @@ function paint_commentAnno(anno, canvasId) {
       tgttxt = 'all of ' + tgtttl;
     }
   }
-
-
   txt = txt.replace('\n', '<br/>')
+
+  //block contains complete annotation
   block = '<div class = "canvas_annotation" ' + 'urn ="' + myid + '" '+ ' >';
   block += '<div class="comment_title" id="anno_' + myid + '"><span class="comment_showhide">+ </span>' + title + '</div>';
-
   block += '<div class="comment_text">' + '<div class="comment_type">' + annoType + '</div><div class="comment_content">' + txt + '</div></div>';
   block += '</div>';
+  
 
-  $('#comment_annos_block').append(block);
+  selectBlock = "#islandora_annoType_content_" + fixed_annotype;
+  $(selectBlock).append(block);
   $('#anno_' + myid).attr('canvas', canvasId);
 
   $('#delete_anno_'+myid).click(function(e){
     if (confirm("Permananently Delete This Annotation?")) {
-      pb_deleteAnno(myid);
+      islandora_deleteAnno(myid);
     }
     e.preventDefault();
   });
@@ -895,7 +861,7 @@ function paint_commentAnno(anno, canvasId) {
       pm.empty().append('- ');
       var id = $(this).attr('id').substring(5,100);
       var canvas = $(this).attr('canvas');
-      paint_commentAnnoTargets(this, canvas, id);
+      paint_commentAnnoTargets(this, canvas, id, annoType);
     } else {
       $('.svg_' + myid).remove();
       var c = $(this).find('.mycolor');
@@ -906,15 +872,14 @@ function paint_commentAnno(anno, canvasId) {
     return false;
   }).next().hide();
 
-  if ($('#check_show_comment').is(':checked')) {
-    $('#comment_annos').show();
-  }
+  $('#comment_annos').show();
+
 }
 
 
 var svgAreaColors = ['#FF0000', '#FF6600', '#FF9400', '#FEC500', '#FFFF00', '#8CC700', '#0FAD00', '#00A3C7', '#0064B5', '#0010A5', '#6300A5', '#C5007C']
 
-function paint_commentAnnoTargets(ttldiv, canvasId, annoId) {
+function paint_commentAnnoTargets(ttldiv, canvasId, annoId, annoType) {
 
   var canvas = $('#' + canvasId).attr('canvas');
   var annos = topinfo['annotations']['comment'][canvas];
@@ -926,6 +891,10 @@ function paint_commentAnnoTargets(ttldiv, canvasId, annoId) {
       } else {
         var col = svgAreaColors.splice(0,1)[0];
       }
+      if(islandora_canvas_params.mappings['urn:uuid:' + annoId] != '' ){
+        col = islandora_canvas_params.mappings[['urn:uuid:' + annoId]];
+      }
+    
       $(ttldiv).append('<span color="' + col + '" class="mycolor" style="margin-right: 2px; margin-top: 2px; background: '+col+';float:right;width:15px;height:15px;">&nbsp;</span>');
       for (var t = 0, tgt; tgt = anno.targets[t]; t++) {
         if (tgt.partOf != null) {
@@ -954,126 +923,16 @@ function paint_svgArea(svgc, annoId, col, svg) {
     npth.setAttribute(attr.nodeName, attr.nodeValue);
   }
   pthelm = npth;
-  pthelm.setAttribute('style', 'opacity:0.4;fill:' + col +';stroke-width:2;');
+  //changed by UPEI
+  pthelm.setAttribute('style', 'fill:none;opacity:none;stroke:'+col+';stroke-width:1%');
   pthelm.setAttribute('class', 'svg_' + annoId);
   svgc.canvas.appendChild(pthelm);
-
 }
 
 
-// UI Callbacks: Audio
 
-function audio_button_click(e) {
-  var jp = $('#jquery_jplayer_1');
-  var aid = $(this).attr('id');
-  var canvasId = $(this).attr('canvasId');
-  var canvas = $('#'+canvasId).attr('canvas');
 
-  // 'audio_button_uuid' + n
-  var aidn = aid.substr(13,100);
-  var auri = 'urn:uuid:' + aidn;
 
-  var annos = topinfo['annotations']['audio'][canvas];
-  var myanno = null;
-  for (var a=0,anno;anno=annos[a];a++) {
-    if (anno.id == auri) {
-      myanno = anno;
-      break;
-    }
-  }
-
-  if (myanno == null) {
-    // :(
-    alert('splat!')
-    return;
-  }
-
-  // Set volume here before playing
-  var vol = $('#slider_volume').slider('value') / 100;
-  jp.jPlayer('volume', vol)
-
-  var img = $(this).attr('src');
-  if (img == '/imgs/play.png') {
-    var curr = topinfo['audioAnno'];
-    if (curr != null) {
-      var pb = $('#audio_progress_' + curr.id.substring(9,1000));
-      pb.progressbar({
-        value:0
-      }).css({
-        'opacity':0.0
-      });
-    }
-    $('.audio_button').attr('src', '/imgs/play.png')
-    $(this).attr('src', '/imgs/stop.png');
-
-    topinfo['audioAnno'] = anno;
-    var pb = $('#audio_progress_' + aidn);
-    pb.css({
-      'opacity':0.6
-    });
-
-    if (anno.body.fragmentType == 'audio') {
-      var start = anno.body.fragmentInfo[0];
-      var mp3 = anno.body.partOf.id;
-    } else {
-      var start = 0;
-      var mp3 = anno.body.id;
-    }
-    jp.jPlayer("setMedia", {
-      'mp3': mp3
-    });
-    jp.jPlayer('play', start);
-
-  } else {
-    var c = topinfo['audioAnno'];
-    $(this).attr('src', '/imgs/play.png');
-    var pb = $('#audio_progress_' + aidn);
-    pb.progressbar({
-      value:0
-    }).css({
-      'opacity':0.0
-    });
-    topinfo['audioAnno'] = null;
-    jp.jPlayer('stop');
-  }
-}
-
-function on_audio_currentTime(e) {
-  var anno = topinfo['audioAnno'];
-  if (anno == null) {
-    // Get ct of 0 before playing
-    return;
-  }
-  var annoid = anno.id.substring(9, 1000);
-  var ct = e.jPlayer.status.currentTime;
-  var l = $('#audio_progress_' + annoid);
-
-  if (anno.body.fragmentType == 'audio') {
-    var start = anno.body.fragmentInfo[0];
-    var end = anno.body.fragmentInfo[1];
-    var mp3 = anno.body.partOf.id;
-  } else {
-    var start = 0;
-    var end = anno.body.extent;
-    var mp3 = anno.body.id;
-  }
-
-  var durn = end - start;
-  var relv = ct - start;
-  l.progressbar({
-    value: relv / durn * 100
-    });
-  if (ct > end) {
-    $(this).jPlayer('stop');
-    $('.audio_button').attr('src', '/imgs/play.png')
-    l.progressbar({
-      value:0
-    });
-    l.css({
-      opacity:0.0
-    });
-  }
-}
 
 // UI Callbacks:  Navigation
 
@@ -1085,7 +944,7 @@ function reorder_layers(e) {
   ids = [];
   $('#show_body').children().each(function() {
     ids.push($(this).attr('id'))
-    });
+  });
   // This is the overall order in which annotations should be ordered
   // li_audio, li_comment, ...  first is topmost in list
 

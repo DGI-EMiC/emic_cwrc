@@ -4,22 +4,24 @@
 // Plus other XXXs (!)
 
 // Raphael overwrites CSS with defaults :(
+
+
 var outsideStyle = {
-  fill: '#fff',
+  fill: 'none',
   opacity: 0.7,
-  'stroke-width': 2,
+  'stroke-width': '1%',
   stroke: 'black'
 };
 var insideStyle = {
   fill: '#FFFFFF',
-  opacity: 0.3,
-  'stroke-width': 2,
+  opacity: 0.1,
+  'stroke-width': 'none',
   stroke: 'black',
   'stroke-dasharray': '- '
 };
 
 function fetch_comment_annotations() {
-  pb_getList();
+  islandora_getList();
 	
 }
 
@@ -42,13 +44,15 @@ function maybe_config_create_annotation() {
   shp.css('border', '1px solid black');
   topinfo['svgAnnoShape'] = shp.attr('id').substr(10,5);
 	
-  // Install PasteBin
-  init_pb();
+// Install PasteBin
+//islandora_init();
 
 }
 
 function startAnnotating() {
-	
+  // initialize color sctivation boolean
+  $('#anno_color_activated').attr('value', '');
+  // return if already annotating
   if ($('#create_annotation').text() == 'Annotating') {
     return;
   }
@@ -70,7 +74,7 @@ function startAnnotating() {
 }
 
 function startEditting(title, annotation, annoType, urn) {
-
+  $('#anno_color_activated').attr('value', '');
   if ($('#create_annotation').text() == 'Annotating') {
     return;
   }
@@ -177,17 +181,26 @@ function destroyAll(canvas) {
     $(r).remove();
   }
   topinfo['raphaels']['comment'][canvas] = undefined;
-  pb_getList();
+
+  islandora_getList();
 }
 
 function saveAnnotation() {
+ 
   // Basic Sanity Check
   var title = $('#anno_title').val();
   var content = $('#anno_text').val();
   var annoType = $('#anno_classification').val();
+  var color = '';
+
+  //check to see if color box has been activated
+  if($('#anno_color_activated').attr('value') == 'active'){
+    color = $('#anno_color').attr('value');
+  }
+  
   if($('#saveAnno').text() == 'Update Annotation'){
     urn = $('#saveAnno').attr('urn');
-    pb_update_annotation(urn, title, annoType, content);
+    islandora_updateAnno(urn, title, annoType, content, color);
     return;
   }
 
@@ -200,7 +213,11 @@ function saveAnnotation() {
   var rinfo = create_rdfAnno();
   var rdfa = rinfo[0];
   var tgt = rinfo[1];
-	
+  //added for Islandora
+  if($('#anno_color_activated').attr('value') == 'active'){
+    color = $('#anno_color').attr('value');
+  }
+
   if (tgt == null) {
     alert('You must draw a shape around the target.');
     return 0;
@@ -214,7 +231,32 @@ function saveAnnotation() {
   });
   // var data = $(rdfa).rdf().databank.dump({format:'application/rdf+xml',serialize:true});
   var type = $('#anno_classification').val();
-  pb_postData(tgt, rdfa, type);
+  // add category to annoblock before saving annotation.  Fixes concurrency errors
+
+  var fixed_cat = type.replace(/[^\w]/g,'');
+
+  var type_class = "annoType_" + fixed_cat;
+  var blockId = 'islandora_annoType_'+ fixed_cat;
+  var contentId = 'islandora_annoType_content_'+ fixed_cat;
+  var idSelector = '#' + blockId;
+    
+  if($(idSelector).length == 0){
+    header =  '<div class = "islandora_comment_type" id = "'+ blockId + '">';
+    header += '<div class = "islandora_comment_type_title">' + type + '</div>';
+    header += '<div class = "islandora_comment_type_content" style = "display:none" id = "'+ contentId + '"></div>';
+    header += '</div>';
+    $('#comment_annos_block').append(header);
+  }
+  // add new categories to typeahead if necessary
+  if($.inArray(type, islandora_canvas_params.categories) == -1){
+    islandora_canvas_params.categories.push(type);
+    $( "#anno_classification" ).autocomplete({
+      source: islandora_canvas_params.categories
+    });
+  }
+    
+  
+  islandora_postData(tgt, rdfa, type, color);
 
   return 1;
 }
@@ -239,33 +281,17 @@ function create_rdfAnno() {
   var typ = null;
   $('#anno_type :selected').each(function() {
     typ = this.value;
+
   });
 
-  if (typ == 'comment') {
-    var clss = 'oac:Annotation';
-    var fullclss = nss['oac'] +'Annotation';
-  } else if (typ == 'transcription' || typ == 'initial' || typ == 'rubric') {
-    var clss = 'dms:TextAnnotation';
-    var fullclss = nss['dms'] + 'TextAnnotation';
-  } else if (typ == 'image') {
-    var clss = 'dms:ImageAnnotation';
-    var fullclss = nss['dms']+'ImageAnnotation';
-  } else if (typ == 'audio') {
-    var clss = 'dms:AudioAnnotation';
-    var fullclss = nss['dms']+'AudioAnnotation';
-  }
-	
-  if (typ == 'initial') {
-    var bodyClass = 'dms:InitialBody';
-    var bodyFullClass = nss['dms']+'InitialBody';
-  } else if (typ == 'rubric') {
-    var bodyClass = 'dms:RubricBody';
-    var bodyFullClass = nss['dms']+'RubricBody';
-  } else {
-    var bodyClass = null;
-    var bodyFullClass = null;
-  }
-		
+
+  var clss = 'oac:Annotation';
+  var fullclss = nss['oa'] +'Annotation';
+  var bodyClass = null;
+  var bodyFullClass = null;
+
+  var clss = 'oac:Annotation';
+  var fullclss = nss['oa'] +'Annotation';
   var now = isodate(new Date());
   // Generate namespaces from RDF options
   var xmlns = '';
@@ -282,10 +308,16 @@ function create_rdfAnno() {
   rdfa += '<span property="dcterms:created" content="' + now + '"></span> ';
 
   var title = $('#anno_title').val();
+  var color = $('#anno_color').attr('value');
+  //alert(color)
+ 
   if (title != '') {
     rdfa += '<span property="dc:title" content="' + title + '"></span>';
   }
   var type = $('#anno_classification').val();
+  if(type == ''){
+    type = 'unclassified'
+  }
   if (title != '') {
     rdfa += '<span property="dc:type" content="' + type + '"></span>';
   }
@@ -329,10 +361,10 @@ function create_rdfAnno() {
   if (isResc == true) {
     // XXX Could be constrained resource, eg part of an XML or image
     // So would need to build constraint ... too hard!
-    rdfa += '<b>See:</b> <a rel="oac:hasBody" href="' + content + '">' + content + '</a>';
+    rdfa += '<b>See:</b> <a rel="oa:hasBody" href="' + content + '">' + content + '</a>';
   } else {
     var contUU = new UUID();
-    rdfa += '<a rel="oac:hasBody" href="urn:uuid:' + contUU +'"></a> ';
+    rdfa += '<a rel="oa:hasBody" href="urn:uuid:' + contUU +'"></a> ';
     rdfa += '<div about="urn:uuid:' + contUU + '"> ';
     rdfa += '<a rel="rdf:type" href="http://www.w3.org/2008/content#ContentAsText"></a> ';
     if (bodyFullClass != null) {
@@ -351,11 +383,11 @@ function create_rdfAnno() {
   var target = null;
   $('#canvases .canvas').each(function() {
     var cnv = $(this).attr('canvas');
-    // var cnv = emic_canvas_params.object_base +'/Canvas';
+    // var cnv = islandora_canvas_params.object_base +'/Canvas';
     if(cnv){
       if (tgtsCanvas == true) {
         target = cnv;
-        rdfa += '<a rel="oac:hasTarget" href="' + cnv +'"></a>';
+        rdfa += '<a rel="oa:hasTarget" href="' + cnv +'"></a>';
       } else {
         var r = topinfo['raphaels']['comment'][cnv];
         var bg = r.annotateRect;
@@ -363,19 +395,20 @@ function create_rdfAnno() {
         for (s in stuff) {
           target = cnv;
           var svgxml = nodeToXml(stuff[s].node);
+          svgxml = svgxml.replace("stroke='#000000'" , "stroke='" + color +  "'")
           svgxml = svgxml.replace('<', '&lt;');
           svgxml = svgxml.replace('<', '&lt;');
           svgxml = svgxml.replace('>', '&gt;');
           svgxml = svgxml.replace('>', '&gt;');
           var ctuu = new UUID();
-          rdfa += '<a rel="oac:hasTarget" href="urn:uuid:' + ctuu +'"></a>';
+          rdfa += '<a rel="oa:hasTarget" href="urn:uuid:' + ctuu +'"></a>';
           rdfa += '<div about="urn:uuid:' + ctuu +'">';
-          rdfa += '<a rel="rdf:type" href="http://www.openannotation.org/ns/ConstrainedTarget"></a>';
-          rdfa += '<a rel="oac:constrains" href="' + cnv + '"></a>';
+          rdfa += '<a rel="rdf:type" href="http://www.w3.org/ns/openannotation/core/ConstrainedTarget"></a>';
+          rdfa += '<a rel="oa:constrains" href="' + cnv + '"></a>';
           var svguu = new UUID();
-          rdfa += '<a rel="oac:constrainedBy" href="urn:uuid:' + svguu + '"></a>'
+          rdfa += '<a rel="oa:constrainedBy" href="urn:uuid:' + svguu + '"></a>'
           rdfa += '<div about="urn:uuid:' + svguu + '">';
-          rdfa += '<a rel="rdf:type" href="http://www.openannotation.org/ns/SvgConstraint"></a>';
+          rdfa += '<a rel="rdf:type" href="http://www.w3.org/ns/openannotation/core/SvgConstraint"></a>';
           rdfa += '<a rel="rdf:type" href="http://www.w3.org/2008/content#ContentAsText"></a>';
           rdfa += '<span property="cnt:chars" content="' + svgxml + '"></span>';
           rdfa += '<span property="cnt:characterEncoding" content="utf-8"></span>';
@@ -387,7 +420,7 @@ function create_rdfAnno() {
   });
   rdfa += "</div>"; // Close Annotation
   rdfa += "</div>"; // Close wrapper
-  return [rdfa, target];
+  return [rdfa, target, color];
 }
 
 switchDown = function(x,y) {

@@ -59,7 +59,7 @@ var opts = {
     dc:'http://purl.org/dc/elements/1.1/',
     dcterms:'http://purl.org/dc/terms/',
     dctype:'http://purl.org/dc/dcmitype/',
-    oac:'http://www.openannotation.org/ns/',
+    oa:'http://www.w3.org/ns/openannotation/core/',
     cnt:'http://www.w3.org/2008/content#',
     dms:'http://dms.stanford.edu/ns/',
     rdf:'http://www.w3.org/1999/02/22-rdf-syntax-ns#',

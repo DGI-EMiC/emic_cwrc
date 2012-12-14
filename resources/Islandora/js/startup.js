@@ -177,7 +177,7 @@ $('document').ready(function(){
    
         if(key == 'delete'){
           if (confirm("Permananently Delete Annotation '" + title + "'")) {
-            pb_deleteAnno(urn);
+            islandora_deleteAnno(urn);
           }
        
         }
@@ -211,17 +211,18 @@ $('document').ready(function(){
     });
   });
 
-  $(function() {
-    var availableTypes = [
-    "Textual Notes",
-    "Explanatory Notes",
-    "Marginalia",
-    "Speculative"
-    ];
-    $( "#anno_classification" ).autocomplete({
-      source: availableTypes
+  if(islandora_canvas_params.use_dropdown == 1){
+    $('#islandora_classification').empty();
+    var sel = $('<select  id="anno_classification">').appendTo('#islandora_classification');
+    $(islandora_canvas_params.categories).each(function() {
+      value = this.toString();
+      sel.append($("<option>").attr('value',value).text(value));
     });
-  });
+  }else{
+    $( "#anno_classification" ).autocomplete({
+      source: islandora_canvas_params.categories
+    });
+  }
 });
 
 
@@ -232,7 +233,7 @@ function init_canvas_div(){
     url: basedir +'/emic/shared/setup/' + pagePid,
     async:false,
     success: function(data, status, xhr) {
-      emic_canvas_params = data;
+      islandora_canvas_params = data;
     },
     error: function() {
       alert("Please Login to EMiC site");
@@ -241,20 +242,20 @@ function init_canvas_div(){
 
   });
 
-  if(emic_canvas_params.no_edit == true){
+  if(islandora_canvas_params.no_edit == true){
     $('#create_annotation').hide();
   }
-  opts.base = emic_canvas_params.object_base;
+  opts.base = islandora_canvas_params.object_base;
 
 
 
   // build and populate page choice dropdown
   $('#canvas_page_selector').html('<select id="canvas_page_choose"></select>');
-  $.each(emic_canvas_params.pages, function(key, value){
+  $.each(islandora_canvas_params.pages, function(key, value){
     $('#canvas_page_choose').append('<option  value="' + key + '">Page ' + (key + 1) + '</option>');
   });  // build and populate page choice dropdown
   $('#canvas_page_selector').html('<select id="canvas_page_choose"></select>');
-  $.each(emic_canvas_params.pages, function(key, value){
+  $.each(islandora_canvas_params.pages, function(key, value){
     $('#canvas_page_choose').append('<option  value="' + key + '">Page ' + (key + 1) + '</option>');
   });
 
@@ -294,13 +295,18 @@ function init_canvas_div(){
   initCanvas(nCanvas)
 
   // Manifest Initialization
-  var manuri = emic_canvas_params.manifest_url;
+  var manuri = islandora_canvas_params.manifest_url;
   if (manuri != undefined) {
     fetchTriples(manuri, rdfbase, cb_process_manifest);
   } else {
     repouri = $('#repository').attr('href');
     fetchTriples(repouri, rdfbase, cb_process_repository);
   }
+
+  $('#color-picker-wrapper').click(function(){
+    $('#anno_color_activated').attr('value', 'active');
+  });
+  $('.color-picker').miniColors();
 
 }
 

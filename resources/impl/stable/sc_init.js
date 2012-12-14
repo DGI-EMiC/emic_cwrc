@@ -58,7 +58,7 @@ var opts = {
     dc:'http://purl.org/dc/elements/1.1/',
     dcterms:'http://purl.org/dc/terms/',
     dctype:'http://purl.org/dc/dcmitype/',
-    oac:'http://www.openannotation.org/ns/',
+    oa:'http://www.w3.org/ns/openannotation/core/',
     cnt:'http://www.w3.org/2008/content#',
     dms:'http://dms.stanford.edu/ns/',
     rdf:'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
@@ -85,6 +85,7 @@ function initCanvas(nCanvas) {
   var w = w/perrow - (5*perrow);
   var h = $(window).height() - 50;
   h = h/rows;
+	
   for (var x=0;x<nCanvas;x++) {
     $('#canvases').append('<div id="canvas_' + x + '" class="canvas"></div>')
     $('#canvas_'+x).width(w);
@@ -406,6 +407,7 @@ $(document).ready(function(){
 	
   // Manifest Initialization
   var manuri = $('#manifest').attr('href');
+
   if (manuri != undefined) {
     fetchTriples(manuri, rdfbase, cb_process_manifest);
   } else {

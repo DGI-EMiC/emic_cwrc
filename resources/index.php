@@ -57,7 +57,7 @@
 
 
       <!-- Color selector -->
-      <script type="text/javascript" src="impl/js/jquery_old/jquery.miniColors.js"></script>
+      <script type="text/javascript" src="impl/js/jquery/jquery.miniColors.js"></script>
       <link type="text/css" rel="stylesheet" href="impl/css/jquery.miniColors.css" />
 
       <script type="text/javascript">

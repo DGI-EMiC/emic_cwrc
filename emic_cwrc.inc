@@ -101,8 +101,9 @@ function setupCWRC($pid) {
 function make_cwrc_datastream($pid) {
   global $base_url;
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
-  $fedora_url = variable_get('fedora_base_url', 'http://localhost:8080/fedora');
-  $ocr_url = "$base_url/fedora/repository/$pid/OCR";
+  $item = new Fedora_Item($pid);
+  $ocr = $item->get_datastream_dissemination('OCR');
+  $lines = explode("\n", $ocr);
   $preface = '<?xml version="1.0"?>
 <html>
     <head>
@@ -117,7 +118,6 @@ function make_cwrc_datastream($pid) {
         </tei>
     </body>
 </html>';
-  $lines = @file($ocr_url);
   $count = 100;
   if (is_array($lines)) {
     foreach ($lines as $line) {
@@ -144,10 +144,10 @@ function save_cwrc_to_fedora($pid, $cwrc_stream) {
   $xml = simplexml_load_string($cwrc_stream);
   $xml->registerXPathNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
   $entities = $xml->xpath("//rdf:Description");
-  foreach($entities as $entity){
+  foreach ($entities as $entity) {
     $urn = emic_cwrc_generate_uuid();
     $entity->addAttribute('rdf:about', "urn:uuid:$urn", 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
-    $entity->addChild('w:urn',"urn:uuid:$urn", 'http://cwrctc.artsrn.ualberta.ca/#' );
+    $entity->addChild('w:urn', "urn:uuid:$urn", 'http://cwrctc.artsrn.ualberta.ca/#');
     $output = $entity->asXML();
   }
   $flat_pid = str_replace(':', '_', $pid);

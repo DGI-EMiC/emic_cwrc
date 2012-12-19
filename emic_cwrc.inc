@@ -126,7 +126,7 @@ function make_cwrc_datastream($pid) {
       $line = preg_replace('/&£/', '£', $line);
 
       $line = htmlspecialchars($line);
-      $ocr .= $line . '<span _editable="true" struct="true" _tag="lb" id="struct_' . $count++ . '">﻿</span>';
+      $ocr .= $line . '<span _editable="true" _struct="true" _tag="lb" id="struct_' . $count++ . '">﻿</span>';
     }
   }
   if (empty($ocr)) {

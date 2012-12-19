@@ -102,8 +102,9 @@ function make_cwrc_datastream($pid) {
   global $base_url;
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $item = new Fedora_Item($pid);
-  $ocr = $item->get_datastream_dissemination('OCR');
-  $lines = explode("\n", $ocr);
+  $ocr_in = $item->get_datastream_dissemination('OCR');
+
+  $lines = explode("\n", $ocr_in);
   $preface = '<?xml version="1.0"?>
 <html>
     <head>
@@ -118,6 +119,7 @@ function make_cwrc_datastream($pid) {
         </tei>
     </body>
 </html>';
+  $ocr = "";
   $count = 100;
   if (is_array($lines)) {
     foreach ($lines as $line) {

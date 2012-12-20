@@ -217,10 +217,11 @@ function cwrc_get_authorities_list($setup_data, $query) {
 
   $query_processor = new IslandoraSolrQueryProcessor();
   $query_string = "collection:\"$collection\" AND dc.subject:\"$query\"";
-  $query_processor->buildAndExecuteQuery($query_string);
-  if($collection == 'islandora:9239'){
+  if ($collection == 'islandora:9239') {
     $query_string = 'collection:"islandora:9239" AND mads.fullname:' . strtolower($query);
   }
+  $query_processor->buildAndExecuteQuery($query_string);
+
 
   $raw_results = $query_processor->solrResult;
 

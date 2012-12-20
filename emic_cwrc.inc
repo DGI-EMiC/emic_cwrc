@@ -172,8 +172,8 @@ function save_cwrc_to_fedora($pid, $cwrc_stream) {
   }
   file_put_contents($file_path, $ocr);
   $value = $item->add_or_modify_by_reference("$base_url/$file_path", 'OCR', 'Scanned Text', 'text/plain', 'M');
-  unlink($file_path);
-  rmdir($dir_path);
+  unlink("$base_url/$file_path");
+  rmdir("$base_url/$dir_path");
 }
 
 /**

@@ -165,7 +165,7 @@ function save_cwrc_to_fedora($pid, $cwrc_stream) {
   else {
     $item->add_datastream_from_string($cwrc_stream, 'CWRC', 'CWRC', 'text/plain', 'M');
   }
-  $dir_path = file_directory_path() . "/$flat_pid/ocrtmp";
+  $dir_path = file_directory_path() . "/criticalEditionTmp/$flat_pid/ocrtmp";
   $file_path = "$dir_path/ocr.txt";
   if (!is_dir($file_path)) {
     mkdir($dir_path, 0777, TRUE);

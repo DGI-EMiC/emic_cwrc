@@ -159,23 +159,14 @@ function save_cwrc_to_fedora($pid, $cwrc_stream) {
   $cwrc_stream = preg_replace("/<>/", '', $cwrc_stream);
   $ocr = get_ocr_from_cwrc($cwrc_stream);
   $item = new Fedora_Item($pid);
-  $string = $xml->asXML();
+
   if ($item->datastreams['CWRC']) {
     $item->modify_datastream_by_value($xml->asXML(), 'CWRC', 'CWRC', 'text/plain', 'M');
   }
   else {
     $item->add_datastream_from_string($cwrc_stream, 'CWRC', 'CWRC', 'text/plain', 'M');
   }
-  $dir_path = file_directory_path() . "/$flat_pid";
-  $file_path = "$dir_path/ocrtmp/ocr.txt";
-  if (!is_dir($file_path)) {
-    mkdir($dir_path, 0777, TRUE);
-  }
-  file_put_contents($file_path, $ocr);
-  $value = $item->add_or_modify_by_reference("$base_url/$file_path", 'OCR', 'Scanned Text', 'text/plain', 'M');
-  unlink("$base_url/$file_path");
-  rmdir("$base_url/$dir_path/ocrtmp");
-  rmdir("$base_url/$dir_path");
+
 }
 
 /**

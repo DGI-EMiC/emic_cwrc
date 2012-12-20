@@ -143,6 +143,7 @@ function make_cwrc_datastream($pid) {
  */
 function save_cwrc_to_fedora($pid, $cwrc_stream) {
   global $base_url;
+
   $xml = simplexml_load_string($cwrc_stream);
   $xml->registerXPathNamespace('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#');
   $entities = $xml->xpath("//rdf:Description");
@@ -165,14 +166,15 @@ function save_cwrc_to_fedora($pid, $cwrc_stream) {
   else {
     $item->add_datastream_from_string($cwrc_stream, 'CWRC', 'CWRC', 'text/plain', 'M');
   }
-  $dir_path = file_directory_path() . "/criticalEditionTmp/$flat_pid/ocrtmp";
-  $file_path = "$dir_path/ocr.txt";
+  $dir_path = file_directory_path() . "/$flat_pid";
+  $file_path = "$dir_path/ocrtmp/ocr.txt";
   if (!is_dir($file_path)) {
     mkdir($dir_path, 0777, TRUE);
   }
   file_put_contents($file_path, $ocr);
   $value = $item->add_or_modify_by_reference("$base_url/$file_path", 'OCR', 'Scanned Text', 'text/plain', 'M');
   unlink("$base_url/$file_path");
+  rmdir("$base_url/$dir_path/ocrtmp");
   rmdir("$base_url/$dir_path");
 }
 

@@ -198,9 +198,7 @@ function emic_cwrc_get_authorities($dataType, $query = "") {
     'Tag Organization' => array('collection' => 'islandora:9236', 'type' => t('Organization')),
   );
 
-  if ($query != '') {
-    $query .= '*';
-  }
+
 
   $authorities = cwrc_get_authorities_list($mappings[$dataType], $query);
   if ($authorities) {
@@ -214,45 +212,41 @@ function cwrc_get_authorities_list($setup_data, $query) {
 
   $collection = $setup_data['collection'];
   $type = $setup_data['type'];
-
   $query_processor = new IslandoraSolrQueryProcessor();
-  $query_string = "collection:\"$collection\" AND dc.subject:\"$query\"";
+  // test if collection is Person collection - handled differently from the others
   if ($collection == 'islandora:9239') {
-    $query_string = 'collection:"islandora:9239" AND mads.fullname:' . strtolower($query);
+    $terms = explode(' ', $query);
+    $terms = array_filter($terms);
+    // wildcard each term
+    foreach ($terms as $term) {
+      if ($term != '') {
+        $term .= '*';
+      }
+      $query_string = 'collection:"islandora:9239" AND mads.fullname:' . strtolower($term);
+      $new_terms = emic_process_query($query_string);
+      if (is_array($new_terms) && is_array($records)) {
+        $pids = array_intersect(array_keys($new_terms), array_keys($records));
+        $records = array_merge($records, $new_terms);
+      }
+      else {
+        $records = $new_terms;
+      }
+    }
+    if (is_array($pids)) {
+      foreach ($pids as $pid) {
+        $filtered_results[] = $records[$pid];
+      }
+      return $filtered_results;
+    }
+    return array_values($records);
   }
-  $query_processor->buildAndExecuteQuery($query_string);
-
-
-  $raw_results = $query_processor->solrResult;
-
-  $rawResponse = $raw_results->getRawResponse();
-  $responseArray = json_decode($rawResponse, true);
-  $records = array();
-  $options = array(
-    'attributes' => array('target' => '_blank'),
-  );
-  foreach ($responseArray['response']['docs'] as $result) {
-    if ($type == 'Person') {
-      $title = $result['dc.subjectFacet'][0];
+  else {
+    if ($query != '') {
+      $query .= '*';
+      $query_string = "collection:\"$collection\" AND dc.subject:\"$query\"";
+      return emic_process_query($query_string);
     }
-    else {
-      $title = $result['dc.subjectFacet'][0];
-      $title .= ' - ' . $result['dc.date'][0];
-    }
-    $auth_pid = str_replace('info:fedora/', '', $result['PID']);
-    if (!$title) {
-      $title = str_replace('info:fedora/', '', $result['title'][0]);
-    }
-    $note = $result['dc.description'][0];
-    $link = l($auth_pid, "fedora/repository/$auth_pid", $options);
-
-    $record = array('identifier' => $title, 'Object' => $link);
-    if ($note) {
-      $record['Note'] = $note;
-    }
-    $records[] = $record;
   }
-  return $records;
 }
 
 function get_ocr_from_cwrc($cwrc) {
@@ -288,4 +282,40 @@ function emic_cwrc_generate_uuid() {
       mt_rand(0, 0x3fff) | 0x8000,
       mt_rand(0, 0xffff), mt_rand(0, 0xffff), mt_rand(0, 0xffff)
   );
+}
+
+function emic_process_query($query_string) {
+  module_load_include('inc', 'islandora_solr_search', 'IslandoraSolrQueryProcessor');
+  $query_processor = new IslandoraSolrQueryProcessor();
+  $query_processor->buildAndExecuteQuery($query_string);
+  $raw_results = $query_processor->solrResult;
+
+  $rawResponse = $raw_results->getRawResponse();
+  $responseArray = json_decode($rawResponse, true);
+  $records = array();
+  $options = array(
+    'attributes' => array('target' => '_blank'),
+  );
+  foreach ($responseArray['response']['docs'] as $result) {
+    if ($type == 'Person') {
+      $title = $result['dc.subjectFacet'][0];
+    }
+    else {
+      $title = $result['dc.subjectFacet'][0];
+      $title .= ' - ' . $result['dc.date'][0];
+    }
+    $auth_pid = str_replace('info:fedora/', '', $result['PID']);
+    if (!$title) {
+      $title = str_replace('info:fedora/', '', $result['title'][0]);
+    }
+    $note = $result['dc.description'][0];
+    $link = l($auth_pid, "fedora/repository/$auth_pid", $options);
+
+    $record = array('identifier' => $title, 'Object' => $link);
+    if ($note) {
+      $record['Note'] = $note;
+    }
+    $records[$result['PID']] = $record;
+  }
+  return $records;
 }

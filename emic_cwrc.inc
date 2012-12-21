@@ -200,7 +200,6 @@ function emic_cwrc_get_authorities($dataType, $query = "") {
   }
 }
 
-
 // builds resultset for typeahead
 
 function cwrc_get_authorities_list($setup_data, $query) {
@@ -216,7 +215,9 @@ function cwrc_get_authorities_list($setup_data, $query) {
     $new_records = emic_process_query($query_string);
     $records = array_intersect_key($records, $new_records);
   }
-  return array_values($records);
+  if (is_array($records)) {
+    return array_values($records);
+  }
 }
 
 function get_ocr_from_cwrc($cwrc) {

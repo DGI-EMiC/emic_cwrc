@@ -145,6 +145,9 @@ function editor_as_link($pid, $book_pid = null) {
   if ($book_pid) {
     $item = new Fedora_Item($book_pid);
     $rels = $item->get_rdf_relationships();
+    if($rels['isCriticalEditionOf']){
+      $book_pid = $rels['isCriticalEditionOf'][0];
+    }
   }
   global $base_url;
 

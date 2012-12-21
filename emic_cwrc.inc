@@ -237,7 +237,7 @@ function cwrc_get_authorities_list($setup_data, $query) {
     if ($query != '') {
       $query .= '*';
       $query_string = "collection:\"$collection\" AND dc.subject:\"$query\"";
-      return emic_process_query($query_string);
+      return array_values(emic_process_query($query_string));
     }
   }
 }

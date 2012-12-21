@@ -489,7 +489,7 @@ function paint_imageAnno(anno, canvasId) {
     
       })
     if ($('#check_view_imgSel').is(':checked')) {
-      alert("Its checked")
+ 
       $('#imgSel').show();
     }
   } else {

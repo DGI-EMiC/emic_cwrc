@@ -166,7 +166,6 @@ function save_cwrc_to_fedora($pid, $cwrc_stream) {
   else {
     $item->add_datastream_from_string($cwrc_stream, 'CWRC', 'CWRC', 'text/plain', 'M');
   }
-
 }
 
 /**
@@ -183,6 +182,7 @@ function guarantee_cwrc_datastream($pid) {
   }
 }
 
+// maps types to collections
 function emic_cwrc_get_authorities($dataType, $query = "") {
   $mappings = array(
     'Tag Place' => array('collection' => 'islandora:9247', 'type' => t('Place')),
@@ -200,46 +200,23 @@ function emic_cwrc_get_authorities($dataType, $query = "") {
   }
 }
 
-function cwrc_get_authorities_list($setup_data, $query) {
-  module_load_include('inc', 'islandora_solr_search', 'IslandoraSolrQueryProcessor');
 
+// builds resultset for typeahead
+
+function cwrc_get_authorities_list($setup_data, $query) {
   $collection = $setup_data['collection'];
-  $type = $setup_data['type'];
-  $query_processor = new IslandoraSolrQueryProcessor();
-  // test if collection is Person collection - handled differently from the others
-  if ($collection == 'islandora:9239') {
-    $terms = explode(' ', $query);
-    $terms = array_filter($terms);
-    // wildcard each term
-    foreach ($terms as $term) {
-      if ($term != '') {
-        $term .= '*';
-      }
-      $query_string = 'collection:"islandora:9239" AND mads.fullname:' . strtolower($term);
-      $new_terms = emic_process_query($query_string);
-      if (is_array($new_terms) && is_array($records)) {
-        $pids = array_intersect(array_keys($new_terms), array_keys($records));
-        $records = array_merge($records, $new_terms);
-      }
-      else {
-        $records = $new_terms;
-      }
-    }
-    if (is_array($pids)) {
-      foreach ($pids as $pid) {
-        $filtered_results[] = $records[$pid];
-      }
-      return $filtered_results;
-    }
-    return array_values($records);
+  $query_string = 'collection:"' . $collection . '"';
+  $records = emic_process_query($query_string);
+  $terms = explode(' ', $query);
+  $terms = array_filter($terms);
+
+  while (count($terms) > 0) {
+    $term = array_shift($terms) . "*";
+    $query_string = 'collection:"' . $collection . '" AND emic.searchname:' . strtolower($term);
+    $new_records = emic_process_query($query_string);
+    $records = array_intersect_key($records, $new_records);
   }
-  else {
-    if ($query != '') {
-      $query .= '*';
-      $query_string = "collection:\"$collection\" AND dc.subject:\"$query\"";
-      return array_values(emic_process_query($query_string));
-    }
-  }
+  return array_values($records);
 }
 
 function get_ocr_from_cwrc($cwrc) {

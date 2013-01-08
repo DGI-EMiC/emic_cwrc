@@ -123,10 +123,15 @@ function make_cwrc_datastream($pid) {
   $count = 100;
   if (is_array($lines)) {
     foreach ($lines as $line) {
-      $line = preg_replace('/&£/', '£', $line);
+      $line = trim(preg_replace('/&£/', '£', $line));
 
       $line = htmlspecialchars($line);
-      $ocr .= $line . '<span _editable="true" _struct="true" _tag="lb" id="struct_' . $count++ . '">﻿</span>';
+      $count++;
+      // the l tag is not supported in version 2 of cwrcwriter
+      // $ocr .=   "<l xml:id='struct_$count'>$line</l>";
+      // $ocr .= $line . '<span _editable="true" _struct="true" _tag="lb" id="struct_' . $count++ . '">﻿</span>';
+      $count++;
+       $ocr .= $line . trim("<span _editable='true' _struct='true' _tag='lb' id='struct_$count' />﻿");
     }
   }
   if (empty($ocr)) {
@@ -268,11 +273,9 @@ function emic_process_query($query_string) {
     'attributes' => array('target' => '_blank'),
   );
   foreach ($responseArray['response']['docs'] as $result) {
-    if ($type == 'Person') {
-      $title = $result['dc.subjectFacet'][0];
-    }
-    else {
-      $title = $result['dc.subjectFacet'][0];
+
+    $title = $result['dc.subjectFacet'][0];
+    if (isset($result['dc.date'][0])) {
       $title .= ' - ' . $result['dc.date'][0];
     }
     $auth_pid = str_replace('info:fedora/', '', $result['PID']);

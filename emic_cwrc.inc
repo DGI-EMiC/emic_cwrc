@@ -26,6 +26,7 @@ function save_cwrc_data() {
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');
   $data = html_entity_decode(stripslashes($_POST['text']), ENT_QUOTES, 'UTF-8');
   $cwrc = str_replace('<br>', '<br />', $data);
+  $cwrc = str_replace('&', '&amp;', $cwrc);
   $pid = ($_POST['file_pid']);
   save_cwrc_to_fedora($pid, $cwrc);
   echo "Success";

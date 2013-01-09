@@ -100,8 +100,7 @@ function islandora_getAnnotation(pid) {
      
     },
     error: function(data,status,xhr) {
-       console.log(xhr);
-       console.log(data)
+      
     }
   });
 }

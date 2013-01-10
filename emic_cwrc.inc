@@ -224,7 +224,7 @@ function cwrc_get_authorities_list($setup_data, $query) {
     $contents = array();
     $identifier = implode('', $doc['emic.searchname']);
     $contents['identifier'] = $identifier;
-    $contents['Object'] = "<a href='/Development/fedora/repository/$pid' target='_blank'>$pid</a>";
+    $contents['Object'] = "<a href='/fedora/repository/$pid' target='_blank'>$pid</a>";
     $contents['Note'] = $doc['dc.description'][0];
     $records[$doc['PID']] = $contents;
   }

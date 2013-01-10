@@ -222,7 +222,8 @@ function cwrc_get_authorities_list($setup_data, $query) {
   foreach($docs as $doc){
     $pid = $doc['PID'];
     $contents = array();
-    $contents['identifier'] = $doc['emic.searchname'][0];
+    $identifier = implode('', $doc['emic.searchname']);
+    $contents['identifier'] = $identifier;
     $contents['Object'] = "<a href='/Development/fedora/repository/$pid' target='_blank'>$pid</a>";
     $contents['Note'] = $doc['dc.description'][0];
     $records[$doc['PID']] = $contents;

@@ -355,5 +355,4 @@ function maybeResize() {
 }
 
 
-// Let's start it up!
 

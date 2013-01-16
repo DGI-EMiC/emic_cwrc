@@ -20,7 +20,7 @@ function cwrc_page_select_form($form, $pid) {
 }
 
 /**
- * Persists CWRC datastrram to page object
+ * Persists CWRC datastream to page object
  */
 function save_cwrc_data() {
   module_load_include('inc', 'fedora_repository', 'api/fedora_item');

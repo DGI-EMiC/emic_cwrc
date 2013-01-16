@@ -29,46 +29,54 @@ function islandora_postData(title, data, type, color) {
 
 function islandora_getList() {
  
+  var tabs = $('#tabs').tabs();
+  tabs.tabs('select', 3);
   islandora_canvas_params.mappings = new Array();
   $.ajax({
     type:'GET',
     async:false,
     url: islandora_canvas_params.get_annotation_list_url,
     success: function(data,status,xhr) {
-      
+   
       if(data != 'null'){
         var listdata = $.parseJSON(data);
         var pids = listdata.pids;
+        var types = listdata.types;
+
+       // create the divs
+   
+        if( listdata!= null && types != null){
+          for (var i=0,info;i < types.length;i++){
+            var fixed_cat = types[i].replace(/[^\w]/g,'');
+            var type_class = "annoType_" + fixed_cat;
+            var blockId = 'islandora_annoType_'+ fixed_cat;
+            var contentId = 'islandora_annoType_content_'+ fixed_cat;
+            var idSelector = '#' + blockId;
+
+            if($(idSelector).length == 0){
+
+              header =  '<div class = "islandora_comment_type" id = "'+ blockId + '">';
+              header += '<div class = "islandora_comment_type_title">' + types[i] + '</div>';
+              header += '<div class = "islandora_comment_type_content" style = "display:none" id = "'+ contentId + '"></div>';
+              header += '</div>';
+
+              $('#comment_annos_block').append(header);
+            }
+
+          }
+        }
+//populate the divs
+
         if( listdata!= null && pids != null){
           for (var i=0,info;i < pids.length;i++){
             islandora_canvas_params.mappings[pids[i]['urn']] = pids[i]['color']
             var pid = pids[i]['id'];
-            var temp = pids[i]['type'];
-            var fixed_cat = temp.replace(/[^\w]/g,'');
-            if(temp != type){
-
-              var type_class = "annoType_" + fixed_cat;
-              var blockId = 'islandora_annoType_'+ fixed_cat;
-              var contentId = 'islandora_annoType_content_'+ fixed_cat;
-              var idSelector = '#' + blockId;
-    
-              if($(idSelector).length == 0){
-
-                header =  '<div class = "islandora_comment_type" id = "'+ blockId + '">';
-                header += '<div class = "islandora_comment_type_title">' + temp + '</div>';
-                header += '<div class = "islandora_comment_type_content" style = "display:none" id = "'+ contentId + '"></div>';
-                header += '</div>';
-             
-                $('#comment_annos_block').append(header);
-              }
-            }
-
             $('#canvases .canvas').each(function() {
               // console.log(temp + " " + pid)
               var cnv = $(this).attr('canvas');
               islandora_getAnnotation(pid);
             });
-            var type = temp;
+      
           }
         }
 

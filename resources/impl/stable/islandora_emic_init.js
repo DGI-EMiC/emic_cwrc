@@ -340,6 +340,9 @@ function resizeCanvas() {
 
 
 function maybeResize() {
+  var baseid = '#' + $('.base_img').attr('id');
+  var imgid = '#' + $('.base_img').children(":first").attr('id');
+
   var w = $('#canvas-body').width();
   // Allow for slight tweak on size from original for scrollbars
   if (w == topinfo['bodyWidth'] && Math.abs(topinfo['origBodyWidth']-w) > 20) {
@@ -348,11 +351,17 @@ function maybeResize() {
     var b = topinfo['origBodyWidth'];
     topinfo['bodyWidth'] = 0;
     if (w != b) {
-      initCanvas(topinfo['numCanvases']);
-      showPages();
+    initCanvas(topinfo['numCanvases']);
+
+    $(imgid).width(w);
+    $(imgid).css("height", "auto");
+
+  //  $(baseid).css("width", (w + 30));
+    $(baseid).css("height", $(imgid).height());
+    $('#canvas_0').css("width", (w));
+  //  $('#canvas_0').css("height", $(imgid).height());
     }
   }
 }
-
 
 

@@ -49,6 +49,7 @@ function getRemForAggr(uri, qry) {
 }
 
 function extract_canvas_size(qry, uri) {
+  
   var h = 0;
   var w = 0;
   var t = ''

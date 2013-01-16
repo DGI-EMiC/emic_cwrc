@@ -85,7 +85,7 @@ function populate_jumpMenu(qry) {
     var info = topinfo['sequenceInfo'][canvas];
     if (info == undefined) {
       info = extract_canvas_size(qry, canvas)
-      topinfo['sequenceInfo'][canvas] = info
+     // topinfo['sequenceInfo'][canvas] = info
     }
     var ttl = info[2];
     $('#jump_body').append('<li><span onclick="jumpPage(' + x + ')">' + ttl + '</span></li>')
@@ -367,31 +367,11 @@ function paint_anno(typ, anno, div) {
 }
 
 
-function swapImage(radio, canvasId, annoId, optId) {
-  var canvas = $('#' + canvasId).attr('canvas');
-  var annos = topinfo['annotations']['image'][canvas];
-  var anno = null;
-  for (var i=0;anno=annos[i];i++) {
-    if (anno.id == annoId) {
-      for (var b=0,bodo;bodo=anno.body.options[b];b++) {
-        if (bodo.id == optId) {
-          anno.body.defaultOpt = bodo;
-          break;
-        }
-      }
-      break;
-    }
-  }
-  if (anno != null) {
-    var myid = 'imganno_' + anno.id.substring(9, 100)
-    $('#'+myid).remove();
-    $('#imgSel_set_' + canvasId).remove();
-    paint_imageAnno(anno, canvasId)
-  }
-}
+
 
 function show_zpr(what) {
   // Stupid rewrite as no access to African
+ 
 
   $('body').append('<div id="zpr-wrap"></div><span style="border: 1px solid black;position:absolute; top:5;right:5;z-index:20001; background: white; padding: 2px;" id="zpr-close"><b>close</b></span><div id="zpr-fullscreen"></div>');
   $('#zpr-close').click(function() {
@@ -450,7 +430,7 @@ function paint_imageAnno(anno, canvasId) {
     aid = aid.replace(/\//g, '_');
     aid = aid.replace(/-/g, '_');
     var myid = 'imganno_' + aid;
-
+  
   }
 
   // First find which image to use!
@@ -493,7 +473,7 @@ function paint_imageAnno(anno, canvasId) {
       $('#imgSel').show();
     }
   } else {
-    alert('abnno body')
+ 
     img = anno.body;
   }
 
@@ -835,15 +815,18 @@ function paint_commentAnno(anno, canvasId) {
     }
   }
   txt = txt.replace('\n', '<br/>')
+ 
 
   //block contains complete annotation
   block = '<div class = "canvas_annotation" ' + 'urn ="' + myid + '" '+ ' >';
   block += '<div class="comment_title" id="anno_' + myid + '"><span class="comment_showhide">+ </span>' + title + '</div>';
   block += '<div class="comment_text">' + '<div class="comment_type">' + annoType + '</div><div class="comment_content">' + txt + '</div></div>';
   block += '</div>';
-  
+ 
 
   selectBlock = "#islandora_annoType_content_" + fixed_annotype;
+
+ 
   $(selectBlock).append(block);
   $('#anno_' + myid).attr('canvas', canvasId);
 
@@ -980,6 +963,7 @@ function jumpPage(n) {
 }
 
 function repositionCanvases() {
+ 
   nCanvas = topinfo['numCanvases']
   rows = Math.floor(Math.sqrt(nCanvas));
   perrow = Math.ceil(nCanvas/rows);

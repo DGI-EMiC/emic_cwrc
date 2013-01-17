@@ -28,7 +28,7 @@ function islandora_postData(title, data, type, color) {
 //
 
 function islandora_getList() {
- 
+
   var tabs = $('#tabs').tabs();
   tabs.tabs('select', 3);
   islandora_canvas_params.mappings = new Array();

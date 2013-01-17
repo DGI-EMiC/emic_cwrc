@@ -29,6 +29,7 @@ function emic_cwrc_form_islandora_book_admin_settings_alter(&$form, &$form_state
 }
 
 function emic_cwrc_menu() {
+  
   $items = array();
   $items['cwrc/page'] = array(
     'file' => 'emic_cwrc.inc',

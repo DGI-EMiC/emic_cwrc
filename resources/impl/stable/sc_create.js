@@ -30,6 +30,7 @@ function maybe_config_create_annotation() {
   $('#create_annotation').click(startAnnotating);
   $('.diabutton').button();
   $('#cancelAnno').click(closeAndEndAnnotating);
+  $('#saveAnno').unbind('click');
   $('#saveAnno').click(saveAndEndAnnotating);
 
 
@@ -99,6 +100,7 @@ function startEditting(title, annotation, annoType, urn) {
   });
 }
 function saveAndEndAnnotating() {
+ 
   var okay = saveAnnotation();
   if (okay) {
     closeAndEndAnnotating();

@@ -132,7 +132,7 @@ function make_cwrc_datastream($pid) {
       // $ocr .=   "<l xml:id='struct_$count'>$line</l>";
       // $ocr .= $line . '<span _editable="true" _struct="true" _tag="lb" id="struct_' . $count++ . '">﻿</span>';
       $count++;
-       $ocr .= $line . trim("<span _editable='true' _struct='true' _tag='lb' id='struct_$count' />﻿");
+      $ocr .= $line . trim("<span _editable='true' _struct='true' _tag='lb' id='struct_$count' />﻿");
     }
   }
   if (empty($ocr)) {
@@ -211,7 +211,7 @@ function emic_cwrc_get_authorities($dataType, $query = "") {
 function cwrc_get_authorities_list($setup_data, $query) {
   $collection = $setup_data['collection'];
   $query_string = 'collection:"' . $collection . '"';
- // $records = emic_process_query($query_string);
+  // $records = emic_process_query($query_string);
   $terms = explode(' ', $query);
   $terms = array_filter($terms);
   $solr = variable_get('islandora_solr_search_block_url', 'http://localhost:8080/solr');
@@ -219,12 +219,12 @@ function cwrc_get_authorities_list($setup_data, $query) {
   $url = "http://$solr/select?indent=on&version=2.2&q=$query_string&fq=&start=0&rows=1000&qt=standard&wt=json&explainOther=&hl.fl=";
   $results = json_decode(file_get_contents($url), TRUE);
   $docs = $results['response']['docs'];
-  foreach($docs as $doc){
+  foreach ($docs as $doc) {
     $pid = $doc['PID'];
     $contents = array();
-    foreach($doc['emic.searchname'] as $sample){
+    foreach ($doc['emic.searchname'] as $sample) {
       $identifier = null;
-      if(!empty($sample) &! $identifier){
+      if (!empty($sample) & !$identifier) {
         $identifier = $sample;
       }
     }
@@ -234,13 +234,15 @@ function cwrc_get_authorities_list($setup_data, $query) {
     $contents['Note'] = $doc['dc.description'][0];
     $records[$doc['PID']] = $contents;
   }
-  
+
   while (count($terms) > 0) {
     $term = array_shift($terms) . "*";
     $query_string = 'collection:"' . $collection . '" AND emic.searchname:' . strtolower($term);
- 
+
     $new_records = emic_process_query($query_string);
-    $records = array_intersect_key($records, $new_records);
+    if (is_array($new_records) && is_array($records)) {
+      $records = array_intersect_key($records, $new_records);
+    }
   }
   if (is_array($records)) {
     return array_values($records);

@@ -260,10 +260,10 @@ function get_ocr_from_cwrc($cwrc) {
 
 function emic_cwrc_get_authority_mappings() {
   $mappings = array(
-    'Place' => 'islandora:9247',
-    'Person' => 'islandora:9239',
-    'Event' => 'islandora:9242',
-    'Organization' => 'islandora:9236',
+    'Place' => 'islandora:placesAuthority',
+    'Person' => 'islandora:personsAuthority',
+    'Event' => 'islandora:eventsAuthority',
+    'Organization' => 'islandora:orgsAuthority',
   );
   return $mappings;
 }

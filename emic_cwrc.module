@@ -9,13 +9,13 @@ function emic_cwrc_form_islandora_book_admin_settings_alter(&$form, &$form_state
       $taxes[$tax->vid] = $tax->name;
     }
   }
-  $current_tax = variable_get('EMIC_TAX','');
+  $current_tax = variable_get('EMIC_TAX', '');
   $form['emic_taxonomy_vid'] = array(
     '#title' => t("Taxonomy for Category Type"),
     '#type' => 'select',
     '#options' => $taxes,
     '#default_value' => $current_tax,
-    '#weight' =>0
+    '#weight' => 0
   );
 
   $form['emic_enforce_taxonomy'] = array(
@@ -24,12 +24,12 @@ function emic_cwrc_form_islandora_book_admin_settings_alter(&$form, &$form_state
     '#options' => array(0 => t('User defined'), 1 => t("Administrator defined")),
     '#description' => t('Allows administrators to select predefined taxonomies to determine annotation categorization terminology'),
     '#default_value' => variable_get('emic_annotation_categories', 0),
-    '#weight'=> -1,
+    '#weight' => -1,
   );
 }
 
 function emic_cwrc_menu() {
-  
+
   $items = array();
   $items['cwrc/page'] = array(
     'file' => 'emic_cwrc.inc',
@@ -146,7 +146,7 @@ function editor_as_link($pid, $book_pid = null) {
   if ($book_pid) {
     $item = new Fedora_Item($book_pid);
     $rels = $item->get_rdf_relationships();
-    if($rels['isCriticalEditionOf']){
+    if ($rels['isCriticalEditionOf']) {
       $book_pid = $rels['isCriticalEditionOf'][0];
     }
   }
@@ -239,4 +239,85 @@ function get_emic_management_content($pid) {
     '#selected' => FALSE,
   );
   return $form;
+}
+
+function emic_cwrc_fedora_repository_required_fedora_objects() {
+  module_load_include('inc', 'fedora_repository', 'fedora_repository.solutionpacks');
+  $module_path = drupal_get_path('module', 'emic_cwrc');
+  $islandora_path = drupal_get_path('module', 'fedora_repository');
+
+
+  return array(
+    'emic_cwrc' => array(
+      'module' => 'emic_cwrc',
+      'title' => 'Cwrc Module',
+      'objects' => array(
+        array(
+          'pid' => 'islandora:authorities',
+          'label' => 'Authority Collections',
+          'cmodel' => 'islandora:collectionCModel',
+          'parent' => 'islandora:root',
+          'datastreams' => array(
+            array(
+              'dsid' => 'TN',
+              'datastream_file' => "$module_path/images/Crystal_Clear_filesystem_folder_grey.png",
+              'mimetype' => 'image/png',
+            ),
+          ),
+        ),
+        array(
+          'pid' => 'islandora:personsAuthority',
+          'label' => 'Persons Authorities',
+          'cmodel' => 'islandora:collectionCModel',
+          'parent' => 'islandora:authorities',
+          'datastreams' => array(
+            array(
+              'dsid' => 'TN',
+              'datastream_file' => "$module_path/images/Crystal_Clear_filesystem_folder_grey.png",
+              'mimetype' => 'image/png',
+            ),
+          ),
+        ),
+        array(
+          'pid' => 'islandora:eventsAuthority',
+          'label' => 'Events Authorities',
+          'cmodel' => 'islandora:collectionCModel',
+          'parent' => 'islandora:authorities',
+          'datastreams' => array(
+            array(
+              'dsid' => 'TN',
+              'datastream_file' => "$module_path/images/Crystal_Clear_filesystem_folder_grey.png",
+              'mimetype' => 'image/png',
+            ),
+          ),
+        ),
+        array(
+          'pid' => 'islandora:orgsAuthority',
+          'label' => 'Organizations Authorities',
+          'cmodel' => 'islandora:collectionCModel',
+          'parent' => 'islandora:authorities',
+          'datastreams' => array(
+            array(
+              'dsid' => 'TN',
+              'datastream_file' => "$module_path/images/Crystal_Clear_filesystem_folder_grey.png",
+              'mimetype' => 'image/png',
+            ),
+          ),
+        ),
+        array(
+          'pid' => 'islandora:placesAuthority',
+          'label' => 'Places Authorities',
+          'cmodel' => 'islandora:collectionCModel',
+          'parent' => 'islandora:authorities',
+          'datastreams' => array(
+            array(
+              'dsid' => 'TN',
+              'datastream_file' => "$module_path/images/Crystal_Clear_filesystem_folder_grey.png",
+              'mimetype' => 'image/png',
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }

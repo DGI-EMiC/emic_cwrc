@@ -2,7 +2,9 @@ $(document).ready(function() {
       
   // resize columns on window resize
   // initialize drag on separator
-  $('#column-separator').draggable({
+  // this is diabled - to renenable remove the 'x' from the selector
+
+  $('#column-separatorx').draggable({
     axis: "x",
     containment: "#colright",
     scroll: false,
